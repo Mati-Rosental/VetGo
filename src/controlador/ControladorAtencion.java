@@ -1,44 +1,45 @@
 package controlador;
 
-import modelo.*;
-import persistencia.*;
-import servicio.*;
 public class ControladorAtencion {
-    private Repositorio<Consulta> repositorioConsultas;
-    private Inventario inventario;
-    private Notificador notificador;
-
-    public boolean iniciarConsulta(Turno turno) {
-        return true;
+    public boolean iniciarConsulta(String idTurno) {
+        System.out.println("ControladorAtencion.iniciarConsulta");
+        return false;
     }
 
-    public boolean registrarPeso(Consulta consulta, double peso) {
-        return true;
+    public boolean registrarPeso(String idConsulta, String peso) {
+        System.out.println("ControladorAtencion.registrarPeso");
+        return false;
     }
 
     public boolean indicarTratamiento(
-            Consulta consulta,
-            Producto medicamento,
+            String idConsulta,
+            String idMedicamento,
             String dosis,
             String frecuencia,
-            int duracionDias,
-            int cantidad) {
-        return true;
+            String duracionDias,
+            String cantidad) {
+        System.out.println("ControladorAtencion.indicarTratamiento");
+        return false;
     }
 
-    public boolean aplicarVacuna(Consulta consulta, Vacuna vacuna) {
-        return true;
+    public boolean aplicarVacuna(String idConsulta, String idVacuna) {
+        System.out.println("ControladorAtencion.aplicarVacuna");
+        return false;
     }
 
-    public boolean confirmarConsulta(Consulta consulta) {
-        return true;
+    public boolean confirmarConsulta(String idConsulta) {
+        System.out.println("ControladorAtencion.confirmarConsulta");
+        return false;
     }
 
-    public boolean registrarNotaRectificatoria(Consulta consulta, String texto, Veterinario firmante) {
-        return true;
+    public boolean registrarNotaRectificatoria(
+            String idConsulta, String texto, String documentoFirmante) {
+        System.out.println("ControladorAtencion.registrarNotaRectificatoria");
+        return false;
     }
 
-    public boolean consultarHistoriaClinica(Mascota mascota) {
-        return true;
+    public boolean consultarHistoriaClinica(String idMascota) {
+        System.out.println("ControladorAtencion.consultarHistoriaClinica");
+        return false;
     }
 }

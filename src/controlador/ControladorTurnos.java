@@ -1,39 +1,29 @@
 package controlador;
 
-import modelo.*;
-import persistencia.*;
-import servicio.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 public class ControladorTurnos {
-    private Repositorio<Turno> repositorioTurnos;
-    private Clinica clinica;
-    private GestorUrgencias gestorUrgencias;
-    private Agenda agenda;
-    private Notificador notificador;
-
     public boolean asignarTurno(
-            Mascota mascota,
-            Veterinario veterinario,
-            TipoAtencion tipo,
-            LocalDateTime fechaHora) {
-        return true;
+            String idMascota, String documentoVeterinario, String tipo, String fechaHora) {
+        System.out.println("ControladorTurnos.asignarTurno");
+        return false;
     }
 
-    public boolean reprogramarTurno(Turno turno, LocalDateTime nuevaFechaHora) {
-        return true;
+    public boolean reprogramarTurno(String idTurno, String nuevaFechaHora, String documentoVeterinario) {
+        System.out.println("ControladorTurnos.reprogramarTurno");
+        return false;
     }
 
-    public boolean cancelarTurno(Turno turno, LocalDateTime ahora) {
-        return true;
+    public boolean cancelarTurno(String idTurno, String ahora) {
+        System.out.println("ControladorTurnos.cancelarTurno");
+        return false;
     }
 
-    public boolean registrarAusencia(Turno turno) {
-        return true;
+    public boolean registrarAusencia(String idTurno) {
+        System.out.println("ControladorTurnos.registrarAusencia");
+        return false;
     }
 
-    public boolean atenderUrgencia(Mascota mascota, LocalDate dia) {
-        return true;
+    public boolean atenderUrgencia(String idMascota, String dia) {
+        System.out.println("ControladorTurnos.atenderUrgencia");
+        return false;
     }
 }

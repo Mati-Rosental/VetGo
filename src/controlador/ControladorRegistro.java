@@ -1,23 +1,30 @@
 package controlador;
 
-import modelo.*;
-import persistencia.*;
-import servicio.*;
-import java.time.LocalDate;
-
 public class ControladorRegistro {
-    private Repositorio<Duenio> repositorioDuenios;
-    private Clinica clinica;
-
-    public boolean registrarDuenio(Duenio duenio) {
-        return true;
+    public boolean altaDuenio(
+            String nombre, String apellido, String documento, String telefono, String correo, String planSalud) {
+        System.out.println("ControladorRegistro.altaDuenio");
+        return false;
     }
 
-    public boolean registrarMascota(Duenio duenio, Mascota mascota) {
-        return true;
+    public boolean altaMascota(
+            String documentoDuenio,
+            String nombre,
+            String especie,
+            String raza,
+            String sexo,
+            String fechaNacimiento,
+            String peso,
+            String chip,
+            String tamanio,
+            String interiorExterior,
+            String vuela) {
+        System.out.println("ControladorRegistro.altaMascota");
+        return false;
     }
 
-    public boolean transferirMascota(Mascota mascota, Duenio nuevoDuenio, LocalDate fecha) {
-        return true;
+    public boolean transferirMascota(String idMascota, String documentoNuevoDuenio, String fecha) {
+        System.out.println("ControladorRegistro.transferirMascota");
+        return false;
     }
 }

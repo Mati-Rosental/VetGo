@@ -3,17 +3,7 @@ package vistas;
 import controlador.ControladorFacturacion;
 import controlador.ControladorRegistro;
 import controlador.ControladorTurnos;
-import modelo.Consulta;
-import modelo.Duenio;
-import modelo.Factura;
-import modelo.Mascota;
-import modelo.MedioPago;
-import modelo.Recepcionista;
-import modelo.TipoAtencion;
-import modelo.Turno;
-import modelo.Veterinario;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class VistaRecepcionista {
     private final ControladorRegistro controladorRegistro;
@@ -29,65 +19,99 @@ public class VistaRecepcionista {
         this.controladorFacturacion = controladorFacturacion;
     }
 
-    public void registrarDuenio(Duenio duenio) {
-        mostrarResultado("registro de dueño", controladorRegistro.registrarDuenio(duenio));
+    public void iniciarMenu(Scanner scanner) {
+        String opcion;
+        do {
+            System.out.println("\n--- Menú de recepción ---");
+            System.out.println("1. Registrar dueño");
+            System.out.println("2. Registrar mascota");
+            System.out.println("3. Transferir mascota a otro dueño");
+            System.out.println("4. Asignar turno");
+            System.out.println("5. Reprogramar turno");
+            System.out.println("6. Cancelar turno");
+            System.out.println("7. Registrar ausencia");
+            System.out.println("8. Atender urgencia");
+            System.out.println("9. Facturar consulta");
+            System.out.println("10. Anular factura");
+            System.out.println("0. Volver");
+            opcion = leer(scanner, "Opción: ");
+            switch (opcion) {
+                case "1":
+                    controladorRegistro.altaDuenio(
+                            leer(scanner, "Nombre: "),
+                            leer(scanner, "Apellido: "),
+                            leer(scanner, "Documento: "),
+                            leer(scanner, "Teléfono: "),
+                            leer(scanner, "Correo: "),
+                            leer(scanner, "¿Tiene plan de salud?: "));
+                    break;
+                case "2":
+                    controladorRegistro.altaMascota(
+                            leer(scanner, "Documento del dueño: "),
+                            leer(scanner, "Nombre de la mascota: "),
+                            leer(scanner, "Especie: "),
+                            leer(scanner, "Raza: "),
+                            leer(scanner, "Sexo: "),
+                            leer(scanner, "Fecha de nacimiento: "),
+                            leer(scanner, "Peso actual: "),
+                            leer(scanner, "Chip (si corresponde): "),
+                            leer(scanner, "Tamaño (si corresponde): "),
+                            leer(scanner, "Interior/exterior (si corresponde): "),
+                            leer(scanner, "¿Vuela? (si corresponde): "));
+                    break;
+                case "3":
+                    controladorRegistro.transferirMascota(
+                            leer(scanner, "Identificador de la mascota: "),
+                            leer(scanner, "Documento del nuevo dueño: "),
+                            leer(scanner, "Fecha de transferencia: "));
+                    break;
+                case "4":
+                    controladorTurnos.asignarTurno(
+                            leer(scanner, "Identificador de la mascota: "),
+                            leer(scanner, "Documento del veterinario: "),
+                            leer(scanner, "Tipo de atención: "),
+                            leer(scanner, "Fecha y hora: "));
+                    break;
+                case "5":
+                    controladorTurnos.reprogramarTurno(
+                            leer(scanner, "Identificador del turno: "),
+                            leer(scanner, "Nueva fecha y hora: "),
+                            leer(scanner, "Documento del veterinario (opcional): "));
+                    break;
+                case "6":
+                    controladorTurnos.cancelarTurno(
+                            leer(scanner, "Identificador del turno: "),
+                            leer(scanner, "Fecha y hora actual: "));
+                    break;
+                case "7":
+                    controladorTurnos.registrarAusencia(leer(scanner, "Identificador del turno: "));
+                    break;
+                case "8":
+                    controladorTurnos.atenderUrgencia(
+                            leer(scanner, "Identificador de la mascota: "),
+                            leer(scanner, "Día de la urgencia: "));
+                    break;
+                case "9":
+                    controladorFacturacion.facturarConsulta(
+                            leer(scanner, "Identificador de la consulta: "),
+                            leer(scanner, "Medio de pago: "));
+                    break;
+                case "10":
+                    controladorFacturacion.anularFactura(
+                            leer(scanner, "Identificador de la factura: "),
+                            leer(scanner, "Motivo: "),
+                            leer(scanner, "Documento de la recepcionista: "));
+                    break;
+                case "0":
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (!opcion.equals("0"));
     }
 
-    public void registrarMascota(Duenio duenio, Mascota mascota) {
-        mostrarResultado("registro de mascota", controladorRegistro.registrarMascota(duenio, mascota));
-    }
-
-    public void transferirMascota(Mascota mascota, Duenio nuevoDuenio, LocalDate fecha) {
-        mostrarResultado(
-                "transferencia de mascota",
-                controladorRegistro.transferirMascota(mascota, nuevoDuenio, fecha));
-    }
-
-    public void asignarTurno(
-            Mascota mascota,
-            Veterinario veterinario,
-            TipoAtencion tipo,
-            LocalDateTime fechaHora) {
-        mostrarResultado(
-                "asignación de turno",
-                controladorTurnos.asignarTurno(mascota, veterinario, tipo, fechaHora));
-    }
-
-    public void reprogramarTurno(Turno turno, LocalDateTime nuevaFechaHora) {
-        mostrarResultado(
-                "reprogramación de turno",
-                controladorTurnos.reprogramarTurno(turno, nuevaFechaHora));
-    }
-
-    public void cancelarTurno(Turno turno, LocalDateTime ahora) {
-        mostrarResultado("cancelación de turno", controladorTurnos.cancelarTurno(turno, ahora));
-    }
-
-    public void registrarAusencia(Turno turno) {
-        mostrarResultado("registro de ausencia", controladorTurnos.registrarAusencia(turno));
-    }
-
-    public void atenderUrgencia(Mascota mascota, LocalDate dia) {
-        mostrarResultado("atención de urgencia", controladorTurnos.atenderUrgencia(mascota, dia));
-    }
-
-    public void facturarConsulta(Consulta consulta, MedioPago medioPago) {
-        mostrarResultado(
-                "facturación de consulta",
-                controladorFacturacion.facturarConsulta(consulta, medioPago));
-    }
-
-    public void anularFactura(Factura factura, String motivo, Recepcionista recepcionista) {
-        mostrarResultado(
-                "anulación de factura",
-                controladorFacturacion.anularFactura(factura, motivo, recepcionista));
-    }
-
-    private void mostrarResultado(String operacion, boolean correcto) {
-        if (correcto) {
-            System.out.println("La vista ejecutó correctamente la operación: " + operacion + ".");
-        } else {
-            System.out.println("La vista no pudo ejecutar la operación: " + operacion + ".");
-        }
+    private String leer(Scanner scanner, String mensaje) {
+        System.out.print(mensaje);
+        return scanner.nextLine();
     }
 }
