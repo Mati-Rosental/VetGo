@@ -9,15 +9,15 @@ public class ControladorRegistro {
     private Repositorio<Duenio> repositorioDuenios;
     private Clinica clinica;
 
-    public void registrarDuenio(Duenio duenio) {
-        System.out.println("ControladorRegistro.registrarDuenio");
+    public boolean registrarDuenio(Duenio duenio) {
+        return true;
     }
 
-    public void registrarMascota(Duenio duenio, Mascota mascota) {
-        System.out.println("ControladorRegistro.registrarMascota");
+    public boolean registrarMascota(Duenio duenio, Mascota mascota) {
+        return true;
     }
 
-    public void transferirMascota(Mascota mascota, Duenio nuevoDuenio, LocalDate fecha) {
-        System.out.println("ControladorRegistro.transferirMascota");
+    public boolean transferirMascota(Mascota mascota, Duenio nuevoDuenio, LocalDate fecha) {
+        return true;
     }
 }

@@ -8,39 +8,37 @@ public class ControladorAtencion {
     private Inventario inventario;
     private Notificador notificador;
 
-    public Consulta iniciarConsulta(Turno turno) {
-        System.out.println("ControladorAtencion.iniciarConsulta");
-        return null;
+    public boolean iniciarConsulta(Turno turno) {
+        return true;
     }
 
-    public void registrarPeso(Consulta consulta, double peso) {
-        System.out.println("ControladorAtencion.registrarPeso");
+    public boolean registrarPeso(Consulta consulta, double peso) {
+        return true;
     }
 
-    public void indicarTratamiento(
+    public boolean indicarTratamiento(
             Consulta consulta,
             Producto medicamento,
             String dosis,
             String frecuencia,
             int duracionDias,
             int cantidad) {
-        System.out.println("ControladorAtencion.indicarTratamiento");
+        return true;
     }
 
-    public void aplicarVacuna(Consulta consulta, Vacuna vacuna) {
-        System.out.println("ControladorAtencion.aplicarVacuna");
+    public boolean aplicarVacuna(Consulta consulta, Vacuna vacuna) {
+        return true;
     }
 
-    public void confirmarConsulta(Consulta consulta) {
-        System.out.println("ControladorAtencion.confirmarConsulta");
+    public boolean confirmarConsulta(Consulta consulta) {
+        return true;
     }
 
-    public void registrarNotaRectificatoria(Consulta consulta, String texto, Veterinario firmante) {
-        System.out.println("ControladorAtencion.registrarNotaRectificatoria");
+    public boolean registrarNotaRectificatoria(Consulta consulta, String texto, Veterinario firmante) {
+        return true;
     }
 
-    public HistoriaClinica consultarHistoriaClinica(Mascota mascota) {
-        System.out.println("ControladorAtencion.consultarHistoriaClinica");
-        return null;
+    public boolean consultarHistoriaClinica(Mascota mascota) {
+        return true;
     }
 }

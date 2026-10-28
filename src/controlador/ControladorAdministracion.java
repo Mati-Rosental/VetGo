@@ -4,7 +4,6 @@ import modelo.*;
 import persistencia.*;
 import servicio.*;
 import java.time.LocalDate;
-import java.util.List;
 
 public class ControladorAdministracion {
     private Repositorio<Persona> repositorioPersonas;
@@ -14,34 +13,31 @@ public class ControladorAdministracion {
     private GeneradorReportes generadorReportes;
     private ServicioRecordatorios servicioRecordatorios;
 
-    public void altaVeterinario(Veterinario veterinario) {
-        System.out.println("ControladorAdministracion.altaVeterinario");
+    public boolean altaVeterinario(Veterinario veterinario) {
+        return true;
     }
 
-    public void altaProducto(Producto producto, Proveedor proveedor) {
-        System.out.println("ControladorAdministracion.altaProducto");
+    public boolean altaProducto(Producto producto, Proveedor proveedor) {
+        return true;
     }
 
-    public void altaVacuna(Vacuna vacuna) {
-        System.out.println("ControladorAdministracion.altaVacuna");
+    public boolean altaVacuna(Vacuna vacuna) {
+        return true;
     }
 
-    public List<Turno> emitirReporteTurnos(Veterinario veterinario, LocalDate desde, LocalDate hasta) {
-        System.out.println("ControladorAdministracion.emitirReporteTurnos");
-        return null;
+    public boolean emitirReporteTurnos(Veterinario veterinario, LocalDate desde, LocalDate hasta) {
+        return true;
     }
 
-    public List<Producto> emitirReporteStockBajo() {
-        System.out.println("ControladorAdministracion.emitirReporteStockBajo");
-        return null;
+    public boolean emitirReporteStockBajo() {
+        return true;
     }
 
-    public List<Lote> emitirReporteLotesPorVencer(LocalDate fechaActual, int diasAnticipacion) {
-        System.out.println("ControladorAdministracion.emitirReporteLotesPorVencer");
-        return null;
+    public boolean emitirReporteLotesPorVencer(LocalDate fechaActual, int diasAnticipacion) {
+        return true;
     }
 
-    public void emitirRecordatorios(LocalDate fechaActual) {
-        System.out.println("ControladorAdministracion.emitirRecordatorios");
+    public boolean emitirRecordatorios(LocalDate fechaActual) {
+        return true;
     }
 }

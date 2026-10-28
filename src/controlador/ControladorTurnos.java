@@ -13,29 +13,27 @@ public class ControladorTurnos {
     private Agenda agenda;
     private Notificador notificador;
 
-    public Turno asignarTurno(
+    public boolean asignarTurno(
             Mascota mascota,
             Veterinario veterinario,
             TipoAtencion tipo,
             LocalDateTime fechaHora) {
-        System.out.println("ControladorTurnos.asignarTurno");
-        return null;
+        return true;
     }
 
-    public void reprogramarTurno(Turno turno, LocalDateTime nuevaFechaHora) {
-        System.out.println("ControladorTurnos.reprogramarTurno");
+    public boolean reprogramarTurno(Turno turno, LocalDateTime nuevaFechaHora) {
+        return true;
     }
 
-    public void cancelarTurno(Turno turno, LocalDateTime ahora) {
-        System.out.println("ControladorTurnos.cancelarTurno");
+    public boolean cancelarTurno(Turno turno, LocalDateTime ahora) {
+        return true;
     }
 
-    public void registrarAusencia(Turno turno) {
-        System.out.println("ControladorTurnos.registrarAusencia");
+    public boolean registrarAusencia(Turno turno) {
+        return true;
     }
 
-    public Turno atenderUrgencia(Mascota mascota, LocalDate dia) {
-        System.out.println("ControladorTurnos.atenderUrgencia");
-        return null;
+    public boolean atenderUrgencia(Mascota mascota, LocalDate dia) {
+        return true;
     }
 }
