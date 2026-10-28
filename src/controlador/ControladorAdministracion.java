@@ -17,7 +17,19 @@ public class ControladorAdministracion {
         return true;
     }
 
+    public boolean gestionarHorario(Veterinario veterinario, HorarioAtencion horario) {
+        return true;
+    }
+
+    public boolean altaRecepcionista(Recepcionista recepcionista) {
+        return true;
+    }
+
     public boolean altaProducto(Producto producto, Proveedor proveedor) {
+        return true;
+    }
+
+    public boolean altaProveedor(Proveedor proveedor) {
         return true;
     }
 

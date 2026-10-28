@@ -2,30 +2,21 @@ package vistas;
 
 import controlador.ControladorAtencion;
 import modelo.Consulta;
-import modelo.HistoriaClinica;
 import modelo.Mascota;
 import modelo.Producto;
 import modelo.Turno;
 import modelo.Vacuna;
 import modelo.Veterinario;
 
-public class VistaAtencion {
+public class VistaVeterinario {
     private final ControladorAtencion controlador;
 
-    public VistaAtencion(ControladorAtencion controlador) {
+    public VistaVeterinario(ControladorAtencion controlador) {
         this.controlador = controlador;
     }
 
-    public void iniciarConsulta(Turno turno) {
-        mostrarResultado(
-                "inicio de consulta",
-                controlador.iniciarConsulta(turno));
-    }
-
-    public void registrarPeso(Consulta consulta, double peso) {
-        mostrarResultado(
-                "registro de peso",
-                controlador.registrarPeso(consulta, peso));
+    public void registrarConsulta(Turno turno) {
+        mostrarResultado("registro de consulta", controlador.iniciarConsulta(turno));
     }
 
     public void indicarTratamiento(
@@ -37,19 +28,16 @@ public class VistaAtencion {
             int cantidad) {
         mostrarResultado(
                 "indicación de tratamiento",
-                controlador.indicarTratamiento(consulta, medicamento, dosis, frecuencia, duracionDias, cantidad));
+                controlador.indicarTratamiento(
+                        consulta, medicamento, dosis, frecuencia, duracionDias, cantidad));
     }
 
     public void aplicarVacuna(Consulta consulta, Vacuna vacuna) {
-        mostrarResultado(
-                "aplicación de vacuna",
-                controlador.aplicarVacuna(consulta, vacuna));
+        mostrarResultado("aplicación de vacuna", controlador.aplicarVacuna(consulta, vacuna));
     }
 
     public void confirmarConsulta(Consulta consulta) {
-        mostrarResultado(
-                "confirmación de consulta",
-                controlador.confirmarConsulta(consulta));
+        mostrarResultado("confirmación de consulta", controlador.confirmarConsulta(consulta));
     }
 
     public void registrarNotaRectificatoria(Consulta consulta, String texto, Veterinario firmante) {

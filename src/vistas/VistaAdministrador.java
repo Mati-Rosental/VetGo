@@ -1,35 +1,51 @@
 package vistas;
 
 import controlador.ControladorAdministracion;
+import modelo.HorarioAtencion;
 import modelo.Producto;
 import modelo.Proveedor;
+import modelo.Recepcionista;
 import modelo.Vacuna;
 import modelo.Veterinario;
 import java.time.LocalDate;
 
-public class VistaAdministracion {
+public class VistaAdministrador {
     private final ControladorAdministracion controlador;
 
-    public VistaAdministracion(ControladorAdministracion controlador) {
+    public VistaAdministrador(ControladorAdministracion controlador) {
         this.controlador = controlador;
     }
 
-    public void altaVeterinario(Veterinario veterinario) {
-        mostrarResultado(
-                "alta de veterinario",
-                controlador.altaVeterinario(veterinario));
+    public void gestionarVeterinario(Veterinario veterinario) {
+        mostrarResultado("gestión de veterinario", controlador.altaVeterinario(veterinario));
     }
 
-    public void altaProducto(Producto producto, Proveedor proveedor) {
+    public void gestionarHorario(Veterinario veterinario, HorarioAtencion horario) {
         mostrarResultado(
-                "alta de producto",
+                "gestión de horario",
+                controlador.gestionarHorario(veterinario, horario));
+    }
+
+    public void gestionarRecepcionista(Recepcionista recepcionista) {
+        mostrarResultado(
+                "gestión de personal de recepción",
+                controlador.altaRecepcionista(recepcionista));
+    }
+
+    public void gestionarCatalogoVacunas(Vacuna vacuna) {
+        mostrarResultado("gestión del catálogo de vacunas", controlador.altaVacuna(vacuna));
+    }
+
+    public void gestionarCatalogoProductos(Producto producto, Proveedor proveedor) {
+        mostrarResultado(
+                "gestión del catálogo de productos",
                 controlador.altaProducto(producto, proveedor));
     }
 
-    public void altaVacuna(Vacuna vacuna) {
+    public void gestionarCatalogoProveedores(Proveedor proveedor) {
         mostrarResultado(
-                "alta de vacuna",
-                controlador.altaVacuna(vacuna));
+                "gestión del catálogo de proveedores",
+                controlador.altaProveedor(proveedor));
     }
 
     public void emitirReporteTurnos(Veterinario veterinario, LocalDate desde, LocalDate hasta) {
@@ -46,12 +62,6 @@ public class VistaAdministracion {
         mostrarResultado(
                 "reporte de lotes próximos a vencer",
                 controlador.emitirReporteLotesPorVencer(fechaActual, diasAnticipacion));
-    }
-
-    public void emitirRecordatorios(LocalDate fechaActual) {
-        mostrarResultado(
-                "emisión de recordatorios",
-                controlador.emitirRecordatorios(fechaActual));
     }
 
     private void mostrarResultado(String operacion, boolean correcto) {
