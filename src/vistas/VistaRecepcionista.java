@@ -4,8 +4,12 @@ import controlador.ControladorFacturacion;
 import controlador.ControladorRegistro;
 import controlador.ControladorTurnos;
 import modelo.Especie;
+import modelo.MedioPago;
 import modelo.Sexo;
 import modelo.TamanioPerro;
+import pago.Credito;
+import pago.Debito;
+import pago.Efectivo;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -103,7 +107,7 @@ public class VistaRecepcionista {
                 case "9":
                     controladorFacturacion.facturarConsulta(
                             leer(scanner, "Identificador de la consulta: "),
-                            leer(scanner, "Medio de pago: "));
+                            leerMedioPago(scanner));
                     break;
                 case "10":
                     controladorFacturacion.anularFactura(
@@ -138,5 +142,26 @@ public class VistaRecepcionista {
         }
 
         return TamanioPerro.valueOf(tamanio.toUpperCase());
+    }
+
+    private MedioPago leerMedioPago(Scanner scanner) {
+        System.out.println("Medios de pago:");
+        System.out.println("1. Efectivo");
+        System.out.println("2. Débito");
+        System.out.println("3. Crédito");
+
+        String opcion = leer(scanner, "Seleccione el medio de pago: ");
+
+        switch (opcion) {
+            case "1":
+                return new Efectivo();
+            case "2":
+                return new Debito();
+            case "3":
+                int cuotas = Integer.parseInt(leer(scanner, "Cantidad de cuotas: "));
+                return new Credito(cuotas);
+            default:
+                return null;
+        }
     }
 }

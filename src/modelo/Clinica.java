@@ -11,6 +11,10 @@ public class Clinica {
     private final List<Administrador> administradores = new ArrayList<>();
     private final List<Duenio> duenios = new ArrayList<>();
 
+    public Clinica(String nombre) {
+        this.nombre = nombre;
+    }
+
     public void agregarVeterinario(Veterinario veterinario) {
         System.out.println("Clinica.agregarVeterinario");
     }
@@ -45,6 +49,16 @@ public class Clinica {
 
     public Mascota buscarMascota(String mascotaID) {
         System.out.println("Clinica.buscarMascota");
+        return null;
+    }
+
+    public Consulta buscarConsulta(String idConsulta) {
+        // Recorrer dueños, mascotas e historias clínicas.
+        return null;
+    }
+
+    public Recepcionista buscarRecepcionista(String recepcionistaDocumento) {
+        System.out.println("Clinica.buscarRecepcionista");
         return null;
     }
 }

@@ -3,9 +3,10 @@ package modelo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Factura {
-    private int numero;
+    private String numero;
     private LocalDate fecha;
     private EstadoFactura estado;
     private double seniaDescontada;
@@ -15,6 +16,17 @@ public class Factura {
     private MedioPago medioPago;
     private NotaCredito notaCredito;
     private final List<LineaFactura> lineas = new ArrayList<>();
+
+    
+
+    public Factura(Consulta consulta, Duenio duenio, Tarifario tarifario, MedioPago medioPago) {
+        this.numero = UUID.randomUUID().toString();
+        fecha = LocalDate.now();
+        this.consulta = consulta;
+        this.duenio = duenio;
+        this.tarifario = tarifario;
+        this.medioPago = medioPago;
+    }
 
     public void agregarLinea(String descripcion, int cantidad, double precioUnitario) {
         System.out.println("Factura.agregarLinea");
@@ -30,13 +42,16 @@ public class Factura {
         return 0.0;
     }
 
-    public NotaCredito anular(String motivo, Recepcionista emisor) {
+    public void anular(String motivo, Recepcionista emisor) {
         System.out.println("Factura.anular");
-        return null;
     }
 
     public boolean estaAnulada() {
         System.out.println("Factura.estaAnulada");
         return false;
+    }
+
+    public String getNumero() {
+        return null;
     }
 }

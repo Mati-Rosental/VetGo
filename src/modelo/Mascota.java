@@ -41,6 +41,7 @@ public abstract class Mascota {
 
     public Duenio getDuenio() {
         System.out.println("Mascota.getDuenio");
+        return null;
     }
 
     public abstract Especie getEspecie();

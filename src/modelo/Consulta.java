@@ -52,4 +52,8 @@ public class Consulta {
         System.out.println("Consulta.getInsumosUtilizados");
         return null;
     }
+
+    public Turno getTurno() {
+        return turno;
+    }
 }

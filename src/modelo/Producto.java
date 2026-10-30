@@ -33,4 +33,28 @@ public class Producto {
         System.out.println("Producto.getDescripcion");
         return null;
     }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getStockMinimo() {
+        return stockMinimo;
+    }
+
+    public double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public List<Lote> getLotes() {
+        return lotes;
+    }
 }

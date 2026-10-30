@@ -21,8 +21,10 @@ public class ControladorRegistro {
 
     public ControladorRegistro(Repositorio<Clinica> clinicaRepositorio) {
         this.clinicaRepositorio = clinicaRepositorio;
+        // Si no hay clinica guardada entonces crea una
         // Repositorio guarda siempre una lista pero solo debe haber 1 clinica asi que obtiene el primer elemento
-        this.clinica = clinicaRepositorio.cargar().get(0);
+        List<Clinica> clinicas = clinicaRepositorio.cargar();
+        this.clinica = clinicas.isEmpty() ? new Clinica("clinica") : clinicas.get(0);
     }
 
     public boolean altaDuenio(String nombre, String apellido, String documento, String telefono, String correo, boolean planSalud) {

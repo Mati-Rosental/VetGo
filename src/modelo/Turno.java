@@ -1,5 +1,6 @@
 package modelo;
 
+import java.rmi.MarshalException;
 import java.time.LocalDateTime;
 
 public class Turno implements Comparable<Turno> {
@@ -47,5 +48,14 @@ public class Turno implements Comparable<Turno> {
     public int compareTo(Turno otro) {
         System.out.println("Turno.compareTo");
         return 0;
+    }
+
+    public TipoAtencion getTipoAtencion() {
+        System.out.println("Turno.getTipoAtencion");
+        return null;
+    }
+
+    public Mascota getMascota() {
+        return null;
     }
 }
