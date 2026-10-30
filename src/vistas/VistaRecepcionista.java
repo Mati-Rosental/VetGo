@@ -3,6 +3,11 @@ package vistas;
 import controlador.ControladorFacturacion;
 import controlador.ControladorRegistro;
 import controlador.ControladorTurnos;
+import modelo.Especie;
+import modelo.Sexo;
+import modelo.TamanioPerro;
+
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class VistaRecepcionista {
@@ -36,35 +41,39 @@ public class VistaRecepcionista {
             System.out.println("0. Volver");
             opcion = leer(scanner, "Opción: ");
             switch (opcion) {
-                case "1":
-                    controladorRegistro.altaDuenio(
-                            leer(scanner, "Nombre: "),
-                            leer(scanner, "Apellido: "),
-                            leer(scanner, "Documento: "),
-                            leer(scanner, "Teléfono: "),
-                            leer(scanner, "Correo: "),
-                            leer(scanner, "¿Tiene plan de salud?: "));
-                    break;
-                case "2":
-                    controladorRegistro.altaMascota(
-                            leer(scanner, "Documento del dueño: "),
-                            leer(scanner, "Nombre de la mascota: "),
-                            leer(scanner, "Especie: "),
-                            leer(scanner, "Raza: "),
-                            leer(scanner, "Sexo: "),
-                            leer(scanner, "Fecha de nacimiento: "),
-                            leer(scanner, "Peso actual: "),
-                            leer(scanner, "Chip (si corresponde): "),
-                            leer(scanner, "Tamaño (si corresponde): "),
-                            leer(scanner, "Interior/exterior (si corresponde): "),
-                            leer(scanner, "¿Vuela? (si corresponde): "));
-                    break;
-                case "3":
-                    controladorRegistro.transferirMascota(
-                            leer(scanner, "Identificador de la mascota: "),
-                            leer(scanner, "Documento del nuevo dueño: "),
-                            leer(scanner, "Fecha de transferencia: "));
-                    break;
+            case "1":
+            controladorRegistro.altaDuenio(
+                    leer(scanner, "Nombre: "),
+                    leer(scanner, "Apellido: "),
+                    leer(scanner, "Documento: "),
+                    leer(scanner, "Teléfono: "),
+                    leer(scanner, "Correo: "),
+                    leerBooleano(scanner, "¿Tiene plan de salud? (si/no): ")
+            );
+            break;
+
+            case "2":
+                controladorRegistro.altaMascota(
+                        leer(scanner, "Documento del dueño: "),
+                        Especie.valueOf(leer(scanner, "Especie (PERRO/GATO/AVE/CONEJO): ").toUpperCase()),
+                        leer(scanner, "Nombre de la mascota: "),
+                        leer(scanner, "Raza: "),
+                        Sexo.valueOf(leer(scanner, "Sexo: ").toUpperCase()),
+                        LocalDate.parse(leer(scanner, "Fecha de nacimiento (AAAA-MM-DD): ")),
+                        Double.parseDouble(leer(scanner, "Peso actual: ")),
+                        leer(scanner, "Chip (si corresponde): "),
+                        leerTamanio(scanner),
+                        leerBooleano(scanner, "¿Vive en interior? (si/no): "),
+                        leerBooleano(scanner, "¿Vuela? (si/no): ")
+                );
+                break;
+
+            case "3":
+                controladorRegistro.transferirMascota(
+                        leer(scanner, "Identificador de la mascota: "),
+                        leer(scanner, "Documento del nuevo dueño: ")
+                );
+                break;
                 case "4":
                     controladorTurnos.asignarTurno(
                             leer(scanner, "Identificador de la mascota: "),
@@ -113,5 +122,21 @@ public class VistaRecepcionista {
     private String leer(Scanner scanner, String mensaje) {
         System.out.print(mensaje);
         return scanner.nextLine();
+    }
+
+    private boolean leerBooleano(Scanner scanner, String mensaje) {
+    String respuesta = leer(scanner, mensaje).trim().toLowerCase();
+
+    return respuesta.equals("si") || respuesta.equals("sí");
+    }
+
+    private TamanioPerro leerTamanio(Scanner scanner) {
+        String tamanio = leer(scanner, "Tamaño (CHICO/MEDIANO/GRANDE): ");
+
+        if (tamanio.isBlank()) {
+            return null;
+        }
+
+        return TamanioPerro.valueOf(tamanio.toUpperCase());
     }
 }
