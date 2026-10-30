@@ -19,7 +19,7 @@ public class Clinica {
         System.out.println("Clinica.agregarRecepcionista");
     }
 
-    public void registrarCliente(Duenio duenio) {
+    public void agregarDuenio(Duenio duenio) {
         System.out.println("Clinica.registrarCliente");
     }
 
@@ -35,6 +35,16 @@ public class Clinica {
 
     public List<Mascota> getMascotas() {
         System.out.println("Clinica.getMascotas");
+        return null;
+    }
+
+    public Duenio buscarDuenio(String duenioDocumento) {
+        System.out.println("Clinica.buscarDuenio");
+        return null;
+    }
+
+    public Mascota buscarMascota(String mascotaID) {
+        System.out.println("Clinica.buscarMascota");
         return null;
     }
 }
