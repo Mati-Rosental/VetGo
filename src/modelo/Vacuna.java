@@ -23,6 +23,12 @@ public class Vacuna extends Producto {
         return null;
     }
 
+    public String getNumeroPrimerLote() {
+        // Obtiene el numero del primer lote disponible, null si no hay
+        System.out.println("Vacuna.getNumeroPrimerLote");
+        return null;
+    }
+
     @Override
     public String getDescripcion() {
         System.out.println("Vacuna.getDescripcion");

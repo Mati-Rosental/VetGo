@@ -42,12 +42,26 @@ public class Clinica {
         return null;
     }
 
+    public List<Administrador> getAdministradores() {
+        return administradores;
+    }
+
     public Duenio buscarDuenio(String duenioDocumento) {
         System.out.println("Clinica.buscarDuenio");
         return null;
     }
 
-    public Mascota buscarMascota(String mascotaID) {
+    public Recepcionista buscarRecepcionista(String recepcionistaDocumento) {
+        System.out.println("Clinica.buscarRecepcionista");
+        return null;
+    }    
+
+    public Veterinario buscarVeterinario(String veterinarioDocumento) {
+        System.out.println("Clinica.buscarVeterinario");
+        return null;
+    }    
+
+    public Mascota buscarMascota(String idMascota) {
         System.out.println("Clinica.buscarMascota");
         return null;
     }
@@ -57,8 +71,8 @@ public class Clinica {
         return null;
     }
 
-    public Recepcionista buscarRecepcionista(String recepcionistaDocumento) {
-        System.out.println("Clinica.buscarRecepcionista");
+    public Turno buscarTurno(String idTurno) {
+        System.out.println("Clinica.buscarTurno");
         return null;
     }
 }

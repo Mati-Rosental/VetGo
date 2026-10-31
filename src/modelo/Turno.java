@@ -2,8 +2,10 @@ package modelo;
 
 import java.rmi.MarshalException;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Turno implements Comparable<Turno> {
+    private final String id;
     private LocalDateTime fechaHora;
     private TipoAtencion tipo;
     private EstadoTurno estado;
@@ -11,6 +13,19 @@ public class Turno implements Comparable<Turno> {
     private Mascota mascota;
     private Veterinario veterinario;
     private Consulta consulta;
+
+    
+
+    public Turno(LocalDateTime fechaHora, EstadoTurno estado, boolean urgencia, Mascota mascota,
+            Veterinario veterinario, Consulta consulta) {
+        this.id = UUID.randomUUID().toString();
+        this.fechaHora = fechaHora;
+        this.estado = estado;
+        this.urgencia = urgencia;
+        this.mascota = mascota;
+        this.veterinario = veterinario;
+        this.consulta = consulta;
+    }
 
     public int getDuracionMin() {
         System.out.println("Turno.getDuracionMin");
@@ -56,6 +71,12 @@ public class Turno implements Comparable<Turno> {
     }
 
     public Mascota getMascota() {
+        System.out.println("Turno.getMascota");
+        return null;
+    }
+
+    public Consulta getConsulta() {
+        System.out.println("Turno.getConsulta");
         return null;
     }
 }

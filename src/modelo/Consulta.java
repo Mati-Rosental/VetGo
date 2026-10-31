@@ -1,5 +1,6 @@
 package modelo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Consulta {
         System.out.println("Consulta.indicarTratamiento");
     }
 
-    public void aplicarVacuna(Vacuna vacuna, String numeroLote, java.time.LocalDate fechaAplicacion) {
+    public void aplicarVacuna(Vacuna vacuna) {
         System.out.println("Consulta.aplicarVacuna");
     }
 

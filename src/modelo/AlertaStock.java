@@ -12,4 +12,10 @@ public class AlertaStock {
     public void cerrar() {
         System.out.println("AlertaStock.cerrar");
     }
+
+    public String getDescripcion() {
+        // genera una descripcion y la devuelve
+        System.out.println("AlertaStock.cerrar");
+        return null;
+    }
 }

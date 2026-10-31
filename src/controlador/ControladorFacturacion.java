@@ -2,7 +2,6 @@ package controlador;
 
 import modelo.*;
 import persistencia.Repositorio;
-import servicio.Notificador;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,24 +9,17 @@ import java.util.List;
 public class ControladorFacturacion {
 
     private Clinica clinica;
-    private Repositorio<Clinica> clinicaRepositorio;
     private Repositorio<Factura> facturaRepositorio;
     private Tarifario tarifario;
-    private Notificador notificador;
     private List<Factura> facturas;
-    private MedioPago medioPago;
 
 
     public ControladorFacturacion(
             Repositorio<Clinica> clinicaRepositorio,
             Repositorio<Factura> facturaRepositorio,
-            Tarifario tarifario,
-            Notificador notificador) {
-
-        this.clinicaRepositorio = clinicaRepositorio;
+            Tarifario tarifario) {
         this.facturaRepositorio = facturaRepositorio;
         this.tarifario = tarifario;
-        this.notificador = notificador;
 
         // Si no hay clinica guardada entonces crea una
         // Repositorio guarda siempre una lista pero solo debe haber 1 clinica asi que obtiene el primer elemento

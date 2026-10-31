@@ -44,6 +44,16 @@ public abstract class Mascota {
         return null;
     }
 
+    public String getNombre() {
+        System.out.println("Mascota.getNombre");
+        return null;
+    }
+
+    public HistoriaClinica getHistoriaClinica() {
+    System.out.println("Mascota.getHistoriaClinica");
+        return null;        
+    }
+
     public abstract Especie getEspecie();
 
     public abstract String getDatosPropios();
