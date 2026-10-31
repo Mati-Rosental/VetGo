@@ -48,7 +48,11 @@ public class Turno implements Comparable<Turno> {
     }
 
     public void marcarAusente() {
-        System.out.println("Turno.marcarAusente");
+        // Cambiar el estado del turno
+        this.estado = EstadoTurno.AUSENTE;
+
+        // Registrar la ausencia del dueño
+        this.mascota.getDuenio().registrarAusencia();
     }
 
     public void marcarAtendido() {
@@ -78,5 +82,13 @@ public class Turno implements Comparable<Turno> {
     public Consulta getConsulta() {
         System.out.println("Turno.getConsulta");
         return null;
+    }
+
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
+    }
+
+    public Veterinario getVeterinario() {
+        return veterinario;
     }
 }

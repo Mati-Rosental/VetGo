@@ -1,3 +1,4 @@
+
 package vistas;
 
 import controlador.ControladorFacturacion;
@@ -7,11 +8,14 @@ import modelo.Especie;
 import modelo.MedioPago;
 import modelo.Sexo;
 import modelo.TamanioPerro;
+import modelo.TipoAtencion;
+import modelo.Turno;
 import pago.Credito;
 import pago.Debito;
 import pago.Efectivo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class VistaRecepcionista {
@@ -19,10 +23,7 @@ public class VistaRecepcionista {
     private final ControladorTurnos controladorTurnos;
     private final ControladorFacturacion controladorFacturacion;
 
-    public VistaRecepcionista(
-            ControladorRegistro controladorRegistro,
-            ControladorTurnos controladorTurnos,
-            ControladorFacturacion controladorFacturacion) {
+    public VistaRecepcionista(ControladorRegistro controladorRegistro, ControladorTurnos controladorTurnos, ControladorFacturacion controladorFacturacion) {
         this.controladorRegistro = controladorRegistro;
         this.controladorTurnos = controladorTurnos;
         this.controladorFacturacion = controladorFacturacion;
@@ -44,79 +45,104 @@ public class VistaRecepcionista {
             System.out.println("10. Anular factura");
             System.out.println("0. Volver");
             opcion = leer(scanner, "Opción: ");
+
             switch (opcion) {
-            case "1":
-            controladorRegistro.altaDuenio(
-                    leer(scanner, "Nombre: "),
-                    leer(scanner, "Apellido: "),
-                    leer(scanner, "Documento: "),
-                    leer(scanner, "Teléfono: "),
-                    leer(scanner, "Correo: "),
-                    leerBooleano(scanner, "¿Tiene plan de salud? (si/no): ")
-            );
-            break;
+                case "1":
+                    controladorRegistro.altaDuenio(
+                            leer(scanner, "Nombre: "),
+                            leer(scanner, "Apellido: "),
+                            leer(scanner, "Documento: "),
+                            leer(scanner, "Teléfono: "),
+                            leer(scanner, "Correo: "),
+                            leerBooleano(scanner, "¿Tiene plan de salud? (si/no): ")
+                    );
+                    break;
 
-            case "2":
-                controladorRegistro.altaMascota(
-                        leer(scanner, "Documento del dueño: "),
-                        Especie.valueOf(leer(scanner, "Especie (PERRO/GATO/AVE/CONEJO): ").toUpperCase()),
-                        leer(scanner, "Nombre de la mascota: "),
-                        leer(scanner, "Raza: "),
-                        Sexo.valueOf(leer(scanner, "Sexo: ").toUpperCase()),
-                        LocalDate.parse(leer(scanner, "Fecha de nacimiento (AAAA-MM-DD): ")),
-                        Double.parseDouble(leer(scanner, "Peso actual: ")),
-                        leer(scanner, "Chip (si corresponde): "),
-                        leerTamanio(scanner),
-                        leerBooleano(scanner, "¿Vive en interior? (si/no): "),
-                        leerBooleano(scanner, "¿Vuela? (si/no): ")
-                );
-                break;
+                case "2":
+                    controladorRegistro.altaMascota(
+                            leer(scanner, "Documento del dueño: "),
+                            Especie.valueOf(leer(scanner, "Especie (PERRO/GATO/AVE/CONEJO): ").toUpperCase()),
+                            leer(scanner, "Nombre de la mascota: "),
+                            leer(scanner, "Raza: "),
+                            Sexo.valueOf(leer(scanner, "Sexo: ").toUpperCase()),
+                            LocalDate.parse(leer(scanner, "Fecha de nacimiento (AAAA-MM-DD): ")),
+                            Double.parseDouble(leer(scanner, "Peso actual: ")),
+                            leer(scanner, "Chip (si corresponde): "),
+                            leerTamanio(scanner),
+                            leerBooleano(scanner, "¿Vive en interior? (si/no): "),
+                            leerBooleano(scanner, "¿Vuela? (si/no): ")
+                    );
+                    break;
 
-            case "3":
-                controladorRegistro.transferirMascota(
-                        leer(scanner, "Identificador de la mascota: "),
-                        leer(scanner, "Documento del nuevo dueño: ")
-                );
-                break;
+                case "3":
+                    controladorRegistro.transferirMascota(
+                            leer(scanner, "Identificador de la mascota: "),
+                            leer(scanner, "Documento del nuevo dueño: ")
+                    );
+                    break;
+
                 case "4":
                     controladorTurnos.asignarTurno(
                             leer(scanner, "Identificador de la mascota: "),
                             leer(scanner, "Documento del veterinario: "),
-                            leer(scanner, "Tipo de atención: "),
-                            leer(scanner, "Fecha y hora: "));
+                            TipoAtencion.valueOf(leer(scanner, "Tipo de atención (CONSULTA_GENERAL/VACUNACION/CIRUGIA): ").toUpperCase()),
+                            LocalDateTime.parse(leer(scanner, "Fecha y hora (AAAA-MM-DDTHH:MM): "))
+                    );
                     break;
+
                 case "5":
                     controladorTurnos.reprogramarTurno(
                             leer(scanner, "Identificador del turno: "),
-                            leer(scanner, "Nueva fecha y hora: "),
-                            leer(scanner, "Documento del veterinario (opcional): "));
+                            LocalDateTime.parse(leer(scanner, "Nueva fecha y hora (AAAA-MM-DDTHH:MM): "))
+                    );
                     break;
+
                 case "6":
                     controladorTurnos.cancelarTurno(
-                            leer(scanner, "Identificador del turno: "),
-                            leer(scanner, "Fecha y hora actual: "));
+                            leer(scanner, "Identificador del turno: ")
+                    );
                     break;
+
                 case "7":
-                    controladorTurnos.registrarAusencia(leer(scanner, "Identificador del turno: "));
+                    controladorTurnos.registrarAusencia(
+                            leer(scanner, "Identificador del turno: ")
+                    );
                     break;
+
                 case "8":
-                    controladorTurnos.atenderUrgencia(
-                            leer(scanner, "Identificador de la mascota: "),
-                            leer(scanner, "Día de la urgencia: "));
+                    Turno turno = controladorTurnos.atenderUrgencia(
+                            leer(scanner, "Identificador de la mascota: ")
+                    );
+
+                    if (turno == null) {
+                        System.out.println("No se pudo asignar un turno de urgencia.");
+                    } else {
+                        System.out.println("\n--- Turno de urgencia asignado ---");
+                        System.out.println("Mascota: " + turno.getMascota().getNombre());
+                        System.out.println("Veterinario: " + turno.getVeterinario().getNombre());
+                        System.out.println("Fecha y hora: " + turno.getFechaHora());
+                        System.out.println("Tipo de atención: " + turno.getTipoAtencion());
+                    }
                     break;
+
                 case "9":
                     controladorFacturacion.facturarConsulta(
                             leer(scanner, "Identificador de la consulta: "),
-                            leerMedioPago(scanner));
+                            leerMedioPago(scanner)
+                    );
                     break;
+
                 case "10":
                     controladorFacturacion.anularFactura(
                             leer(scanner, "Identificador de la factura: "),
                             leer(scanner, "Motivo: "),
-                            leer(scanner, "Documento de la recepcionista: "));
+                            leer(scanner, "Documento de la recepcionista: ")
+                    );
                     break;
+
                 case "0":
                     break;
+
                 default:
                     System.out.println("Opción no válida.");
             }
@@ -129,9 +155,8 @@ public class VistaRecepcionista {
     }
 
     private boolean leerBooleano(Scanner scanner, String mensaje) {
-    String respuesta = leer(scanner, mensaje).trim().toLowerCase();
-
-    return respuesta.equals("si") || respuesta.equals("sí");
+        String respuesta = leer(scanner, mensaje).trim().toLowerCase();
+        return respuesta.equals("si") || respuesta.equals("sí");
     }
 
     private TamanioPerro leerTamanio(Scanner scanner) {

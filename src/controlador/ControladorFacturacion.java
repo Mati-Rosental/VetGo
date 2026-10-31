@@ -7,24 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorFacturacion {
-
     private Clinica clinica;
     private Repositorio<Factura> facturaRepositorio;
     private Tarifario tarifario;
     private List<Factura> facturas;
 
-
-    public ControladorFacturacion(
-            Repositorio<Clinica> clinicaRepositorio,
-            Repositorio<Factura> facturaRepositorio,
-            Tarifario tarifario) {
+    public ControladorFacturacion(Clinica clinica, Repositorio<Factura> facturaRepositorio, 
+        Tarifario tarifario) {
+        this.clinica = clinica;
         this.facturaRepositorio = facturaRepositorio;
         this.tarifario = tarifario;
-
-        // Si no hay clinica guardada entonces crea una
-        // Repositorio guarda siempre una lista pero solo debe haber 1 clinica asi que obtiene el primer elemento
-        List<Clinica> clinicas = clinicaRepositorio.cargar();
-        this.clinica = clinicas.isEmpty() ? new Clinica("clinica") : clinicas.get(0);
 
         this.facturas = new ArrayList<>(facturaRepositorio.cargar());
     }
@@ -63,7 +55,12 @@ public class ControladorFacturacion {
             return false;
         }
         // Buscar la factura
-        Factura factura = buscarFactura(idFactura);
+        Factura factura = null;
+        for (Factura facturaRecorrida : facturas) {
+            if (facturaRecorrida.getNumero().equals(idFactura)) {
+                factura = facturaRecorrida;
+            }
+        }
         if (factura == null || factura.estaAnulada()) {
             return false;
         }
@@ -80,12 +77,21 @@ public class ControladorFacturacion {
         return true;
     }
 
-    private Factura buscarFactura(String idFactura) {
-        for (Factura factura : facturas) {
-            if (factura.getNumero().equals(idFactura)) {
-                return factura;
-            }
-        }
-        return null;
+    public Factura cobrarCargoCancelacionTardia(Turno turno) {
+        // Validar el turno
+        if (turno == null) return null;
+        // Obtener el dueño
+        Duenio duenio = turno.getMascota().getDuenio();
+        // Calcular el importe del cargo
+        double importe = tarifario.calcularCargoCancelacionTardia();
+        // Crear la factura
+        Factura factura = new Factura(null, duenio, tarifario, null);
+        // Agregar la única línea de la factura
+        factura.agregarLinea("Cargo por cancelación tardía", 1, importe);
+        // Guardar la factura
+        facturas.add(factura);
+        facturaRepositorio.guardar(facturas);
+
+        return factura;
     }
 }

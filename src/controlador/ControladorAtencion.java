@@ -1,3 +1,4 @@
+
 package controlador;
 
 import java.util.List;
@@ -9,19 +10,19 @@ import servicio.Notificador;
 public class ControladorAtencion {
 
     private Repositorio<Clinica> clinicaRepositorio;
+    private Repositorio<Agenda> agendaRepositorio;
     private Clinica clinica;
+    private Agenda agenda;
     private Inventario inventario;
     private Notificador notificador;
 
-    public ControladorAtencion(Repositorio<Clinica> clinicaRepositorio, Inventario inventario, Notificador notificador) {
+    public ControladorAtencion(Repositorio<Clinica> clinicaRepositorio, Clinica clinica, Repositorio<Agenda> agendaRepositorio, Agenda agenda, Inventario inventario, Notificador notificador) {
         this.clinicaRepositorio = clinicaRepositorio;
+        this.clinica = clinica;
+        this.agendaRepositorio = agendaRepositorio;
+        this.agenda = agenda;
         this.inventario = inventario;
         this.notificador = notificador;
-
-        // Si no hay clinica guardada entonces crea una
-        // Repositorio guarda siempre una lista pero solo debe haber 1 clinica asi que obtiene el primer elemento
-        List<Clinica> clinicas = clinicaRepositorio.cargar();
-        this.clinica = clinicas.isEmpty() ? new Clinica("clinica") : clinicas.get(0);
     }
 
     public boolean iniciarConsulta(String idTurno, String motivo) {
@@ -29,8 +30,8 @@ public class ControladorAtencion {
         if (idTurno == null || motivo == null || motivo.isBlank()) {
             return false;
         }
-        // Buscar el turno
-        Turno turno = clinica.buscarTurno(idTurno);
+        // Buscar el turno en Agenda
+        Turno turno = agenda.buscarTurno(idTurno);
         if (turno == null || turno.getConsulta() != null) {
             return false;
         }
@@ -41,6 +42,7 @@ public class ControladorAtencion {
         turno.marcarAtendido();
         // Guardar los cambios
         clinicaRepositorio.guardar(List.of(clinica));
+        agendaRepositorio.guardar(List.of(agenda));
 
         return true;
     }

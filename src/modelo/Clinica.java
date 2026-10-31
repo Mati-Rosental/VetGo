@@ -70,9 +70,4 @@ public class Clinica {
         // Recorrer dueños, mascotas e historias clínicas.
         return null;
     }
-
-    public Turno buscarTurno(String idTurno) {
-        System.out.println("Clinica.buscarTurno");
-        return null;
-    }
 }

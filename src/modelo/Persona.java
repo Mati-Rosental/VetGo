@@ -24,4 +24,8 @@ public abstract class Persona {
         System.out.println("Persona.getDocumento");
         return null;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

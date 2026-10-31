@@ -8,7 +8,7 @@ public class GestorUrgencias {
     private Agenda agenda;
     private Notificador notificador;
 
-    public Turno atenderUrgencia(Mascota mascota, Veterinario veterinario, LocalDate dia) {
+    public Turno atenderUrgencia(Mascota mascota, Veterinario veterinario) {
         System.out.println("GestorUrgencias.atenderUrgencia");
         return null;
     }
