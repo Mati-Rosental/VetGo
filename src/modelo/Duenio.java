@@ -20,6 +20,10 @@ public class Duenio extends Persona {
         this.seniaPendiente = 0;
     }
 
+    public List<Mascota> getMascotas() {
+        return mascotas;
+    }
+
     public void registrarAusencia() {
         System.out.println("Duenio.registrarAusencia");
     }
@@ -39,8 +43,7 @@ public class Duenio extends Persona {
 
     @Override
     public String getRol() {
-        System.out.println("Duenio.getRol");
-        return null;
+        return "Dueño";
     }
 
     public void agregarMascota(Mascota mascota) {

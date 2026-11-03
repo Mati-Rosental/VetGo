@@ -12,7 +12,6 @@ public enum TipoAtencion {
     }
 
     public int getDuracionMin() {
-        System.out.println("TipoAtencion.getDuracionMin");
-        return 0;
+        return duracionMin;
     }
 }

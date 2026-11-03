@@ -22,8 +22,7 @@ public class Veterinario extends Persona {
 
     @Override
     public String getRol() {
-        System.out.println("Veterinario.getRol");
-        return null;
+        return "Veterinario";
     }
 
     public Veterinario(String nombre, String apellido, String documento, String telefono,

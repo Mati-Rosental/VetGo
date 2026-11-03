@@ -14,15 +14,13 @@ public abstract class Persona {
     }
 
     public String getNombreCompleto() {
-        System.out.println("Persona.getNombreCompleto");
-        return null;
+        return nombre + " " + apellido;
     }
 
     public abstract String getRol();
 
     public String getDocumento() {
-        System.out.println("Persona.getDocumento");
-        return null;
+        return documento;
     }
 
     public String getNombre() {

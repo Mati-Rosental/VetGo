@@ -13,8 +13,7 @@ public class HistoriaClinica {
     }
 
     public List<Consulta> getConsultas() {
-        System.out.println("HistoriaClinica.getConsultas");
-        return null;
+        return consultas;
     }
 
     public List<VacunaAplicada> getVacunasAplicadas() {

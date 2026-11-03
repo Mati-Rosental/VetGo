@@ -8,8 +8,7 @@ public class NotaRectificatoria {
     private Veterinario firmante;
 
     public String getTexto() {
-        System.out.println("NotaRectificatoria.getTexto");
-        return null;
+        return texto;
     }
 
     public NotaRectificatoria(String texto, Veterinario firmante) {

@@ -52,6 +52,6 @@ public class Factura {
     }
 
     public String getNumero() {
-        return null;
+        return numero;
     }
 }

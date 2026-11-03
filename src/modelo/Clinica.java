@@ -28,8 +28,7 @@ public class Clinica {
     }
 
     public List<Veterinario> getVeterinarios() {
-        System.out.println("Clinica.getVeterinarios");
-        return null;
+        return veterinarios;
     }
 
     public Veterinario getVeterinarioDeGuardia(LocalDate dia) {
@@ -38,8 +37,11 @@ public class Clinica {
     }
 
     public List<Mascota> getMascotas() {
-        System.out.println("Clinica.getMascotas");
-        return null;
+        List<Mascota> todas = new ArrayList<>();
+        for (Duenio duenio : duenios) {
+            todas.addAll(duenio.getMascotas());
+        }
+        return todas;
     }
 
     public List<Administrador> getAdministradores() {

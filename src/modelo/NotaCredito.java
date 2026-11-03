@@ -11,8 +11,7 @@ public class NotaCredito {
     private Recepcionista emisor;
 
     public double getImporte() {
-        System.out.println("NotaCredito.getImporte");
-        return 0.0;
+        return importe;
     }
 
     public NotaCredito(int numero, Factura factura, String motivo, Recepcionista emisor) {

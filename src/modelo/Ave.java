@@ -12,13 +12,11 @@ public class Ave extends Mascota {
 
     @Override
     public Especie getEspecie() {
-        System.out.println("Ave.getEspecie");
-        return null;
+        return Especie.AVE;
     }
 
     @Override
     public String getDatosPropios() {
-        System.out.println("Ave.getDatosPropios");
-        return null;
+        return "Puede volar: " + (vuela ? "sí" : "no");
     }
 }

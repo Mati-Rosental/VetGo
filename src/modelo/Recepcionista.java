@@ -3,8 +3,7 @@ package modelo;
 public class Recepcionista extends Persona {
     @Override
     public String getRol() {
-        System.out.println("Recepcionista.getRol");
-        return null;
+        return "Recepcionista";
     }
 
     public Recepcionista(String nombre, String apellido, String documento, String telefono) {

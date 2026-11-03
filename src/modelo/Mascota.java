@@ -40,18 +40,15 @@ public abstract class Mascota {
     }
 
     public Duenio getDuenio() {
-        System.out.println("Mascota.getDuenio");
-        return null;
+        return duenio;
     }
 
     public String getNombre() {
-        System.out.println("Mascota.getNombre");
-        return null;
+        return nombre;
     }
 
     public HistoriaClinica getHistoriaClinica() {
-    System.out.println("Mascota.getHistoriaClinica");
-        return null;        
+        return historiaClinica;
     }
 
     public abstract Especie getEspecie();

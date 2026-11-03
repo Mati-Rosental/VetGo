@@ -71,18 +71,15 @@ public class Turno implements Comparable<Turno> {
     }
 
     public TipoAtencion getTipoAtencion() {
-        System.out.println("Turno.getTipoAtencion");
-        return null;
+        return tipo;
     }
 
     public Mascota getMascota() {
-        System.out.println("Turno.getMascota");
-        return null;
+        return mascota;
     }
 
     public Consulta getConsulta() {
-        System.out.println("Turno.getConsulta");
-        return null;
+        return consulta;
     }
 
     public LocalDateTime getFechaHora() {

@@ -10,13 +10,11 @@ public class Conejo extends Mascota {
 
     @Override
     public Especie getEspecie() {
-        System.out.println("Conejo.getEspecie");
-        return null;
+        return Especie.CONEJO;
     }
 
     @Override
     public String getDatosPropios() {
-        System.out.println("Conejo.getDatosPropios");
-        return null;
+        return "Sin datos propios";
     }
 }

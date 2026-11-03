@@ -17,13 +17,11 @@ public class Perro extends Mascota {
 
     @Override
     public Especie getEspecie() {
-        System.out.println("Perro.getEspecie");
-        return null;
+        return Especie.PERRO;
     }
 
     @Override
     public String getDatosPropios() {
-        System.out.println("Perro.getDatosPropios");
-        return null;
+        return "Chip: " + numeroChip + ", tamaño: " + tamanio;
     }
 }

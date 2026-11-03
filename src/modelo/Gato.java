@@ -12,13 +12,11 @@ public class Gato extends Mascota {
 
     @Override
     public Especie getEspecie() {
-        System.out.println("Gato.getEspecie");
-        return null;
+        return Especie.GATO;
     }
 
     @Override
     public String getDatosPropios() {
-        System.out.println("Gato.getDatosPropios");
-        return null;
+        return "Vive en " + (viveEnInterior ? "interior" : "exterior");
     }
 }
