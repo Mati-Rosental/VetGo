@@ -22,4 +22,11 @@ public class HorarioAtencion {
     public void setDeGuardia(boolean deGuardia) {
         System.out.println("HorarioAtencion.setDeGuardia");
     }
+
+    public HorarioAtencion(DayOfWeek dia, LocalTime horaInicio, LocalTime horaFin, boolean deGuardia) {
+        this.dia = dia;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.deGuardia = deGuardia;
+    }
 }

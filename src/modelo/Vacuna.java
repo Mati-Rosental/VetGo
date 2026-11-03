@@ -34,4 +34,11 @@ public class Vacuna extends Producto {
         System.out.println("Vacuna.getDescripcion");
         return null;
     }
+
+    public Vacuna(String nombre, int stockMinimo, double precioUnitario, Proveedor proveedor, Set<Especie> especies, int edadMinimaSemanas, int intervaloRefuerzoDias) {
+        super(nombre, stockMinimo, precioUnitario, proveedor);
+        this.especies = especies;
+        this.edadMinimaSemanas = edadMinimaSemanas;
+        this.intervaloRefuerzoDias = intervaloRefuerzoDias;
+    }
 }

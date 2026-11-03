@@ -18,4 +18,12 @@ public class AlertaStock {
         System.out.println("AlertaStock.cerrar");
         return null;
     }
+
+    public AlertaStock(Producto producto) {
+        this.producto = producto;
+        this.fecha = LocalDate.now();
+        this.stockActual = producto.getStockActual();
+        this.stockMinimo = producto.getStockMinimo();
+        this.vigente = true;
+    }
 }

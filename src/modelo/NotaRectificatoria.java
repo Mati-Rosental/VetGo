@@ -11,4 +11,10 @@ public class NotaRectificatoria {
         System.out.println("NotaRectificatoria.getTexto");
         return null;
     }
+
+    public NotaRectificatoria(String texto, Veterinario firmante) {
+        this.texto = texto;
+        this.firmante = firmante;
+        this.fecha = LocalDate.now();
+    }
 }

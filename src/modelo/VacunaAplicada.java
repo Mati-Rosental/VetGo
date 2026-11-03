@@ -21,4 +21,11 @@ public class VacunaAplicada {
         System.out.println("VacunaAplicada.estaVencida");
         return false;
     }
+
+    public VacunaAplicada(Vacuna vacuna, String numeroLote, LocalDate fechaAplicacion) {
+        this.vacuna = vacuna;
+        this.numeroLote = numeroLote;
+        this.fechaAplicacion = fechaAplicacion;
+        calcularProximoRefuerzo();
+    }
 }

@@ -11,4 +11,12 @@ public class Tratamiento {
         System.out.println("Tratamiento.getCantidad");
         return 0;
     }
+
+    public Tratamiento(String dosis, String frecuencia, int duracionDias, int cantidad, Producto medicamento) {
+        this.dosis = dosis;
+        this.frecuencia = frecuencia;
+        this.duracionDias = duracionDias;
+        this.cantidad = cantidad;
+        this.medicamento = medicamento;
+    }
 }

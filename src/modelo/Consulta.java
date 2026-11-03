@@ -57,4 +57,13 @@ public class Consulta {
     public Turno getTurno() {
         return turno;
     }
+
+    public Consulta(Turno turno, Veterinario veterinario, String motivo) {
+        this.turno = turno;
+        this.veterinario = veterinario;
+        this.motivo = motivo;
+        this.fecha = LocalDateTime.now();
+        this.estado = EstadoConsulta.EN_CURSO;
+        this.pesoDia = null;
+    }
 }

@@ -25,4 +25,11 @@ public class Veterinario extends Persona {
         System.out.println("Veterinario.getRol");
         return null;
     }
+
+    public Veterinario(String nombre, String apellido, String documento, String telefono,
+                       String matricula, String especialidad) {
+        super(nombre, apellido, documento, telefono);
+        this.matricula = matricula;
+        this.especialidad = especialidad;
+    }
 }

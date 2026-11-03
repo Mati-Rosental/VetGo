@@ -14,4 +14,13 @@ public class NotaCredito {
         System.out.println("NotaCredito.getImporte");
         return 0.0;
     }
+
+    public NotaCredito(int numero, Factura factura, String motivo, Recepcionista emisor) {
+        this.numero = numero;
+        this.factura = factura;
+        this.motivo = motivo;
+        this.emisor = emisor;
+        this.fecha = LocalDate.now();
+        this.importe = factura.calcularTotal();
+    }
 }

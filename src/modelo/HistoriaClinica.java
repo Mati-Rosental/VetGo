@@ -40,4 +40,5 @@ public class HistoriaClinica {
 
         return sb.toString();
     }
+    
 }

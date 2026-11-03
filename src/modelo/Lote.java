@@ -21,4 +21,10 @@ public class Lote implements Comparable<Lote> {
         System.out.println("Lote.compareTo");
         return 0;
     }
+
+    public Lote(String numero, int cantidad, LocalDate fechaVencimiento) {
+        this.numero = numero;
+        this.cantidad = cantidad;
+        this.fechaVencimiento = fechaVencimiento;
+    }
 }

@@ -14,17 +14,18 @@ public class Turno implements Comparable<Turno> {
     private Veterinario veterinario;
     private Consulta consulta;
 
-    
 
-    public Turno(LocalDateTime fechaHora, EstadoTurno estado, boolean urgencia, Mascota mascota,
-            Veterinario veterinario, Consulta consulta) {
+
+    public Turno(LocalDateTime fechaHora, TipoAtencion tipo, boolean urgencia,
+                 Mascota mascota, Veterinario veterinario) {
         this.id = UUID.randomUUID().toString();
         this.fechaHora = fechaHora;
-        this.estado = estado;
+        this.tipo = tipo;
+        this.estado = EstadoTurno.PROGRAMADO;
         this.urgencia = urgencia;
         this.mascota = mascota;
         this.veterinario = veterinario;
-        this.consulta = consulta;
+        this.consulta = null;
     }
 
     public int getDuracionMin() {
