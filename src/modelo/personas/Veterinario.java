@@ -38,4 +38,9 @@ public class Veterinario extends Persona {
         // Si alguna variable es null, no hay que modificarla
         System.out.println("Veterinario.modificarDatos");
     }
+
+    public LocalDateTime proximaApertura(LocalDateTime inicio) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'proximaApertura'");
+    }
 }

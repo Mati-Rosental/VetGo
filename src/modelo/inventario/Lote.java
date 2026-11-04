@@ -38,4 +38,9 @@ public class Lote implements Comparable<Lote>, Serializable {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getCantidad'");
     }
+
+    public LocalDate getFechaVencimiento() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFechaVencimiento'");
+    }
 }

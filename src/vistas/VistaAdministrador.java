@@ -1,8 +1,10 @@
 package vistas;
 
 import controlador.ControladorAdministracion;
+import modelo.agenda.Turno;
 import modelo.enumeradores.Especie;
 import modelo.inventario.Lote;
+import modelo.inventario.Producto;
 import modelo.personas.HorarioAtencion;
 
 import java.time.DayOfWeek;
@@ -249,35 +251,38 @@ public class VistaAdministrador {
             System.out.println("4. Emitir recordatorios");
             System.out.println("0. Volver");
             opcion = leer(scanner, "Opción: ");
+
             switch (opcion) {
                 case "1":
-                    resultado(controlador.emitirReporteTurnos(
-                            leer(scanner, "Documento del veterinario: "),
-                            leerFecha(scanner, "Desde (AAAA-MM-DD): "),
-                            leerFecha(scanner, "Hasta (AAAA-MM-DD): ")),
-                            null,
-                            "No se pudo emitir el reporte de turnos.");
+                    mostrarReporteTurnos(
+                            controlador.emitirReporteTurnos(
+                                    leer(scanner, "Documento del veterinario: "),
+                                    leerFecha(scanner, "Desde (AAAA-MM-DD): "),
+                                    leerFecha(scanner, "Hasta (AAAA-MM-DD): ")));
                     break;
+
                 case "2":
-                    resultado(controlador.emitirReporteStockBajo(),
-                            null,
-                            "No se pudo emitir el reporte de stock bajo.");
+                    mostrarReporteProductos(
+                            controlador.emitirReporteStockBajo());
                     break;
+
                 case "3":
-                    resultado(controlador.emitirReporteLotesPorVencer(
-                            leerFecha(scanner, "Fecha actual (AAAA-MM-DD): "),
-                            leerEntero(scanner, "Días de anticipación: ")),
-                            null,
-                            "No se pudo emitir el reporte de lotes por vencer.");
+                    mostrarReporteLotes(
+                            controlador.emitirReporteLotesPorVencer(
+                                    leerFecha(scanner, "Fecha actual (AAAA-MM-DD): "),
+                                    leerEntero(scanner, "Días de anticipación: ")));
                     break;
+
                 case "4":
                     resultado(controlador.emitirRecordatorios(
                             leerFecha(scanner, "Fecha actual (AAAA-MM-DD): ")),
                             "Recordatorios emitidos correctamente.",
                             "No se pudieron emitir los recordatorios.");
                     break;
+
                 case "0":
                     break;
+
                 default:
                     System.out.println("Opción no válida.");
             }
@@ -398,5 +403,59 @@ public class VistaAdministrador {
 
     private void volver() {
         System.out.println("Volviendo al menú anterior.");
+    }
+
+    private void mostrarReporteTurnos(List<Turno> turnos) {
+        System.out.println("\n--- Reporte de turnos ---");
+
+        if (turnos == null) {
+            System.out.println("No se pudo generar el reporte. Verifique los datos ingresados.");
+            return;
+        }
+
+        if (turnos.isEmpty()) {
+            System.out.println("No hay turnos para los criterios seleccionados.");
+            return;
+        }
+
+        for (Turno turno : turnos) {
+            System.out.println(turno.getDescripcion());
+        }
+    }
+
+    private void mostrarReporteProductos(List<Producto> productos) {
+        System.out.println("\n--- Productos con stock bajo ---");
+
+        if (productos == null) {
+            System.out.println("No se pudo generar el reporte.");
+            return;
+        }
+
+        if (productos.isEmpty()) {
+            System.out.println("No hay productos con stock bajo.");
+            return;
+        }
+
+        for (Producto producto : productos) {
+            System.out.println(producto.getDescripcion());
+        }
+    }
+
+    private void mostrarReporteLotes(List<Lote> lotes) {
+        System.out.println("\n--- Lotes próximos a vencer ---");
+
+        if (lotes == null) {
+            System.out.println("No se pudo generar el reporte. Verifique los datos ingresados.");
+            return;
+        }
+
+        if (lotes.isEmpty()) {
+            System.out.println("No hay lotes próximos a vencer.");
+            return;
+        }
+
+        for (Lote lote : lotes) {
+            System.out.println(lote.getDescripcion());
+        }
     }
 }

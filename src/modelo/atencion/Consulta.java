@@ -22,9 +22,9 @@ public class Consulta implements Serializable {
     private EstadoConsulta estado;
     private Turno turno;
     private Veterinario veterinario;
-    private final List<Tratamiento> tratamientos = new ArrayList<>();
-    private final List<VacunaAplicada> vacunasAplicadas = new ArrayList<>();
-    private final List<NotaRectificatoria> notasRectificatorias = new ArrayList<>();
+    private List<Tratamiento> tratamientos = new ArrayList<>();
+    private List<VacunaAplicada> vacunasAplicadas = new ArrayList<>();
+    private List<NotaRectificatoria> notasRectificatorias = new ArrayList<>();
 
     public void registrarPeso(double peso) {
         System.out.println("Consulta.registrarPeso");

@@ -441,63 +441,32 @@ public class ControladorAdministracion {
 
     // Emitir reportes / recordatorios
 
-    public boolean emitirReporteTurnos(String documentoVeterinario, LocalDate desde, LocalDate hasta) {
+    public List<Turno> emitirReporteTurnos(String documentoVeterinario, LocalDate desde, LocalDate hasta) {
         // Validar los parámetros
         if (vacio(documentoVeterinario) || desde == null || hasta == null || hasta.isBefore(desde)) {
-            return false;
+            return null;
         }
         // Buscar al veterinario
         Veterinario veterinario = clinica.buscarVeterinarioPorDocumento(documentoVeterinario);
         if (veterinario == null) {
-            return false;
+            return null;
         }
         // Delegar la generación del reporte a GeneradorReportes
-        List<Turno> turnos = generadorReportes.turnosPorVeterinario(veterinario, desde, hasta);
-        // Mostrar el reporte
-        List<String> lineas = new ArrayList<>();
-        if (turnos != null) {
-            for (Turno turno : turnos) {
-                lineas.add(turno.getDescripcion());
-            }
-        }
-        mostrarReporte("Turnos de " + veterinario.getNombreCompleto()
-                + " (" + desde + " a " + hasta + ")", lineas);
-
-        return true;
+        return generadorReportes.turnosPorVeterinario(veterinario, desde, hasta);
     }
 
-    public boolean emitirReporteStockBajo() {
+    public List<Producto> emitirReporteStockBajo() {
         // Delegar la generación del reporte a GeneradorReportes
-        List<Producto> productos = generadorReportes.productosConStockBajo();
-        // Mostrar el reporte
-        List<String> lineas = new ArrayList<>();
-        if (productos != null) {
-            for (Producto producto : productos) {
-                lineas.add(producto.getDescripcion());
-            }
-        }
-        mostrarReporte("Productos con stock bajo", lineas);
-
-        return true;
+        return generadorReportes.productosConStockBajo();
     }
 
-    public boolean emitirReporteLotesPorVencer(LocalDate fechaActual, int diasAnticipacion) {
+    public List<Lote> emitirReporteLotesPorVencer(LocalDate fechaActual, int diasAnticipacion) {
         // Validar los parámetros
         if (fechaActual == null || diasAnticipacion < 0) {
-            return false;
+            return null;
         }
         // Delegar la generación del reporte a GeneradorReportes
-        List<Lote> lotes = generadorReportes.lotesProximosAVencer(fechaActual, diasAnticipacion);
-        // Mostrar el reporte
-        List<String> lineas = new ArrayList<>();
-        if (lotes != null) {
-            for (Lote lote : lotes) {
-                lineas.add(lote.getDescripcion());
-            }
-        }
-        mostrarReporte("Lotes próximos a vencer (" + diasAnticipacion + " días desde " + fechaActual + ")", lineas);
-
-        return true;
+        return generadorReportes.lotesProximosAVencer(fechaActual, diasAnticipacion);
     }
 
     public boolean emitirRecordatorios(LocalDate fechaActual) {
@@ -541,16 +510,5 @@ public class ControladorAdministracion {
             }
         }
         return true;
-    }
-
-    private void mostrarReporte(String titulo, List<String> lineas) {
-        System.out.println("\n--- " + titulo + " ---");
-        if (lineas.isEmpty()) {
-            System.out.println("No hay datos para el reporte.");
-            return;
-        }
-        for (String linea : lineas) {
-            System.out.println(linea);
-        }
     }
 }

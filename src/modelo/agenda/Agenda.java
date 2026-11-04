@@ -13,8 +13,8 @@ import modelo.personas.Veterinario;
 public class Agenda implements Serializable {
     private final List<Turno> turnos = new ArrayList<>();
 
-    public boolean asignarTurno(Mascota mascota, Veterinario veterinario,
-        TipoAtencion tipo, LocalDateTime fechaHora) {
+    public boolean asignarTurno(Turno turno) {
+        // Validar si se puede asignar el turno
         System.out.println("Agenda.asignarTurno");
         return false;
     }
@@ -46,6 +46,12 @@ public class Agenda implements Serializable {
     }
 
     public Turno getTurnoSiguiente(Veterinario veterinario, LocalDateTime despuesDe) {
+        System.out.println("Agenda.getTurnoSiguiente");
+        return null;
+    }
+
+    public Turno getTurnoActual(Veterinario veterinario) {
+        // Si es null no esta atendiendo o no puede atender ahora
         System.out.println("Agenda.getTurnoSiguiente");
         return null;
     }

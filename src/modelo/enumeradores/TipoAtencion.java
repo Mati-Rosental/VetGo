@@ -3,7 +3,8 @@ package modelo.enumeradores;
 public enum TipoAtencion {
     CONSULTA_GENERAL(30),
     VACUNACION(15),
-    CIRUGIA(120);
+    CIRUGIA(120),
+    URGENCIA(30);
 
     private final int duracionMin;
 

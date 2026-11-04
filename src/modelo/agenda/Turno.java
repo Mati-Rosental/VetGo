@@ -16,20 +16,18 @@ public class Turno implements Comparable<Turno>, Serializable {
     private LocalDateTime fechaHora;
     private TipoAtencion tipo;
     private EstadoTurno estado;
-    private boolean urgencia;
     private Mascota mascota;
     private Veterinario veterinario;
     private Consulta consulta;
 
 
 
-    public Turno(LocalDateTime fechaHora, TipoAtencion tipo, boolean urgencia,
+    public Turno(LocalDateTime fechaHora, TipoAtencion tipo,
                  Mascota mascota, Veterinario veterinario) {
         this.id = UUID.randomUUID().toString();
         this.fechaHora = fechaHora;
         this.tipo = tipo;
         this.estado = EstadoTurno.PROGRAMADO;
-        this.urgencia = urgencia;
         this.mascota = mascota;
         this.veterinario = veterinario;
         this.consulta = null;

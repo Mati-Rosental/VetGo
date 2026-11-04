@@ -67,4 +67,9 @@ public class Inventario implements Serializable {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'eliminarProveedor'");
     }
+
+    public Producto[] getProductos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getProductos'");
+    }
 }

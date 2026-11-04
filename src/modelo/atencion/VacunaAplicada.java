@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import modelo.inventario.Vacuna;
+import modelo.mascotas.Mascota;
 
 public class VacunaAplicada implements Serializable {
     private LocalDate fechaAplicacion;
@@ -11,8 +12,15 @@ public class VacunaAplicada implements Serializable {
     private LocalDate proximoRefuerzo;
     private Vacuna vacuna;
 
-    public void calcularProximoRefuerzo() {
+    public VacunaAplicada(Vacuna vacuna, String numeroLote, LocalDate fechaAplicacion) {
+        this.vacuna = vacuna;
+        this.numeroLote = numeroLote;
+        this.fechaAplicacion = fechaAplicacion;
+    }
+
+    public LocalDate getProximoRefuerzo() {
         System.out.println("VacunaAplicada.calcularProximoRefuerzo");
+        return null;
     }
 
     public boolean requiereRecordatorio(LocalDate fechaActual) {
@@ -25,10 +33,8 @@ public class VacunaAplicada implements Serializable {
         return false;
     }
 
-    public VacunaAplicada(Vacuna vacuna, String numeroLote, LocalDate fechaAplicacion) {
-        this.vacuna = vacuna;
-        this.numeroLote = numeroLote;
-        this.fechaAplicacion = fechaAplicacion;
-        calcularProximoRefuerzo();
+    public Mascota getVacuna() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getVacuna'");
     }
 }
