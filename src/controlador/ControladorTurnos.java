@@ -2,26 +2,32 @@ package controlador;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import modelo.*;
+import modelo.agenda.Agenda;
+import modelo.agenda.Turno;
+import modelo.enumeradores.TipoAtencion;
+import modelo.mascotas.Mascota;
+import modelo.personas.Clinica;
+import modelo.personas.Veterinario;
+import persistencia.EstadoSistema;
 import persistencia.Repositorio;
 import servicio.GestorUrgencias;
 
 public class ControladorTurnos {
-    private Repositorio<Clinica> clinicaRepositorio;
-    private Repositorio<Agenda> agendaRepositorio;
+    private Repositorio estadoRepositorio;
+    private EstadoSistema estado;
     private Clinica clinica;
     private Agenda agenda;
     private GestorUrgencias gestorUrgencias;
     private ControladorFacturacion controladorFacturacion;
 
-    public ControladorTurnos(Repositorio<Clinica> clinicaRepositorio, Clinica clinica, Repositorio<Agenda> agendaRepositorio, Agenda agenda, 
-        GestorUrgencias gestorUrgencias, ControladorFacturacion controladorFacturacion) {
-        this.clinicaRepositorio = clinicaRepositorio;
-        this.clinica = clinica;
-        this.agendaRepositorio = agendaRepositorio;
-        this.agenda = agenda;
+    public ControladorTurnos(Repositorio estadoRepositorio, EstadoSistema estado,
+            GestorUrgencias gestorUrgencias, ControladorFacturacion controladorFacturacion) {
+        this.estadoRepositorio = estadoRepositorio;
+        this.estado = estado;
+        this.clinica = estado.getClinica();
+        this.agenda = estado.getAgenda();
         this.gestorUrgencias = gestorUrgencias;
         this.controladorFacturacion = controladorFacturacion;
     }
@@ -36,7 +42,7 @@ public class ControladorTurnos {
         // Delegar la asignación a Agenda
         if (!agenda.asignarTurno(mascota, veterinario, tipo, fechaHora)) return false;
         // Guardar los cambios
-        agendaRepositorio.guardar(List.of(agenda));
+        estadoRepositorio.guardar(estado);
         return true;
     }
 
@@ -49,7 +55,7 @@ public class ControladorTurnos {
         // Delegar la reprogramación a Agenda
         if (!agenda.reprogramar(turno, nuevaFechaHora)) return false;
         // Guardar los cambios
-        agendaRepositorio.guardar(List.of(agenda));
+        estadoRepositorio.guardar(estado);
         return true;
     }
 
@@ -62,7 +68,7 @@ public class ControladorTurnos {
         // Delegar la cancelación a Agenda y cobrar si es tardia
         if (agenda.cancelar(turno)) controladorFacturacion.cobrarCargoCancelacionTardia(turno);
         // Guardar los cambios
-        agendaRepositorio.guardar(List.of(agenda));
+        estadoRepositorio.guardar(estado);
         return true;
     }
 
@@ -75,13 +81,12 @@ public class ControladorTurnos {
         // Marcar el turno como ausente
         agenda.registrarAusencia(turno);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
-        agendaRepositorio.guardar(List.of(agenda));
+        estadoRepositorio.guardar(estado);
         return true;
     }
 
     public Turno atenderUrgencia(String idMascota) {
-        // Validar los parámetros
+        // Validar el parámetro
         if (idMascota == null) return null;
         // Buscar la mascota
         Mascota mascota = clinica.buscarMascota(idMascota);
@@ -92,7 +97,7 @@ public class ControladorTurnos {
         // Delegar la atención de la urgencia a GestorUrgencias
         Turno turno = gestorUrgencias.atenderUrgencia(mascota, veterinario);
         // Guardar los cambios
-        agendaRepositorio.guardar(List.of(agenda));
+        estadoRepositorio.guardar(estado);
         return turno;
     }
 }

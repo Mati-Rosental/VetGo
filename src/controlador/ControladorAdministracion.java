@@ -8,28 +8,40 @@ import java.util.List;
 import java.util.Set;
 
 import modelo.*;
+import modelo.agenda.Agenda;
+import modelo.agenda.Turno;
+import modelo.enumeradores.Especie;
+import modelo.inventario.Inventario;
+import modelo.inventario.Lote;
+import modelo.inventario.Producto;
+import modelo.inventario.Proveedor;
+import modelo.inventario.Vacuna;
+import modelo.personas.Clinica;
+import modelo.personas.HorarioAtencion;
+import modelo.personas.Recepcionista;
+import modelo.personas.Veterinario;
+import persistencia.EstadoSistema;
 import persistencia.Repositorio;
 import servicio.GeneradorReportes;
 import servicio.ServicioRecordatorios;
 
 public class ControladorAdministracion {
 
-    private Repositorio<Clinica> clinicaRepositorio;
-    private Repositorio<Inventario> inventarioRepositorio;
+    private Repositorio estadoRepositorio;
+    private EstadoSistema estado;
     private Clinica clinica;
     private Agenda agenda;
     private Inventario inventario;
     private GeneradorReportes generadorReportes;
     private ServicioRecordatorios servicioRecordatorios;
 
-    public ControladorAdministracion(Repositorio<Clinica> clinicaRepositorio, Clinica clinica,
-            Repositorio<Inventario> inventarioRepositorio, Inventario inventario, Agenda agenda,
+    public ControladorAdministracion(Repositorio estadoRepositorio, EstadoSistema estado,
             GeneradorReportes generadorReportes, ServicioRecordatorios servicioRecordatorios) {
-        this.clinicaRepositorio = clinicaRepositorio;
-        this.clinica = clinica;
-        this.inventarioRepositorio = inventarioRepositorio;
-        this.inventario = inventario;
-        this.agenda = agenda;
+        this.estadoRepositorio = estadoRepositorio;
+        this.estado = estado;
+        this.clinica = estado.getClinica();
+        this.agenda = estado.getAgenda();
+        this.inventario = estado.getInventario();
         this.generadorReportes = generadorReportes;
         this.servicioRecordatorios = servicioRecordatorios;
     }
@@ -59,7 +71,7 @@ public class ControladorAdministracion {
         // Agregarlo a la clínica
         clinica.agregarVeterinario(veterinario);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -81,7 +93,7 @@ public class ControladorAdministracion {
         // Quitarlo de la clínica
         clinica.eliminarVeterinario(veterinario);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -106,7 +118,7 @@ public class ControladorAdministracion {
         // Delegar la modificación a Veterinario
         veterinario.modificarDatos(nombre, apellido, telefono, especialidad, horarios);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -125,7 +137,7 @@ public class ControladorAdministracion {
         // Crear la recepcionista y agregarla a la clínica
         clinica.agregarRecepcionista(new Recepcionista(nombre, apellido, documento, telefono));
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -143,7 +155,7 @@ public class ControladorAdministracion {
         // Quitarla de la clínica
         clinica.eliminarRecepcionista(recepcionista);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -161,7 +173,7 @@ public class ControladorAdministracion {
         // Delegar la modificación a Recepcionista
         recepcionista.modificarDatos(nombre, apellido, telefono);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -187,7 +199,7 @@ public class ControladorAdministracion {
             producto.agregarLote(lote);
         }
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -220,7 +232,7 @@ public class ControladorAdministracion {
         // Agregarla al catálogo
         inventario.agregarProducto(vacuna);
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -238,7 +250,7 @@ public class ControladorAdministracion {
         // Dar de baja sin borrar el historial de vacunas aplicadas
         inventario.darDeBajaVacuna(vacuna);
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -272,7 +284,7 @@ public class ControladorAdministracion {
             vacuna.reemplazarLotes(lotes);
         }
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -310,7 +322,7 @@ public class ControladorAdministracion {
         // Agregarlo al inventario
         inventario.agregarProducto(producto);
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -328,7 +340,7 @@ public class ControladorAdministracion {
         // Dar de baja sin borrar el historial de consultas asociadas
         inventario.darDeBajaProducto(producto);
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -362,7 +374,7 @@ public class ControladorAdministracion {
             producto.reemplazarLotes(lotes);
         }
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -381,7 +393,7 @@ public class ControladorAdministracion {
         // Crear el proveedor y agregarlo al inventario
         inventario.agregarProveedor(new Proveedor(CUIL, nombre, telefono, correo));
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -403,7 +415,7 @@ public class ControladorAdministracion {
         // Quitarlo del inventario
         inventario.eliminarProveedor(proveedor);
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -422,7 +434,7 @@ public class ControladorAdministracion {
         // Delegar la modificación a Proveedor
         proveedor.modificarDatos(nombre, telefono, correo);
         // Guardar los cambios
-        inventarioRepositorio.guardar(List.of(inventario));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }

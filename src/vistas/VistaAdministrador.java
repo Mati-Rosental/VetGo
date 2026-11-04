@@ -1,9 +1,9 @@
 package vistas;
 
 import controlador.ControladorAdministracion;
-import modelo.Especie;
-import modelo.HorarioAtencion;
-import modelo.Lote;
+import modelo.enumeradores.Especie;
+import modelo.inventario.Lote;
+import modelo.personas.HorarioAtencion;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

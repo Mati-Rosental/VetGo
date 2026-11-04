@@ -4,24 +4,41 @@ package controlador;
 import java.util.List;
 
 import modelo.*;
+import modelo.agenda.Agenda;
+import modelo.agenda.Turno;
+import modelo.atencion.Consulta;
+import modelo.inventario.AlertaStock;
+import modelo.inventario.Inventario;
+import modelo.inventario.Producto;
+import modelo.inventario.Vacuna;
+import modelo.mascotas.HistoriaClinica;
+import modelo.mascotas.Mascota;
+import modelo.personas.Administrador;
+import modelo.personas.Clinica;
+import modelo.personas.Veterinario;
+import persistencia.EstadoSistema;
 import persistencia.Repositorio;
 import servicio.Notificador;
 
 public class ControladorAtencion {
 
-    private Repositorio<Clinica> clinicaRepositorio;
-    private Repositorio<Agenda> agendaRepositorio;
+    private Repositorio estadoRepositorio;
+    private EstadoSistema estado;
+
     private Clinica clinica;
     private Agenda agenda;
     private Inventario inventario;
+
     private Notificador notificador;
 
-    public ControladorAtencion(Repositorio<Clinica> clinicaRepositorio, Clinica clinica, Repositorio<Agenda> agendaRepositorio, Agenda agenda, Inventario inventario, Notificador notificador) {
-        this.clinicaRepositorio = clinicaRepositorio;
-        this.clinica = clinica;
-        this.agendaRepositorio = agendaRepositorio;
-        this.agenda = agenda;
-        this.inventario = inventario;
+    public ControladorAtencion(Repositorio estadoRepositorio, EstadoSistema estado, Notificador notificador) {
+        this.estadoRepositorio = estadoRepositorio;
+        this.estado = estado;
+
+        this.clinica = estado.getClinica();
+        this.agenda = estado.getAgenda();
+        this.inventario = estado.getInventario();
+
         this.notificador = notificador;
     }
 
@@ -41,8 +58,7 @@ public class ControladorAtencion {
         // Marcar el turno como atendido
         turno.marcarAtendido();
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
-        agendaRepositorio.guardar(List.of(agenda));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -60,7 +76,7 @@ public class ControladorAtencion {
         // Registrar el peso en la consulta
         consulta.registrarPeso(peso);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -86,7 +102,7 @@ public class ControladorAtencion {
         // Delegar el registro del tratamiento a Consulta
         consulta.indicarTratamiento(medicamento, dosis, frecuencia, duracionDias, cantidad);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -109,7 +125,7 @@ public class ControladorAtencion {
         // Registrar la aplicación de la vacuna en la consulta
         consulta.aplicarVacuna(vacuna);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -136,7 +152,7 @@ public class ControladorAtencion {
             }
         }
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -156,7 +172,7 @@ public class ControladorAtencion {
         // Delegar la creación de la nota rectificatoria a Consulta
         consulta.agregarNota(texto, veterinario);
         // Guardar los cambios
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }

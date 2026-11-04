@@ -1,24 +1,33 @@
 package controlador;
 
 import modelo.*;
+import modelo.agenda.Turno;
+import modelo.atencion.Consulta;
+import modelo.enumeradores.TipoAtencion;
+import modelo.facturacion.Factura;
+import modelo.facturacion.Tarifario;
+import modelo.facturacion.pago.MedioPago;
+import modelo.personas.Clinica;
+import modelo.personas.Duenio;
+import modelo.personas.Recepcionista;
+import persistencia.EstadoSistema;
 import persistencia.Repositorio;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorFacturacion {
     private Clinica clinica;
-    private Repositorio<Factura> facturaRepositorio;
+    private Repositorio estadoRepositorio;
+    private EstadoSistema estado;
     private Tarifario tarifario;
     private List<Factura> facturas;
 
-    public ControladorFacturacion(Clinica clinica, Repositorio<Factura> facturaRepositorio, 
-        Tarifario tarifario) {
-        this.clinica = clinica;
-        this.facturaRepositorio = facturaRepositorio;
+    public ControladorFacturacion(EstadoSistema estado, Repositorio estadoRepositorio, Tarifario tarifario) {
+        this.estado = estado;
+        this.estadoRepositorio = estadoRepositorio;
+        this.clinica = estado.getClinica();
         this.tarifario = tarifario;
-
-        this.facturas = new ArrayList<>(facturaRepositorio.cargar());
+        this.facturas = estado.getFacturas();
     }
 
     public boolean facturarConsulta(String idConsulta, MedioPago medioPago) {
@@ -45,7 +54,7 @@ public class ControladorFacturacion {
         {factura.agregarLinea(producto.getNombre(), cantidad, producto.getPrecioUnitario());});
         // Guardar la factura
         facturas.add(factura);
-        facturaRepositorio.guardar(facturas);
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -73,8 +82,8 @@ public class ControladorFacturacion {
         // Delegar la anulación a Factura
         factura.anular(motivo, recepcionista);
         // Persistir los cambios
-        facturaRepositorio.guardar(facturas);
-        
+        estadoRepositorio.guardar(estado);
+
         return true;
     }
 
@@ -91,7 +100,7 @@ public class ControladorFacturacion {
         factura.agregarLinea("Cargo por cancelación tardía", 1, importe);
         // Guardar la factura
         facturas.add(factura);
-        facturaRepositorio.guardar(facturas);
+        estadoRepositorio.guardar(estado);
 
         return factura;
     }

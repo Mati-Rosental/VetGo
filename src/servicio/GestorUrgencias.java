@@ -1,6 +1,10 @@
 package servicio;
 
 import modelo.*;
+import modelo.agenda.Agenda;
+import modelo.agenda.Turno;
+import modelo.mascotas.Mascota;
+import modelo.personas.Veterinario;
 import persistencia.*;
 import java.time.LocalDate;
 

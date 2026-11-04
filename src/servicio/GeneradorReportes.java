@@ -1,6 +1,12 @@
 package servicio;
 
 import modelo.*;
+import modelo.agenda.Agenda;
+import modelo.agenda.Turno;
+import modelo.inventario.Inventario;
+import modelo.inventario.Lote;
+import modelo.inventario.Producto;
+import modelo.personas.Veterinario;
 import persistencia.*;
 import java.time.LocalDate;
 import java.util.List;

@@ -1,27 +1,30 @@
 package controlador;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import modelo.Ave;
-import modelo.Clinica;
-import modelo.Conejo;
-import modelo.Duenio;
-import modelo.Especie;
-import modelo.Gato;
-import modelo.Mascota;
-import modelo.Perro;
-import modelo.Sexo;
-import modelo.TamanioPerro;
+import modelo.*;
+import modelo.enumeradores.Especie;
+import modelo.enumeradores.Sexo;
+import modelo.enumeradores.TamanioPerro;
+import modelo.mascotas.Ave;
+import modelo.mascotas.Conejo;
+import modelo.mascotas.Gato;
+import modelo.mascotas.Mascota;
+import modelo.mascotas.Perro;
+import modelo.personas.Clinica;
+import modelo.personas.Duenio;
+import persistencia.EstadoSistema;
 import persistencia.Repositorio;
 
 public class ControladorRegistro {
-    private Repositorio<Clinica> clinicaRepositorio;
+    private Repositorio estadoRepositorio;
+    private EstadoSistema estado;
     private Clinica clinica;
 
-    public ControladorRegistro(Repositorio<Clinica> clinicaRepositorio, Clinica clinica) {
-        this.clinicaRepositorio = clinicaRepositorio;
-        this.clinica = clinica;
+    public ControladorRegistro(Repositorio estadoRepositorio, EstadoSistema estado) {
+        this.estadoRepositorio = estadoRepositorio;
+        this.estado = estado;
+        this.clinica = estado.getClinica();
     }
 
     public boolean altaDuenio(String nombre, String apellido, String documento, String telefono, String correo, boolean planSalud) {
@@ -32,12 +35,12 @@ public class ControladorRegistro {
         }
 
         clinica.agregarDuenio(nuevoDuenio);
-        clinicaRepositorio.guardar(List.of(clinica));
+        estadoRepositorio.guardar(estado);
         return true;
     }
 
     public boolean altaMascota(
-            String documentoDuenio,    
+            String documentoDuenio,
             Especie especie,
             String nombre,
             String raza,
@@ -89,7 +92,7 @@ public class ControladorRegistro {
 
         duenioMascota.agregarMascota(nuevaMascota);
 
-        clinicaRepositorio.guardar(java.util.List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }
@@ -107,7 +110,7 @@ public class ControladorRegistro {
 
         mascota.transferirA(nuevoDuenio, LocalDate.now());
 
-        clinicaRepositorio.guardar(java.util.List.of(clinica));
+        estadoRepositorio.guardar(estado);
 
         return true;
     }

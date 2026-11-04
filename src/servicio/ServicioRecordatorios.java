@@ -1,6 +1,7 @@
 package servicio;
 
 import modelo.*;
+import modelo.mascotas.Mascota;
 import persistencia.*;
 import java.time.LocalDate;
 import java.util.List;

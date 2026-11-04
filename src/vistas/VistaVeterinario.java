@@ -1,7 +1,8 @@
 package vistas;
 
 import controlador.ControladorAtencion;
-import modelo.HistoriaClinica;
+import modelo.mascotas.HistoriaClinica;
+
 import java.util.Scanner;
 
 public class VistaVeterinario {
