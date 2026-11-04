@@ -7,6 +7,12 @@ public class Lote implements Comparable<Lote> {
     private int cantidad;
     private LocalDate fechaVencimiento;
 
+    public Lote(String numero, int cantidad, LocalDate fechaVencimiento) {
+        this.numero = numero;
+        this.cantidad = cantidad;
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
     public boolean estaVencido(LocalDate fechaActual) {
         System.out.println("Lote.estaVencido");
         return false;
@@ -22,9 +28,13 @@ public class Lote implements Comparable<Lote> {
         return 0;
     }
 
-    public Lote(String numero, int cantidad, LocalDate fechaVencimiento) {
-        this.numero = numero;
-        this.cantidad = cantidad;
-        this.fechaVencimiento = fechaVencimiento;
+    public String getDescripcion() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDescripcion'");
+    }
+
+    public int getCantidad() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCantidad'");
     }
 }

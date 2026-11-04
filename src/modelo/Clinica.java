@@ -58,8 +58,8 @@ public class Clinica {
         return null;
     }    
 
-    public Veterinario buscarVeterinario(String veterinarioDocumento) {
-        System.out.println("Clinica.buscarVeterinario");
+    public Veterinario buscarVeterinarioPorDocumento(String veterinarioDocumento) {
+        System.out.println("Clinica.buscarVeterinarioPorDocumento");
         return null;
     }    
 
@@ -71,5 +71,19 @@ public class Clinica {
     public Consulta buscarConsulta(String idConsulta) {
         // Recorrer dueños, mascotas e historias clínicas.
         return null;
+    }
+
+    public Object buscarVeterinarioPorMatricula(String matricula) {
+        System.out.println("Clinica.buscarVeterinarioPorMatricula");
+        return null;
+    }
+
+    public void eliminarVeterinario(Veterinario veterinario) {
+        System.out.println("Clinica.eliminarVeterinario");
+    }
+
+    public void eliminarRecepcionista(Recepcionista recepcionista) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'eliminarRecepcionista'");
     }
 }

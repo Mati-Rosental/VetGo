@@ -8,7 +8,15 @@ import java.util.List;
 public class Veterinario extends Persona {
     private String matricula;
     private String especialidad;
-    private final List<HorarioAtencion> horarios = new ArrayList<>();
+    private List<HorarioAtencion> horarios = new ArrayList<>();
+
+    public Veterinario(String nombre, String apellido, String documento, String telefono,
+                       String matricula, String especialidad, List<HorarioAtencion> horarios) {
+        super(nombre, apellido, documento, telefono);
+        this.matricula = matricula;
+        this.especialidad = especialidad;
+        this.horarios = horarios;
+    }
 
     public boolean atiendeEn(LocalDateTime inicio, int minutos) {
         System.out.println("Veterinario.atiendeEn");
@@ -25,10 +33,9 @@ public class Veterinario extends Persona {
         return "Veterinario";
     }
 
-    public Veterinario(String nombre, String apellido, String documento, String telefono,
-                       String matricula, String especialidad) {
-        super(nombre, apellido, documento, telefono);
-        this.matricula = matricula;
-        this.especialidad = especialidad;
+    public void modificarDatos(String nombre, String apellido, String telefono,
+         String especialidad, List<HorarioAtencion> horarios) {
+        // Si alguna variable es null, no hay que modificarla
+        System.out.println("Veterinario.modificarDatos");
     }
 }

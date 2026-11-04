@@ -10,10 +10,10 @@ public class Producto {
     private int stockMinimo;
     private double precioUnitario;
     private Proveedor proveedor;
-    private final List<Lote> lotes = new ArrayList<>();
+    private List<Lote> lotes = new ArrayList<>();
 
-    public Producto(String nombre, int stockMinimo, double precioUnitario, Proveedor proveedor) {
-        this.codigo = UUID.randomUUID().toString();
+    public Producto(String codigo, String nombre, int stockMinimo, double precioUnitario, Proveedor proveedor) {
+        this.codigo = codigo;
         this.nombre = nombre;
         this.stockMinimo = stockMinimo;
         this.precioUnitario = precioUnitario;
@@ -70,5 +70,15 @@ public class Producto {
 
     public List<Lote> getLotes() {
         return lotes;
+    }
+
+    public void modificarDatos(String nombre2, int stockMinimo2, double precioUnitario2, Proveedor proveedor2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'modificarDatos'");
+    }
+
+    public void reemplazarLotes(List<Lote> lotes2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reemplazarLotes'");
     }
 }

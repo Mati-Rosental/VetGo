@@ -41,7 +41,8 @@ public class ControladorFacturacion {
         factura.agregarLinea("Consulta veterinaria", 1, precioConsulta);
         // Agregar una línea por cada insumo utilizado
         // Es una funcion lambda
-        consulta.getInsumosUtilizados().forEach((producto, cantidad) -> {factura.agregarLinea(producto.getNombre(), cantidad, producto.getPrecioUnitario());});
+        consulta.getInsumosUtilizados().forEach((producto, cantidad) ->
+        {factura.agregarLinea(producto.getNombre(), cantidad, producto.getPrecioUnitario());});
         // Guardar la factura
         facturas.add(factura);
         facturaRepositorio.guardar(facturas);

@@ -149,7 +149,7 @@ public class ControladorAtencion {
         }
         // Buscar la consulta y el veterinario firmante
         Consulta consulta = clinica.buscarConsulta(idConsulta);
-        Veterinario veterinario = clinica.buscarVeterinario(documentoFirmante);
+        Veterinario veterinario = clinica.buscarVeterinarioPorDocumento(documentoFirmante);
         if (consulta == null || veterinario == null || !consulta.estaConfirmada()) {
             return false;
         }

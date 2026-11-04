@@ -1,7 +1,9 @@
 package modelo;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDate;
 
 public class HorarioAtencion {
     private DayOfWeek dia;
@@ -28,5 +30,20 @@ public class HorarioAtencion {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.deGuardia = deGuardia;
+    }
+
+    public LocalDate getHoraFin() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getHoraFin'");
+    }
+
+    public ChronoLocalDate getHoraInicio() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getHoraInicio'");
+    }
+
+    public DayOfWeek getDia() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDia'");
     }
 }

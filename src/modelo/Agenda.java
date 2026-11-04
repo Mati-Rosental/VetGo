@@ -39,6 +39,7 @@ public class Agenda {
 
     public List<Turno> getTurnosDe(Veterinario veterinario, LocalDate desde, LocalDate hasta) {
         System.out.println("Agenda.getTurnosDe");
+        // Si hasta es null devuelve todos
         return null;
     }
 

@@ -31,7 +31,7 @@ public class ControladorTurnos {
         if (idMascota == null || documentoVeterinario == null || tipo == null || fechaHora == null) return false;
         // Buscar la mascota y el veterinario
         Mascota mascota = clinica.buscarMascota(idMascota);
-        Veterinario veterinario = clinica.buscarVeterinario(documentoVeterinario);
+        Veterinario veterinario = clinica.buscarVeterinarioPorDocumento(documentoVeterinario);
         if (mascota == null || veterinario == null || !mascota.getDuenio().puedePedirTurno()) return false;
         // Delegar la asignación a Agenda
         if (!agenda.asignarTurno(mascota, veterinario, tipo, fechaHora)) return false;

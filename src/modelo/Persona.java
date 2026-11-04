@@ -17,8 +17,6 @@ public abstract class Persona {
         return nombre + " " + apellido;
     }
 
-    public abstract String getRol();
-
     public String getDocumento() {
         return documento;
     }
@@ -26,4 +24,6 @@ public abstract class Persona {
     public String getNombre() {
         return nombre;
     }
+
+    public abstract String getRol();
 }
