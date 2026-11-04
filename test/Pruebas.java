@@ -22,10 +22,10 @@ import modelo.TipoAtencion;
 import modelo.Veterinario;
 import persistencia.Repositorio;
 
-public final class PruebasPunto4 {
+public final class Pruebas {
     private static int pruebasEjecutadas;
 
-    private PruebasPunto4() {
+    private Pruebas() {
     }
 
     public static void main(String[] args) {
