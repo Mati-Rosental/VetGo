@@ -1,6 +1,8 @@
 package controlador;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelo.*;
 import modelo.enumeradores.Especie;
@@ -113,5 +115,13 @@ public class ControladorRegistro {
         estadoRepositorio.guardar(estado);
 
         return true;
+    }
+
+    public List<Duenio> obtenerDuenios() {
+        return new ArrayList<>(clinica.getDuenios());
+    }
+
+    public List<Mascota> obtenerMascotas() {
+        return clinica.getMascotas();
     }
 }

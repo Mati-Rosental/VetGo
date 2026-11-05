@@ -13,8 +13,7 @@ public class HorarioAtencion implements Serializable {
     private boolean deGuardia;
 
     public boolean cubreTramoHorario(LocalTime horaInicio, LocalTime horaFin) {
-        System.out.println("HorarioAtencion.cubreTramoHorario");
-        return false;
+        return !horaInicio.isBefore(this.horaInicio) && !horaFin.isAfter(this.horaFin);
     }
 
     public boolean esDeGuardia() {
@@ -37,7 +36,7 @@ public class HorarioAtencion implements Serializable {
     }
 
     public LocalTime getHoraInicio() {
-        return getHoraInicio();
+        return horaInicio;
     }
 
     public DayOfWeek getDia() {

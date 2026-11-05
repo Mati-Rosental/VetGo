@@ -56,6 +56,9 @@ public class ControladorFacturacion {
         Factura factura = new Factura(consulta, medioPago, lineas);
         // Guardar la factura
         facturas.add(factura);
+        // Actualizar el estado de la consulta
+        consulta.marcarFacturada();
+
         estadoRepositorio.guardar(estado);
 
         return true;
@@ -106,5 +109,18 @@ public class ControladorFacturacion {
         estadoRepositorio.guardar(estado);
 
         return factura;
+    }
+
+    // Devuelve las consultas confirmadas que todavía no fueron facturadas
+    public List<Consulta> obtenerConsultasConfirmadas() {
+        List<Consulta> consultasPendientes = new ArrayList<>();
+
+        for (Consulta consulta : clinica.getConsultas()) {
+            if (consulta.estaConfirmada() && !consulta.estaFacturada()) {
+                consultasPendientes.add(consulta);
+            }
+        }
+
+        return consultasPendientes;
     }
 }

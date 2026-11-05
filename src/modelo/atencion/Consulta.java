@@ -82,6 +82,18 @@ public class Consulta implements Serializable {
         return this.estado.equals(EstadoConsulta.CONFIRMADA);
     }
 
+    public void marcarFacturada() {
+        this.estado = EstadoConsulta.FACTURADA;
+    }
+
+    public boolean estaFacturada() {
+        return this.estado.equals(EstadoConsulta.FACTURADA);
+    }
+
+    public boolean estaEnCurso() {
+        return this.estado.equals(EstadoConsulta.EN_CURSO);
+    }
+
     // Junta los productos usados en la consulta con la cantidad total de cada uno
     public Map<Producto, Integer> getInsumosUtilizados() {
         Map<Producto, Integer> insumos = new HashMap<>();
@@ -110,15 +122,11 @@ public class Consulta implements Serializable {
 
     @Override
     public String toString() {
-        return "Consulta [ID=" + id
-                + ", Fecha=" + fecha
-                + ", Motivo=" + motivo
-                + ", Peso del día=" + (pesoDia != null ? pesoDia + " kg" : "No registrado")
-                + ", Diagnóstico=" + diagnostico
-                + ", Observaciones=" + observaciones
-                + ", Tratamientos=" + tratamientos
-                + ", Vacunas aplicadas=" + vacunasAplicadas
-                + ", Notas rectificatorias=" + notasRectificatorias
-                + ", Estado=" + estado + "]";
+        return "ID: " + id
+                + "\nTurno: " + turno.getId()
+                + "\nMascota: " + turno.getMascota().getNombre()
+                + "\nDueño: " + turno.getMascota().getDuenio().getNombreCompleto()
+                + "\nFecha y hora: " + turno.getFechaHora()
+                + "\nTipo de atención: " + turno.getTipoAtencion();
     }
 }

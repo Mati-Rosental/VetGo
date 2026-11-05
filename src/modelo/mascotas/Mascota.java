@@ -29,7 +29,7 @@ public abstract class Mascota implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
         this.peso = peso;
         this.fechaTransferencia = null;
-        this.historiaClinica = new HistoriaClinica();
+        this.historiaClinica = new HistoriaClinica(this);
     }
 
     public int edadEnSemanas() {
@@ -68,4 +68,16 @@ public abstract class Mascota implements Serializable {
     public abstract Especie getEspecie();
 
     public abstract String getDatosPropios();
+
+    @Override
+    public String toString() {
+        return "Nombre: " + nombre
+                + "\nID: " + id
+                + "\nEspecie: " + getEspecie()
+                + "\nRaza: " + raza
+                + "\nSexo: " + sexo
+                + "\nDatos: " + getDatosPropios()
+                + "\nDueño: " + duenio.getNombreCompleto() + " - " + duenio.getDocumento()
+                + "\nFecha transferencia: " + fechaTransferencia;
+    }
 }

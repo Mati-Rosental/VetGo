@@ -120,7 +120,22 @@ public class Clinica implements Serializable {
     public void eliminarRecepcionista(Recepcionista recepcionista) {
         recepcionistas.remove(recepcionista);
     }
+
     public void agregarAdministrador(Administrador administrador) {
         administradores.add(administrador);
+    }
+
+    public List<Duenio> getDuenios() {
+        return duenios;
+    }
+
+    public List<Consulta> getConsultas() {
+        List<Consulta> consultas = new ArrayList<>();
+
+        for (Mascota mascota : getMascotas()) {
+            consultas.addAll(mascota.getHistoriaClinica().getConsultas());
+        }
+
+        return consultas;
     }
 }

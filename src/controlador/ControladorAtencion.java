@@ -70,7 +70,7 @@ public class ControladorAtencion {
         }
         // Buscar la consulta
         Consulta consulta = clinica.buscarConsulta(idConsulta);
-        if (consulta == null || consulta.estaConfirmada()) {
+        if (consulta == null || !consulta.estaEnCurso()) {
             return false;
         }
         // Registrar el peso en la consulta
@@ -87,7 +87,7 @@ public class ControladorAtencion {
         }
         // Buscar la consulta
         Consulta consulta = clinica.buscarConsulta(idConsulta);
-        if (consulta == null || consulta.estaConfirmada()) {
+        if (consulta == null || !consulta.estaEnCurso()) {
             return false;
         }
         // Registrar el diagnostico en la consulta
@@ -104,7 +104,7 @@ public class ControladorAtencion {
         }
         // Buscar la consulta
         Consulta consulta = clinica.buscarConsulta(idConsulta);
-        if (consulta == null || consulta.estaConfirmada()) {
+        if (consulta == null || !consulta.estaEnCurso()) {
             return false;
         }
         // Registrar las observaciones en la consulta
@@ -126,7 +126,7 @@ public class ControladorAtencion {
         // Buscar la consulta y el medicamento
         Consulta consulta = clinica.buscarConsulta(idConsulta);
         Producto medicamento = inventario.buscarProducto(idProducto);
-        if (consulta == null || medicamento == null || consulta.estaConfirmada()) {
+        if (consulta == null || medicamento == null || !consulta.estaEnCurso()) {
             return false;
         }
         // Verificar que haya stock suficiente
@@ -151,7 +151,7 @@ public class ControladorAtencion {
         // Buscar la consulta y la vacuna
         Consulta consulta = clinica.buscarConsulta(idConsulta);
         Vacuna vacuna = inventario.buscarVacuna(idVacuna);
-        if (consulta == null || vacuna == null || consulta.estaConfirmada()) {
+        if (consulta == null || vacuna == null || !consulta.estaEnCurso()) {
             return false;
         }
         // Verificar que haya stock suficiente
@@ -172,7 +172,7 @@ public class ControladorAtencion {
             return false;
         }
         Consulta consulta = clinica.buscarConsulta(idConsulta);
-        if (consulta == null || consulta.estaConfirmada()) {
+        if (consulta == null || !consulta.estaEnCurso()) {
             return false;
         }
         // Descontar los insumos utilizados y obtener las alertas de stock bajo
@@ -204,7 +204,7 @@ public class ControladorAtencion {
         // Buscar la consulta y el veterinario firmante
         Consulta consulta = clinica.buscarConsulta(idConsulta);
         Veterinario veterinario = clinica.buscarVeterinarioPorDocumento(documentoFirmante);
-        if (consulta == null || veterinario == null || !consulta.estaConfirmada()) {
+        if (consulta == null || veterinario == null || consulta.estaEnCurso()) {
             return false;
         }
         // Delegar la creación de la nota rectificatoria a Consulta

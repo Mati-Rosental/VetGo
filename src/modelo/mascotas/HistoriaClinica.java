@@ -12,10 +12,13 @@ public class HistoriaClinica implements Serializable {
     private Mascota mascota;
     private final List<Consulta> consultas = new ArrayList<>();
 
+    public HistoriaClinica(Mascota mascota) {
+        this.mascota = mascota;
+    }
+
     public void abrirConsulta(Turno turno, String motivo) {
         consultas.add(new Consulta(turno, motivo));
-    }
-    
+    }    
 
     public List<Consulta> getConsultas() {
         return consultas;

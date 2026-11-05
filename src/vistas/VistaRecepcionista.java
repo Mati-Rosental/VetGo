@@ -1,3 +1,4 @@
+
 package vistas;
 
 import controlador.ControladorFacturacion;
@@ -8,13 +9,17 @@ import modelo.enumeradores.Especie;
 import modelo.enumeradores.Sexo;
 import modelo.enumeradores.TamanioPerro;
 import modelo.enumeradores.TipoAtencion;
+import modelo.atencion.Consulta;
 import modelo.facturacion.pago.Credito;
 import modelo.facturacion.pago.Debito;
 import modelo.facturacion.pago.Efectivo;
 import modelo.facturacion.pago.MedioPago;
+import modelo.mascotas.Mascota;
+import modelo.personas.Duenio;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class VistaRecepcionista {
@@ -30,6 +35,7 @@ public class VistaRecepcionista {
 
     public void iniciarMenu(Scanner scanner) {
         String opcion;
+
         do {
             System.out.println("\n--- Menú de recepción ---");
             System.out.println("1. Registrar dueño");
@@ -42,7 +48,14 @@ public class VistaRecepcionista {
             System.out.println("8. Atender urgencia");
             System.out.println("9. Facturar consulta");
             System.out.println("10. Anular factura");
+            System.out.println("\n--- Consultas ---");
+            System.out.println("11. Ver dueños");
+            System.out.println("12. Ver mascotas");
+            System.out.println("13. Ver todos los turnos");
+            System.out.println("14. Ver turnos de un dueño");
+            System.out.println("15. Ver consultas pendientes de facturación");
             System.out.println("0. Volver");
+
             opcion = Entrada.textoOpcional(scanner, "Opción: ");
 
             try {
@@ -78,7 +91,8 @@ public class VistaRecepcionista {
                                 Entrada.elegir(scanner, "Tipo de atención", new TipoAtencion[] {
                                         TipoAtencion.CONSULTA_GENERAL,
                                         TipoAtencion.VACUNACION,
-                                        TipoAtencion.CIRUGIA }),
+                                        TipoAtencion.CIRUGIA
+                                }),
                                 Entrada.fechaHora(scanner, "Fecha y hora (AAAA-MM-DDTHH:MM): ")),
                                 "Turno asignado correctamente.",
                                 "No se pudo asignar el turno. Verifique los datos y que el veterinario esté disponible en ese horario.");
@@ -108,17 +122,13 @@ public class VistaRecepcionista {
 
                     case "8":
                         Turno turno = controladorTurnos.atenderUrgencia(
-                                leer(scanner, "Identificador de la mascota: ")
-                        );
+                                leer(scanner, "Identificador de la mascota: "));
 
                         if (turno == null) {
                             System.out.println("No se pudo asignar un turno de urgencia.");
                         } else {
                             System.out.println("\n--- Turno de urgencia asignado ---");
-                            System.out.println("Mascota: " + turno.getMascota().getNombre());
-                            System.out.println("Veterinario: " + turno.getVeterinario().getNombre());
-                            System.out.println("Fecha y hora: " + turno.getFechaHora());
-                            System.out.println("Tipo de atención: " + turno.getTipoAtencion());
+                            System.out.println(turno);
                         }
                         break;
 
@@ -137,6 +147,27 @@ public class VistaRecepcionista {
                                 leer(scanner, "Documento de la recepcionista: ")),
                                 "Factura anulada correctamente.",
                                 "No se pudo anular la factura. Verifique los datos ingresados.");
+                        break;
+
+                    case "11":
+                        verDuenios();
+                        break;
+
+                    case "12":
+                        verMascotas();
+                        break;
+
+                    case "13":
+                        verTurnos(controladorTurnos.obtenerTurnos());
+                        break;
+
+                    case "14":
+                        verTurnos(controladorTurnos.obtenerTurnosDeDuenio(
+                                leer(scanner, "Documento del dueño: ")));
+                        break;
+
+                    case "15":
+                        verConsultasPendientes();
                         break;
 
                     case "0":
@@ -185,6 +216,68 @@ public class VistaRecepcionista {
                 fechaNacimiento, peso, chip, tamanio, viveEnInterior, vuela),
                 "Mascota registrada correctamente.",
                 "No se pudo registrar la mascota. Verifique que el documento del dueño exista.");
+    }
+
+    // Muestra todos los dueños registrados
+    private void verDuenios() {
+        List<Duenio> duenios = controladorRegistro.obtenerDuenios();
+
+        if (duenios == null || duenios.isEmpty()) {
+            System.out.println("No hay dueños registrados.");
+            return;
+        }
+
+        System.out.println("\n--- Dueños registrados ---");
+
+        for (Duenio duenio : duenios) {
+            System.out.println("\n" + duenio);
+        }
+    }
+
+    // Muestra todas las mascotas registradas
+    private void verMascotas() {
+        List<Mascota> mascotas = controladorRegistro.obtenerMascotas();
+
+        if (mascotas == null || mascotas.isEmpty()) {
+            System.out.println("No hay mascotas registradas.");
+            return;
+        }
+
+        System.out.println("\n--- Mascotas registradas ---");
+
+        for (Mascota mascota : mascotas) {
+            System.out.println("\n" + mascota);
+        }
+    }
+
+    // Muestra los turnos recibidos, tanto generales como filtrados por dueño
+    private void verTurnos(List<Turno> turnos) {
+        if (turnos == null || turnos.isEmpty()) {
+            System.out.println("No se encontraron turnos.");
+            return;
+        }
+
+        System.out.println("\n--- Turnos ---");
+
+        for (Turno turno : turnos) {
+            System.out.println("\n" + turno.getDescripcion());
+        }
+    }
+
+    // Muestra las consultas que todavía no tienen una factura emitida
+    private void verConsultasPendientes() {
+        List<Consulta> consultas = controladorFacturacion.obtenerConsultasConfirmadas();
+
+        if (consultas == null || consultas.isEmpty()) {
+            System.out.println("No hay consultas pendientes de facturación.");
+            return;
+        }
+
+        System.out.println("\n--- Consultas pendientes de facturación ---");
+
+        for (Consulta consulta : consultas) {
+            System.out.println("\n" + consulta);
+        }
     }
 
     private void resultado(boolean ok, String exito, String error) {

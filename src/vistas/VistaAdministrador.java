@@ -274,13 +274,13 @@ public class VistaAdministrador {
                     case "3":
                         mostrarReporteLotes(
                                 controlador.emitirReporteLotesPorVencer(
-                                        leerFecha(scanner, "Fecha actual (AAAA-MM-DD): "),
+                                        LocalDate.now(),
                                         leerEntero(scanner, "Días de anticipación: ")));
                         break;
 
                     case "4":
                         resultado(controlador.emitirRecordatorios(
-                                leerFecha(scanner, "Fecha actual (AAAA-MM-DD): ")),
+                                LocalDate.now()),
                                 "Recordatorios emitidos correctamente.",
                                 "No se pudieron emitir los recordatorios.");
                         break;

@@ -16,6 +16,7 @@ import modelo.inventario.Lote;
 import modelo.inventario.Producto;
 import modelo.inventario.Proveedor;
 import modelo.inventario.Vacuna;
+import modelo.personas.Administrador;
 import modelo.personas.Clinica;
 import modelo.personas.HorarioAtencion;
 import modelo.personas.Recepcionista;
@@ -509,6 +510,24 @@ public class ControladorAdministracion {
                 return false;
             }
         }
+        return true;
+    }
+    
+    public boolean altaAdministrador(String nombre, String apellido, String documento, String telefono) {
+        if (vacio(nombre) || vacio(apellido) || vacio(documento) || vacio(telefono)) {
+            return false;
+        }
+
+        // Rechazar documentos duplicados
+        for (Administrador administrador : clinica.getAdministradores()) {
+            if (administrador.getDocumento().equals(documento)) {
+                return false;
+            }
+        }
+
+        clinica.agregarAdministrador(new Administrador(nombre, apellido, documento, telefono));
+        estadoRepositorio.guardar(estado);
+
         return true;
     }
 }

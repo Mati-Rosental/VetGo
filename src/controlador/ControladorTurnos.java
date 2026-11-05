@@ -2,6 +2,8 @@ package controlador;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelo.*;
 import modelo.agenda.Agenda;
@@ -99,5 +101,25 @@ public class ControladorTurnos {
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
         return turno;
+    }
+
+    public List<Turno> obtenerTurnos() {
+        return new ArrayList<>(agenda.getTurnos());
+    }
+
+    public List<Turno> obtenerTurnosDeDuenio(String documento) {
+        List<Turno> turnosDuenio = new ArrayList<>();
+
+        if (documento == null || documento.isBlank()) {
+            return turnosDuenio;
+        }
+
+        for (Turno turno : agenda.getTurnos()) {
+            if (turno.getMascota().getDuenio().getDocumento().equals(documento)) {
+                turnosDuenio.add(turno);
+            }
+        }
+
+        return turnosDuenio;
     }
 }

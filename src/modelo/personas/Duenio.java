@@ -53,7 +53,7 @@ public class Duenio extends Persona {
     }
 
     public void agregarMascota(Mascota mascota) {
-        System.out.println("Duenio.agregarMascota");
+        this.mascotas.add(mascota);
     }
 
     public boolean tienePlanSalud() {
@@ -63,5 +63,14 @@ public class Duenio extends Persona {
     @Override
     public String getRol() {
         return "Dueño";
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre: " + getNombreCompleto()
+                + "\nDocumento: " + documento
+                + "\nTeléfono: " + telefono
+                + "\nCorreo: " + correo
+                + "\nPlan de salud: " + (tienePlanSalud ? "Sí" : "No");
     }
 }

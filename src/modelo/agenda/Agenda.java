@@ -117,4 +117,9 @@ public class Agenda implements Serializable {
         }
         return null;
     }
+
+    // Devuelve todos los turnos registrados
+    public List<Turno> getTurnos() {
+        return turnos;
+    }
 }
