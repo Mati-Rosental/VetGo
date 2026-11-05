@@ -11,7 +11,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.EnumSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -34,30 +34,34 @@ public class VistaAdministrador {
             System.out.println("5. Gestionar catálogo de proveedores");
             System.out.println("6. Emitir reportes y recordatorios");
             System.out.println("0. Volver");
-            opcion = leer(scanner, "Opción: ");
-            switch (opcion) {
-                case "1":
-                    gestionarVeterinarios(scanner);
-                    break;
-                case "2":
-                    gestionarRecepcionistas(scanner);
-                    break;
-                case "3":
-                    gestionarVacunas(scanner);
-                    break;
-                case "4":
-                    gestionarProductos(scanner);
-                    break;
-                case "5":
-                    gestionarProveedores(scanner);
-                    break;
-                case "6":
-                    menuReportes(scanner);
-                    break;
-                case "0":
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
+            opcion = Entrada.textoOpcional(scanner, "Opción: ");
+            try {
+                switch (opcion) {
+                    case "1":
+                        gestionarVeterinarios(scanner);
+                        break;
+                    case "2":
+                        gestionarRecepcionistas(scanner);
+                        break;
+                    case "3":
+                        gestionarVacunas(scanner);
+                        break;
+                    case "4":
+                        gestionarProductos(scanner);
+                        break;
+                    case "5":
+                        gestionarProveedores(scanner);
+                        break;
+                    case "6":
+                        menuReportes(scanner);
+                        break;
+                    case "0":
+                        break;
+                    default:
+                        Entrada.mostrarOpcionInvalida(opcion);
+                }
+            } catch (RuntimeException e) {
+                Entrada.mostrarError(e);
             }
         } while (!opcion.equals("0"));
     }
@@ -250,41 +254,45 @@ public class VistaAdministrador {
             System.out.println("3. Lotes próximos a vencer");
             System.out.println("4. Emitir recordatorios");
             System.out.println("0. Volver");
-            opcion = leer(scanner, "Opción: ");
+            opcion = Entrada.textoOpcional(scanner, "Opción: ");
 
-            switch (opcion) {
-                case "1":
-                    mostrarReporteTurnos(
-                            controlador.emitirReporteTurnos(
-                                    leer(scanner, "Documento del veterinario: "),
-                                    leerFecha(scanner, "Desde (AAAA-MM-DD): "),
-                                    leerFecha(scanner, "Hasta (AAAA-MM-DD): ")));
-                    break;
+            try {
+                switch (opcion) {
+                    case "1":
+                        mostrarReporteTurnos(
+                                controlador.emitirReporteTurnos(
+                                        leer(scanner, "Documento del veterinario: "),
+                                        leerFecha(scanner, "Desde (AAAA-MM-DD): "),
+                                        leerFecha(scanner, "Hasta (AAAA-MM-DD): ")));
+                        break;
 
-                case "2":
-                    mostrarReporteProductos(
-                            controlador.emitirReporteStockBajo());
-                    break;
+                    case "2":
+                        mostrarReporteProductos(
+                                controlador.emitirReporteStockBajo());
+                        break;
 
-                case "3":
-                    mostrarReporteLotes(
-                            controlador.emitirReporteLotesPorVencer(
-                                    leerFecha(scanner, "Fecha actual (AAAA-MM-DD): "),
-                                    leerEntero(scanner, "Días de anticipación: ")));
-                    break;
+                    case "3":
+                        mostrarReporteLotes(
+                                controlador.emitirReporteLotesPorVencer(
+                                        leerFecha(scanner, "Fecha actual (AAAA-MM-DD): "),
+                                        leerEntero(scanner, "Días de anticipación: ")));
+                        break;
 
-                case "4":
-                    resultado(controlador.emitirRecordatorios(
-                            leerFecha(scanner, "Fecha actual (AAAA-MM-DD): ")),
-                            "Recordatorios emitidos correctamente.",
-                            "No se pudieron emitir los recordatorios.");
-                    break;
+                    case "4":
+                        resultado(controlador.emitirRecordatorios(
+                                leerFecha(scanner, "Fecha actual (AAAA-MM-DD): ")),
+                                "Recordatorios emitidos correctamente.",
+                                "No se pudieron emitir los recordatorios.");
+                        break;
 
-                case "0":
-                    break;
+                    case "0":
+                        break;
 
-                default:
-                    System.out.println("Opción no válida.");
+                    default:
+                        Entrada.mostrarOpcionInvalida(opcion);
+                }
+            } catch (RuntimeException e) {
+                Entrada.mostrarError(e);
             }
         } while (!opcion.equals("0"));
     }
@@ -298,72 +306,62 @@ public class VistaAdministrador {
             System.out.println("4. Agregar lotes");
         }
         System.out.println("0. Volver");
-        return leer(scanner, "Opción: ");
+
+        String opcion = Entrada.textoOpcional(scanner, "Opción: ");
+        boolean valida = opcion.equals("0") || opcion.equals("1") || opcion.equals("2") || opcion.equals("3")
+                || (conAgregarLotes && opcion.equals("4"));
+        if (!valida) {
+            Entrada.mostrarOpcionInvalida(opcion);
+            return "0";
+        }
+        return opcion;
     }
 
     private String leer(Scanner scanner, String mensaje) {
-        System.out.print(mensaje);
-        return scanner.nextLine();
+        return Entrada.texto(scanner, mensaje);
     }
 
     private int leerEntero(Scanner scanner, String mensaje) {
-        return Integer.parseInt(leer(scanner, mensaje).trim());
+        return Entrada.entero(scanner, mensaje);
+    }
+
+    private int leerEntero(Scanner scanner, String mensaje, int minimo) {
+        return Entrada.entero(scanner, mensaje, minimo);
     }
 
     private double leerDecimal(Scanner scanner, String mensaje) {
-        return Double.parseDouble(leer(scanner, mensaje).trim().replace(',', '.'));
+        return Entrada.decimal(scanner, mensaje);
     }
 
     private LocalDate leerFecha(Scanner scanner, String mensaje) {
-        return LocalDate.parse(leer(scanner, mensaje).trim());
+        return Entrada.fecha(scanner, mensaje);
     }
 
     private boolean leerBooleano(Scanner scanner, String mensaje) {
-        return leer(scanner, mensaje + " (s/n): ").trim().equalsIgnoreCase("s");
+        return Entrada.booleano(scanner, mensaje + " (s/n): ");
     }
 
     private Set<Especie> leerEspecies(Scanner scanner) {
-        Set<Especie> especies = EnumSet.noneOf(Especie.class);
-        String texto = leer(scanner, "Especies, separadas por coma (PERRO/GATO/AVE/CONEJO): ");
-        for (String parte : texto.split(",")) {
-            especies.add(Especie.valueOf(parte.trim().toUpperCase()));
-        }
-        return especies;
+        return Entrada.elegirVarios(scanner, "Especies", Especie.values());
     }
 
     private DayOfWeek leerDia(Scanner scanner) {
-        String dia = leer(scanner, "Día (LUNES/MARTES/MIERCOLES/JUEVES/VIERNES/SABADO/DOMINGO): ")
-                .trim().toUpperCase();
-        switch (dia) {
-            case "LUNES":
-                return DayOfWeek.MONDAY;
-            case "MARTES":
-                return DayOfWeek.TUESDAY;
-            case "MIERCOLES":
-            case "MIÉRCOLES":
-                return DayOfWeek.WEDNESDAY;
-            case "JUEVES":
-                return DayOfWeek.THURSDAY;
-            case "VIERNES":
-                return DayOfWeek.FRIDAY;
-            case "SABADO":
-            case "SÁBADO":
-                return DayOfWeek.SATURDAY;
-            case "DOMINGO":
-                return DayOfWeek.SUNDAY;
-            default:
-                throw new IllegalArgumentException("Día no válido: " + dia);
-        }
+        int indice = Entrada.elegirIndice(scanner, "Día",
+                Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"));
+        return DayOfWeek.of(indice + 1);
     }
 
     private List<HorarioAtencion> leerHorarios(Scanner scanner) {
         List<HorarioAtencion> horarios = new ArrayList<>();
-        int cantidad = leerEntero(scanner, "Cantidad de bloques de atención: ");
+        int cantidad = leerEntero(scanner, "Cantidad de bloques de atención: ", 1);
         for (int i = 1; i <= cantidad; i++) {
             System.out.println("Bloque " + i + ":");
             DayOfWeek dia = leerDia(scanner);
-            LocalTime inicio = LocalTime.parse(leer(scanner, "Hora de inicio (HH:MM): ").trim());
-            LocalTime fin = LocalTime.parse(leer(scanner, "Hora de fin (HH:MM): ").trim());
+            LocalTime inicio = Entrada.hora(scanner, "Hora de inicio (HH:MM): ");
+            LocalTime fin = Entrada.hora(scanner, "Hora de fin (HH:MM): ");
+            if (!fin.isAfter(inicio)) {
+                throw new IllegalArgumentException("La hora de fin debe ser posterior a la hora de inicio.");
+            }
             boolean guardia = leerBooleano(scanner, "¿Es día de guardia?");
             horarios.add(new HorarioAtencion(dia, inicio, fin, guardia));
         }
@@ -376,7 +374,7 @@ public class VistaAdministrador {
         for (int i = 1; i <= cantidad; i++) {
             System.out.println("Lote " + i + ":");
             String numero = leer(scanner, "Número de lote: ");
-            int unidades = leerEntero(scanner, "Cantidad de unidades: ");
+            int unidades = leerEntero(scanner, "Cantidad de unidades: ", 1);
             LocalDate vencimiento = leerFecha(scanner, "Vencimiento (AAAA-MM-DD): ");
             lotes.add(new Lote(numero, unidades, vencimiento));
         }

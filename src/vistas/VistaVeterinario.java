@@ -27,122 +27,117 @@ public class VistaVeterinario {
             System.out.println("9. Consultar historia clínica");
             System.out.println("0. Volver");
 
-            opcion = leer(scanner, "Opción: ");
+            opcion = Entrada.textoOpcional(scanner, "Opción: ");
 
-            switch (opcion) {
-                case "1":
-                    if (controlador.iniciarConsulta(
-                            leer(scanner, "Identificador del turno: "),
-                            leer(scanner, "Motivo de consulta: "))) {
-                        System.out.println("Consulta iniciada correctamente.");
-                    } else {
-                        System.out.println("No se pudo iniciar la consulta.");
-                    }
-                    break;
+            try {
+                switch (opcion) {
+                    case "1":
+                        if (controlador.iniciarConsulta(
+                                leer(scanner, "Identificador del turno: "),
+                                leer(scanner, "Motivo de consulta: "))) {
+                            System.out.println("Consulta iniciada correctamente.");
+                        } else {
+                            System.out.println("No se pudo iniciar la consulta.");
+                        }
+                        break;
 
-                case "2":
-                    try {
-                        double peso = Double.parseDouble(leer(scanner, "Peso registrado: "));
+                    case "2":
+                        double peso = Entrada.decimalPositivo(scanner, "Peso registrado: ");
                         if (controlador.registrarPeso(leer(scanner, "Identificador de la consulta: "), peso)) {
                             System.out.println("Peso registrado correctamente.");
                         } else {
                             System.out.println("No se pudo registrar el peso.");
                         }
-                    } catch (NumberFormatException e) {
-                        System.out.println("El peso debe ser un número válido.");
-                    }
-                    break;
+                        break;
 
-                case "3":
-                    if (controlador.registrarDiagnostico(
-                            leer(scanner, "Identificador de la consulta: "),
-                            leer(scanner, "Diagnóstico: "))) {
-                        System.out.println("Diagnóstico registrado correctamente.");
-                    } else {
-                        System.out.println("No se pudo registrar el diagnóstico.");
-                    }
-                    break;
+                    case "3":
+                        if (controlador.registrarDiagnostico(
+                                leer(scanner, "Identificador de la consulta: "),
+                                leer(scanner, "Diagnóstico: "))) {
+                            System.out.println("Diagnóstico registrado correctamente.");
+                        } else {
+                            System.out.println("No se pudo registrar el diagnóstico.");
+                        }
+                        break;
 
-                case "4":
-                    if (controlador.registrarObservaciones(
-                            leer(scanner, "Identificador de la consulta: "),
-                            leer(scanner, "Observaciones: "))) {
-                        System.out.println("Observaciones registradas correctamente.");
-                    } else {
-                        System.out.println("No se pudo registrar las observaciones.");
-                    }
-                    break;
+                    case "4":
+                        if (controlador.registrarObservaciones(
+                                leer(scanner, "Identificador de la consulta: "),
+                                leer(scanner, "Observaciones: "))) {
+                            System.out.println("Observaciones registradas correctamente.");
+                        } else {
+                            System.out.println("No se pudo registrar las observaciones.");
+                        }
+                        break;
 
-                case "5":
-                    try {
+                    case "5":
                         String idConsulta = leer(scanner, "Identificador de la consulta: ");
                         String idProducto = leer(scanner, "Identificador del medicamento: ");
                         String dosis = leer(scanner, "Dosis: ");
                         String frecuencia = leer(scanner, "Frecuencia: ");
-                        int duracionDias = Integer.parseInt(leer(scanner, "Duración en días: "));
-                        int cantidad = Integer.parseInt(leer(scanner, "Cantidad: "));
+                        int duracionDias = Entrada.entero(scanner, "Duración en días: ", 1);
+                        int cantidad = Entrada.entero(scanner, "Cantidad: ", 1);
 
                         if (controlador.indicarTratamiento(idConsulta, idProducto, dosis, frecuencia, duracionDias, cantidad)) {
                             System.out.println("Tratamiento registrado correctamente.");
                         } else {
                             System.out.println("No se pudo registrar el tratamiento.");
                         }
-                    } catch (NumberFormatException e) {
-                        System.out.println("La duración y la cantidad deben ser números enteros.");
-                    }
-                    break;
+                        break;
 
-                case "6":
-                    if (controlador.aplicarVacuna(
-                            leer(scanner, "Identificador de la consulta: "),
-                            leer(scanner, "Identificador de la vacuna: "))) {
-                        System.out.println("Vacuna aplicada correctamente.");
-                    } else {
-                        System.out.println("No se pudo registrar la aplicación de la vacuna.");
-                    }
-                    break;
+                    case "6":
+                        if (controlador.aplicarVacuna(
+                                leer(scanner, "Identificador de la consulta: "),
+                                leer(scanner, "Identificador de la vacuna: "))) {
+                            System.out.println("Vacuna aplicada correctamente.");
+                        } else {
+                            System.out.println("No se pudo registrar la aplicación de la vacuna.");
+                        }
+                        break;
 
-                case "7":
-                    if (controlador.confirmarConsulta(leer(scanner, "Identificador de la consulta: "))) {
-                        System.out.println("Consulta confirmada correctamente.");
-                    } else {
-                        System.out.println("No se pudo confirmar la consulta.");
-                    }
-                    break;
+                    case "7":
+                        if (controlador.confirmarConsulta(leer(scanner, "Identificador de la consulta: "))) {
+                            System.out.println("Consulta confirmada correctamente.");
+                        } else {
+                            System.out.println("No se pudo confirmar la consulta.");
+                        }
+                        break;
 
-                case "8":
-                    if (controlador.registrarNotaRectificatoria(
-                            leer(scanner, "Identificador de la consulta: "),
-                            leer(scanner, "Texto de la nota: "),
-                            leer(scanner, "Documento del veterinario firmante: "))) {
-                        System.out.println("Nota rectificatoria registrada correctamente.");
-                    } else {
-                        System.out.println("No se pudo registrar la nota rectificatoria.");
-                    }
-                    break;
+                    case "8":
+                        if (controlador.registrarNotaRectificatoria(
+                                leer(scanner, "Identificador de la consulta: "),
+                                leer(scanner, "Texto de la nota: "),
+                                leer(scanner, "Documento del veterinario firmante: "))) {
+                            System.out.println("Nota rectificatoria registrada correctamente.");
+                        } else {
+                            System.out.println("No se pudo registrar la nota rectificatoria.");
+                        }
+                        break;
 
-                case "9":
-                    HistoriaClinica historia = controlador.consultarHistoriaClinica(
-                            leer(scanner, "Identificador de la mascota: "));
+                    case "9":
+                        HistoriaClinica historia = controlador.consultarHistoriaClinica(
+                                leer(scanner, "Identificador de la mascota: "));
 
-                    if (historia == null) {
-                        System.out.println("No se encontró la historia clínica.");
-                    } else {
-                        System.out.println(historia);
-                    }
-                    break;
+                        if (historia == null) {
+                            System.out.println("No se encontró la historia clínica.");
+                        } else {
+                            System.out.println(historia);
+                        }
+                        break;
 
-                case "0":
-                    break;
+                    case "0":
+                        break;
 
-                default:
-                    System.out.println("Opción no válida.");
+                    default:
+                        Entrada.mostrarOpcionInvalida(opcion);
+                }
+            } catch (RuntimeException e) {
+                Entrada.mostrarError(e);
             }
         } while (!opcion.equals("0"));
     }
 
     private String leer(Scanner scanner, String mensaje) {
-        System.out.print(mensaje);
-        return scanner.nextLine();
+        return Entrada.texto(scanner, mensaje);
     }
 }

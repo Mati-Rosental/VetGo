@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ import servicio.GestorUrgencias;
 import servicio.Notificador;
 import servicio.NotificadorConsola;
 import servicio.ServicioRecordatorios;
+import vistas.Entrada;
 import vistas.VistaAdministrador;
 import vistas.VistaRecepcionista;
 import vistas.VistaVeterinario;
@@ -33,29 +33,39 @@ public class App {
     private static final String ARCHIVO_DATOS = "vetgo.dat";
 
     public static void main(String[] args) {
-        // Inicializar el repositorio y recuperar el estado guardado
+        // Inicializar el repositorio
         Repositorio repositorio = new RepositorioArchivo(ARCHIVO_DATOS);
         EstadoSistema estado;
 
+        // Recuperar el estado guardado si existe
         if (new File(ARCHIVO_DATOS).exists()) {
             estado = repositorio.cargar();
         } else {
             estado = null;
         }
 
-        // Crear un estado inicial si no existen datos guardados
+        // Crear el estado inicial si no hay datos guardados
         if (estado == null) {
+            Map<TipoAtencion, Double> precios = new HashMap<>();
+            precios.put(TipoAtencion.CONSULTA_GENERAL, 10000.0);
+            precios.put(TipoAtencion.VACUNACION, 7000.0);
+            precios.put(TipoAtencion.CIRUGIA, 50000.0);
+            precios.put(TipoAtencion.URGENCIA, 15000.0);
+
+            Tarifario tarifario = new Tarifario(precios, 2000.0, 0.2);
+
             estado = new EstadoSistema(
                     new Clinica("VetGo"),
                     new Agenda(),
                     new Inventario(),
-                    new ArrayList<Factura>()
+                    new ArrayList<Factura>(),
+                    tarifario
             );
 
             repositorio.guardar(estado);
         }
 
-        // Inicializar servicios compartidos
+        // Inicializar los servicios compartidos
         Notificador notificador = new NotificadorConsola();
         ServicioRecordatorios servicioRecordatorios = new ServicioRecordatorios(notificador);
 
@@ -69,20 +79,10 @@ public class App {
                 notificador
         );
 
-        // Configurar los precios del tarifario
-        Map<TipoAtencion, Double> precios = new HashMap<>();
-        precios.put(TipoAtencion.CONSULTA_GENERAL, 10000.0);
-        precios.put(TipoAtencion.VACUNACION, 7000.0);
-        precios.put(TipoAtencion.CIRUGIA, 50000.0);
-        precios.put(TipoAtencion.URGENCIA, 15000.0);
-
-        Tarifario tarifario = new Tarifario(precios, 2000.0, 0.2);
-
         // Inicializar los controladores
         ControladorFacturacion controladorFacturacion = new ControladorFacturacion(
                 estado,
-                repositorio,
-                tarifario
+                repositorio
         );
 
         ControladorRegistro controladorRegistro = new ControladorRegistro(
@@ -117,13 +117,9 @@ public class App {
                 controladorFacturacion
         );
 
-        VistaVeterinario vistaVeterinario = new VistaVeterinario(
-                controladorAtencion
-        );
+        VistaVeterinario vistaVeterinario = new VistaVeterinario(controladorAtencion);
 
-        VistaAdministrador vistaAdministrador = new VistaAdministrador(
-                controladorAdministracion
-        );
+        VistaAdministrador vistaAdministrador = new VistaAdministrador(controladorAdministracion);
 
         // Ejecutar el menú principal
         Scanner scanner = new Scanner(System.in);
@@ -136,8 +132,7 @@ public class App {
             System.out.println("3. Administración");
             System.out.println("0. Salir");
 
-            System.out.print("Opción: ");
-            opcion = scanner.nextLine();
+            opcion = Entrada.textoOpcional(scanner, "Opción: ");
 
             switch (opcion) {
                 case "1":
@@ -157,7 +152,7 @@ public class App {
                     break;
 
                 default:
-                    System.out.println("Opción no válida.");
+                    Entrada.mostrarOpcionInvalida(opcion);
             }
 
         } while (!opcion.equals("0"));

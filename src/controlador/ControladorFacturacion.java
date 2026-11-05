@@ -24,11 +24,11 @@ public class ControladorFacturacion {
     private Tarifario tarifario;
     private List<Factura> facturas;
 
-    public ControladorFacturacion(EstadoSistema estado, Repositorio estadoRepositorio, Tarifario tarifario) {
+    public ControladorFacturacion(EstadoSistema estado, Repositorio estadoRepositorio) {
         this.estado = estado;
         this.estadoRepositorio = estadoRepositorio;
         this.clinica = estado.getClinica();
-        this.tarifario = tarifario;
+        this.tarifario = estado.getTarifario();
         this.facturas = estado.getFacturas();
     }
 
