@@ -3,15 +3,13 @@ package modelo.atencion;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import modelo.agenda.Turno;
 import modelo.enumeradores.EstadoConsulta;
 import modelo.inventario.Producto;
 import modelo.inventario.Vacuna;
+import modelo.mascotas.Mascota;
 import modelo.personas.Veterinario;
 
 public class Consulta implements Serializable {
@@ -29,7 +27,10 @@ public class Consulta implements Serializable {
     private final String id;
 
     public void registrarPeso(double peso) {
-        System.out.println("Consulta.registrarPeso");
+        this.pesoDia = peso;
+        if (turno != null && turno.getMascota() != null) {
+            turno.getMascota().actualizarPeso(peso); // S-23
+        }
     }
 
     public void indicarTratamiento(
@@ -38,29 +39,40 @@ public class Consulta implements Serializable {
             String frecuencia,
             int duracionDias,
             int cantidad) {
-        System.out.println("Consulta.indicarTratamiento");
+        if (pesoDia != null) {
+            tratamientos.add(new Tratamiento(dosis, frecuencia, duracionDias, cantidad, medicamento)); // RN-M5
+        }
     }
 
     public void aplicarVacuna(Vacuna vacuna) {
-        System.out.println("Consulta.aplicarVacuna");
+        Mascota m = turno.getMascota();
+        int semanas = m.edadEnSemanas(LocalDate.now());
+        if (vacuna.aplicaA(m.getEspecie()) && vacuna.permiteEdad(semanas)) {
+            vacunasAplicadas.add(new VacunaAplicada(vacuna, vacuna.getNumeroPrimerLote(), LocalDate.now()));
+        }
     }
 
     public void agregarNota(String texto, Veterinario firmante) {
-        System.out.println("Consulta.agregarNota");
+        notasRectificatorias.add(new NotaRectificatoria(texto, firmante));
     }
 
     public void confirmar() {
-        System.out.println("Consulta.confirmar");
+        this.estado = EstadoConsulta.CONFIRMADA;
     }
 
     public boolean estaConfirmada() {
-        System.out.println("Consulta.estaConfirmada");
-        return false;
+        return this.estado.equals(EstadoConsulta.CONFIRMADA);
     }
 
     public Map<Producto, Integer> getInsumosUtilizados() {
-        System.out.println("Consulta.getInsumosUtilizados");
-        return null;
+        Map<Producto, Integer> insumos = new HashMap<>();
+        for (Tratamiento t : tratamientos) {
+            insumos.merge(t.getMedicamento(), t.getCantidad(), Integer::sum);
+        }
+        for (VacunaAplicada v : vacunasAplicadas) {
+            insumos.merge(v.getVacuna(), 1, Integer::sum);
+        }
+        return insumos;
     }
 
     public Turno getTurno() {
@@ -75,6 +87,18 @@ public class Consulta implements Serializable {
         this.estado = EstadoConsulta.EN_CURSO;
         this.id = UUID.randomUUID().toString();
         this.pesoDia = null;
+    }
+    public List<Tratamiento> getTratamientos() {
+        return tratamientos;
+    }
+
+    public List<VacunaAplicada> getVacunasAplicadas() {
+        return vacunasAplicadas;
+    }
+
+    @Override
+    public String toString() {
+        return "Consulta [ID=" + id + ", Fecha=" + fecha + ", Motivo=" + motivo + ", Estado=" + estado + "]";
     }
     public String getId() {
         return id;

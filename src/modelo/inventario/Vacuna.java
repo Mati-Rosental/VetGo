@@ -19,30 +19,31 @@ public class Vacuna extends Producto {
     }
 
     public boolean aplicaA(Especie especie) {
-        System.out.println("Vacuna.aplicaA");
-        return false;
+        return especies.contains(especie);
     }
 
     public boolean permiteEdad(int semanas) {
-        System.out.println("Vacuna.permiteEdad");
-        return false;
+        return semanas >= edadMinimaSemanas;
     }
 
     public LocalDate calcularProximoRefuerzo(LocalDate fechaAplicacion) {
-        System.out.println("Vacuna.calcularProximoRefuerzo");
-        return null;
+        return fechaAplicacion.plusDays(intervaloRefuerzoDias);
     }
 
     public String getNumeroPrimerLote() {
         // Obtiene el numero del primer lote disponible, null si no hay
-        System.out.println("Vacuna.getNumeroPrimerLote");
+        LocalDate hoy = LocalDate.now();
+        for (Lote l : getLotes()) {
+            if (!l.estaVencido(hoy) && l.getCantidad() > 0) {
+                return l.toString();
+            }
+        }
         return null;
     }
 
     @Override
     public String getDescripcion() {
-        System.out.println("Vacuna.getDescripcion");
-        return null;
+        return "Vacuna: " + getNombre() + " [Código: " + getCodigo() + ", Refuerzo cada " + intervaloRefuerzoDias + " días]";
     }
 
     public void modificarDatos(String nombre, Set<Especie> especies2, int edadMinimaSemanas2,

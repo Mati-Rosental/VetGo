@@ -14,7 +14,6 @@ public class LineaFactura implements Serializable {
     }
 
     public double getSubtotal() {
-        System.out.println("LineaFactura.getSubtotal");
-        return 0.0;
+        return cantidad * precioUnitario;
     }
 }

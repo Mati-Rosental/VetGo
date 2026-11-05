@@ -16,8 +16,12 @@ public class Proveedor implements Serializable {
     }
 
     public void modificarDatos(String nombre2, String telefono2, String correo2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modificarDatos'");
+        if (nombre != null && !nombre.isBlank()) this.nombre = nombre;
+        if (telefono != null && !telefono.isBlank()) this.telefono = telefono;
+        if (correo != null && !correo.isBlank()) this.correo = correo;
+    }
+    public String getCUIL() {
+        return CUIL;
     }
 }
 

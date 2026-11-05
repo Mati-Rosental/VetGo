@@ -1,16 +1,15 @@
 package modelo.facturacion.pago;
 
-import modelo.*;
+import java.io.Serializable;
+
 public class Efectivo implements MedioPago {
     @Override
     public double calcularTotal(double subtotal, boolean tienePlanSalud) {
-        System.out.println("Efectivo.calcularTotal");
-        return 0.0;
+        return subtotal;
     }
 
     @Override
     public String getNombre() {
-        System.out.println("Efectivo.getNombre");
-        return null;
+        return "Efectivo";
     }
 }

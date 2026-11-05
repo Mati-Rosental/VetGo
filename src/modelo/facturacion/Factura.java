@@ -45,12 +45,15 @@ public class Factura implements Serializable {
     }
 
     public void agregarLinea(String descripcion, int cantidad, double precioUnitario) {
-        System.out.println("Factura.agregarLinea");
+        lineas.add(new LineaFactura(descripcion, cantidad, precioUnitario));
     }
 
     public double calcularSubtotal() {
-        System.out.println("Factura.calcularSubtotal");
-        return 0.0;
+        double sub = 0;
+        for (LineaFactura lf : lineas) {
+            sub += lf.getSubtotal();
+        }
+        return sub;
     }
 
     public double calcularTotal() {
@@ -59,12 +62,12 @@ public class Factura implements Serializable {
     }
 
     public void anular(String motivo, Recepcionista emisor) {
-        System.out.println("Factura.anular");
+        this.estado = EstadoFactura.ANULADA;
+        this.notaCredito = new NotaCredito(0, this, motivo, emisor);
     }
 
     public boolean estaAnulada() {
-        System.out.println("Factura.estaAnulada");
-        return false;
+        return this.estado.equals(EstadoFactura.ANULADA);
     }
 
     public String getNumero() {

@@ -17,22 +17,18 @@ public class Tarifario implements Serializable {
     }
 
     public double getPrecio(TipoAtencion tipo) {
-        System.out.println("Tarifario.getPrecio");
-        return 0.0;
+        return precios != null ? precios.getOrDefault(tipo, 0.0) : 0.0;
     }
 
     public double getMontoSenia() {
-        System.out.println("Tarifario.getMontoSenia");
-        return 0.0;
+        return montoSenia;
     }
 
     public double getPorcCancelacionTardia() {
-        System.out.println("Tarifario.getPorcCancelacionTardia");
-        return 0.0;
+        return porcCancelacionTardia;
     }
 
     public double calcularCargoCancelacionTardia() {
-        System.out.println("Tarifario.calcularCargoCancelacionTardia");
-        return 0.0;
+        return 1000.0;
     }
 }

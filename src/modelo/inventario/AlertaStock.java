@@ -11,13 +11,12 @@ public class AlertaStock implements Serializable {
     private Producto producto;
 
     public void cerrar() {
-        System.out.println("AlertaStock.cerrar");
+        this.vigente = false;
     }
 
     public String getDescripcion() {
         // genera una descripcion y la devuelve
-        System.out.println("AlertaStock.cerrar");
-        return null;
+        return "Alerta: El producto " + producto.getNombre() + " tiene stock actual (" + producto.getStockActual() + ") menor al mínimo (" + stockMinimo + ").";
     }
 
     public AlertaStock(Producto producto) {

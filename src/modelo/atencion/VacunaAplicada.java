@@ -16,25 +16,25 @@ public class VacunaAplicada implements Serializable {
         this.vacuna = vacuna;
         this.numeroLote = numeroLote;
         this.fechaAplicacion = fechaAplicacion;
+        this.proximoRefuerzo = vacuna.calcularProximoRefuerzo(fechaAplicacion);
     }
 
     public LocalDate getProximoRefuerzo() {
-        System.out.println("VacunaAplicada.calcularProximoRefuerzo");
-        return null;
+        return proximoRefuerzo;
     }
 
     public boolean requiereRecordatorio(LocalDate fechaActual) {
-        System.out.println("VacunaAplicada.requiereRecordatorio");
-        return false;
+        if (proximoRefuerzo == null) return false;
+        LocalDate inicioAviso = proximoRefuerzo.minusDays(7);
+        return !fechaActual.isBefore(inicioAviso) && !fechaActual.isAfter(proximoRefuerzo); // RN-V2
     }
 
     public boolean estaVencida(LocalDate fechaActual) {
-        System.out.println("VacunaAplicada.estaVencida");
-        return false;
+        if (proximoRefuerzo == null) return false;
+        return fechaActual.isAfter(proximoRefuerzo.plusDays(30));
     }
 
     public Vacuna getVacuna() {
-        // TODO Auto-generated method stub
         return vacuna;
     }
 }

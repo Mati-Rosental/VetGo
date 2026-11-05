@@ -15,32 +15,27 @@ public class Lote implements Comparable<Lote>, Serializable {
     }
 
     public boolean estaVencido(LocalDate fechaActual) {
-        System.out.println("Lote.estaVencido");
-        return false;
+        return fechaVencimiento.isBefore(fechaActual);
     }
 
     public void descontar(int cantidad) {
-        System.out.println("Lote.descontar");
+        this.cantidad -= cantidad;
     }
 
     @Override
     public int compareTo(Lote otro) {
-        System.out.println("Lote.compareTo");
-        return 0;
+        return this.fechaVencimiento.compareTo(otro.fechaVencimiento);
     }
 
     public String getDescripcion() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDescripcion'");
+        return "Lote " + numero + " (Cant: " + cantidad + ", Vto: " + fechaVencimiento + ")";
     }
 
     public int getCantidad() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCantidad'");
+        return cantidad;
     }
 
     public LocalDate getFechaVencimiento() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFechaVencimiento'");
+        return fechaVencimiento;
     }
 }

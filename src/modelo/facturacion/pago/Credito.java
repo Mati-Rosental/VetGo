@@ -1,6 +1,7 @@
 package modelo.facturacion.pago;
 
-import modelo.*;
+import java.io.Serializable;
+
 public class Credito implements MedioPago {
     private int cuotas;
 
@@ -10,13 +11,14 @@ public class Credito implements MedioPago {
 
     @Override
     public double calcularTotal(double subtotal, boolean tienePlanSalud) {
-        System.out.println("Credito.calcularTotal");
-        return 0.0;
+        return subtotal;
     }
 
     @Override
     public String getNombre() {
-        System.out.println("Credito.getNombre");
-        return null;
+        return "Crédito";
+    }
+    public int getCuotas() {
+        return cuotas;
     }
 }

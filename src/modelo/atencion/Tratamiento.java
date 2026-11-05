@@ -12,8 +12,10 @@ public class Tratamiento implements Serializable {
     private Producto medicamento;
 
     public int getCantidad() {
-        System.out.println("Tratamiento.getCantidad");
-        return 0;
+        return cantidad;
+    }
+    public Producto getMedicamento() {
+        return medicamento;
     }
 
     public Tratamiento(String dosis, String frecuencia, int duracionDias, int cantidad, Producto medicamento) {

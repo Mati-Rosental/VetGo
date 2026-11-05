@@ -3,6 +3,7 @@ package modelo.inventario;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import modelo.atencion.Consulta;
 
@@ -12,22 +13,45 @@ public class Inventario implements Serializable {
     private List<Proveedor> proveedores = new ArrayList<>();
 
     public List<AlertaStock> descontarStock(Consulta consulta) {
-        System.out.println("Inventario.descontarStock");
-        return null;
+        List<AlertaStock> nuevasAlertas = new ArrayList<>();
+        Map<Producto, Integer> insumos = consulta.getInsumosUtilizados();
+        for (Map.Entry<Producto, Integer> entry : insumos.entrySet()) {
+            Producto p = entry.getKey();
+            int cant = entry.getValue();
+            p.descontar(cant);
+            if (p.estaBajoMinimo()) {
+                AlertaStock alerta = new AlertaStock(p);
+                alertas.add(alerta);
+                nuevasAlertas.add(alerta);
+            }
+        }
+        return nuevasAlertas;
     }
 
     public List<Producto> getProductosBajoMinimo() {
-        System.out.println("Inventario.getProductosBajoMinimo");
-        return null;
+        List<Producto> lista = new ArrayList<>();
+        for (Producto p : productos) {
+            if (p.estaBajoMinimo()) {
+                lista.add(p);
+            }
+        }
+        return lista;
     }
 
     public Producto buscarProducto(String codigoProducto) {
-        System.out.println("Inventario.buscarProducto");
+        for (Producto p : productos) {
+            if (p.getCodigo().equals(codigoProducto)) {
+                return p;
+            }
+        }
         return null;
     }
 
     public Vacuna buscarVacuna(String codigoVacuna) {
-        System.out.println("Inventario.buscarVacuna");
+        Producto p = buscarProducto(codigoVacuna);
+        if (p instanceof Vacuna) {
+            return (Vacuna) p;
+        }
         return null;
     }
 
@@ -37,26 +61,20 @@ public class Inventario implements Serializable {
     }
 
     public void agregarProducto(Producto producto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'agregarProducto'");
+        productos.add(producto);
     }
 
     public void darDeBajaVacuna(Vacuna vacuna) {
-        // TODO Auto-generated method stub
-        // Dar de baja sin borrar el historial de vacunas aplicadas
-        throw new UnsupportedOperationException("Unimplemented method 'darDeBaja'");
+        productos.remove(vacuna); // Sin borrar historial de aplicadas
     }
 
     public void darDeBajaProducto(Producto producto) {
-        // TODO Auto-generated method stub
-        // Dar de baja sin borrar el historial de consultas asociadas
-        throw new UnsupportedOperationException("Unimplemented method 'darDeBaja'");
+        productos.remove(producto);
     }
 
     public void agregarProveedor(Proveedor proveedor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'agregarProveedor'");
-    }
+        proveedores.add(proveedor);
+        }
 
     public boolean proveedorTieneProductos(Proveedor proveedor) {
         // TODO Auto-generated method stub
@@ -64,11 +82,10 @@ public class Inventario implements Serializable {
     }
 
     public void eliminarProveedor(Proveedor proveedor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarProveedor'");
+        proveedores.remove(proveedor);
     }
 
     public List<Producto> getProductos() {
-        // TODO Auto-generated method stub
-        return productos;    }
+        return productos;
+    }
 }
