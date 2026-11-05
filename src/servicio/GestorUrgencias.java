@@ -20,9 +20,9 @@ public class GestorUrgencias {
         this.notificador = notificador;
     }
 
-    public boolean atenderUrgencia(Mascota mascota, Veterinario veterinario) {
+    public Turno atenderUrgencia(Mascota mascota, Veterinario veterinario) {
         if (mascota == null || veterinario == null) {
-            return false;
+            return null;
         }
 
         // Determinar el horario de comienzo
@@ -36,10 +36,14 @@ public class GestorUrgencias {
 
         // Desplazar los turnos que se superpongan con la urgencia.
         if (!desplazarEnCascada(turnoUrgencia)) {
-            return false;
+            return null;
         }
 
-        return agenda.asignarTurno(turnoUrgencia);
+        if (!agenda.asignarTurno(turnoUrgencia)) {
+            return null;
+        }
+
+        return turnoUrgencia;
     }
 
     private boolean desplazarEnCascada(Turno turnoUrgencia) {
@@ -89,7 +93,7 @@ public class GestorUrgencias {
 
         return true;
     }
-    
+
     private void notificarDesplazados(List<Turno> turnosAfectados, List<LocalDateTime> horariosOriginales) {
         DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         for (int i = 0; i < turnosAfectados.size(); i++) {
