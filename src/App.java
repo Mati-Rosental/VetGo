@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.SwingUtilities;
+
 import controlador.ControladorAdministracion;
 import controlador.ControladorAtencion;
 import controlador.ControladorFacturacion;
@@ -23,8 +25,8 @@ import servicio.GestorUrgencias;
 import servicio.Notificador;
 import servicio.NotificadorConsola;
 import servicio.ServicioRecordatorios;
-import vistas.Entrada;
 import vistas.VistaAdministrador;
+import vistas.VistaPrincipal;
 import vistas.VistaRecepcionista;
 import vistas.VistaVeterinario;
 
@@ -121,44 +123,27 @@ public class App {
 
         VistaAdministrador vistaAdministrador = new VistaAdministrador(controladorAdministracion);
 
-        // Ejecutar el menú principal
+        
         Scanner scanner = new Scanner(System.in);
-        String opcion;
-
-        do {
-            System.out.println("\n========== VETGO ==========");
-            System.out.println("1. Recepción");
-            System.out.println("2. Veterinario");
-            System.out.println("3. Administración");
-            System.out.println("0. Salir");
-
-            opcion = Entrada.textoOpcional(scanner, "Opción: ");
-
-            switch (opcion) {
-                case "1":
-                    vistaRecepcionista.iniciarMenu(scanner);
-                    break;
-
-                case "2":
-                    vistaVeterinario.iniciarMenu(scanner);
-                    break;
-
-                case "3":
-                    vistaAdministrador.iniciarMenu(scanner);
-                    break;
-
-                case "0":
-                    System.out.println("Cerrando VetGo...");
-                    break;
-
-                default:
-                    Entrada.mostrarOpcionInvalida(opcion);
-            }
-
-        } while (!opcion.equals("0"));
+        // Hacemos que estado sea final para utilizarse en el lambda
+        final EstadoSistema estadoFinal = estado;
 
         // Guardar el estado antes de finalizar
-        repositorio.guardar(estado);
-        scanner.close();
+        // Esto lo corre la ventana de swing antes de cerrarse
+        Runnable salir = () -> {
+            repositorio.guardar(estadoFinal);
+            scanner.close();
+            System.exit(0);
+        };
+        // Mostrar la ventana inicial para elegir la vista
+        // Usa invokeLater para correr la ventana en su propio hilo
+        // Recibe un runnable que se crea mediante lambda
+        SwingUtilities.invokeLater(() -> new VistaPrincipal(
+                vistaRecepcionista,
+                vistaVeterinario,
+                vistaAdministrador,
+                scanner,
+                salir
+        ).setVisible(true));
     }
 }
