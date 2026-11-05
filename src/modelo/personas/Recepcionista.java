@@ -13,6 +13,7 @@ public class Recepcionista extends Persona {
     public void modificarDatos(String nombre, String apellido, String telefono) {
         // TODO Auto-generated method stub
         // Si alguna variable es null, no hay que modificarla
-        throw new UnsupportedOperationException("Unimplemented method 'modificarDatos'");
-    }
+        if (nombre != null && !nombre.isBlank()) this.nombre = nombre;
+        if (apellido != null && !apellido.isBlank()) this.apellido = apellido;
+        if (telefono != null && !telefono.isBlank()) this.telefono = telefono;    }
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import modelo.atencion.Consulta;
 import modelo.mascotas.Mascota;
@@ -20,15 +21,15 @@ public class Clinica implements Serializable {
     }
 
     public void agregarVeterinario(Veterinario veterinario) {
-        System.out.println("Clinica.agregarVeterinario");
+        veterinarios.add(veterinario);
     }
 
     public void agregarRecepcionista(Recepcionista recepcionista) {
-        System.out.println("Clinica.agregarRecepcionista");
+        recepcionistas.add(recepcionista);
     }
 
     public void agregarDuenio(Duenio duenio) {
-        System.out.println("Clinica.registrarCliente");
+        duenios.add(duenio);
     }
 
     public List<Veterinario> getVeterinarios() {
@@ -36,7 +37,11 @@ public class Clinica implements Serializable {
     }
 
     public Veterinario getVeterinarioDeGuardia(LocalDate dia) {
-        System.out.println("Clinica.getVeterinarioDeGuardia");
+        for (Veterinario v : veterinarios) {
+            if (v.esDeGuardia(dia)) {
+                return v;
+            }
+        }
         return null;
     }
 
@@ -53,27 +58,49 @@ public class Clinica implements Serializable {
     }
 
     public Duenio buscarDuenio(String duenioDocumento) {
-        System.out.println("Clinica.buscarDuenio");
+        for (Duenio d : duenios) {
+            if (d.getDocumento().equals(duenioDocumento)) {
+                return d;
+            }
+        }
         return null;
     }
 
     public Recepcionista buscarRecepcionista(String recepcionistaDocumento) {
-        System.out.println("Clinica.buscarRecepcionista");
+        for (Recepcionista r : recepcionistas) {
+            if (r.getDocumento().equals(recepcionistaDocumento)) {
+                return r;
+            }
+        }
         return null;
     }    
 
     public Veterinario buscarVeterinarioPorDocumento(String veterinarioDocumento) {
-        System.out.println("Clinica.buscarVeterinarioPorDocumento");
+        for (Veterinario v : veterinarios) {
+            if (v.getDocumento().equals(veterinarioDocumento)) {
+                return v;
+            }
+        }
         return null;
     }    
 
     public Mascota buscarMascota(String idMascota) {
-        System.out.println("Clinica.buscarMascota");
+        for (Mascota m : getMascotas()) {
+            if (m.getId().equals(idMascota)) {
+                return m;
+            }
+        }
         return null;
     }
 
     public Consulta buscarConsulta(String idConsulta) {
-        // Recorrer dueños, mascotas e historias clínicas.
+        for (Mascota m : getMascotas()) {
+            for (Consulta c : m.getHistoriaClinica().getConsultas()) {
+                if (c.getId().equals(idConsulta)) {
+                    return c;
+                }
+            }
+        }
         return null;
     }
 
@@ -83,11 +110,13 @@ public class Clinica implements Serializable {
     }
 
     public void eliminarVeterinario(Veterinario veterinario) {
-        System.out.println("Clinica.eliminarVeterinario");
+        veterinarios.remove(veterinario);
     }
 
     public void eliminarRecepcionista(Recepcionista recepcionista) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarRecepcionista'");
+        recepcionistas.remove(recepcionista);
+    }
+    public void agregarAdministrador(Administrador administrador) {
+        administradores.add(administrador);
     }
 }

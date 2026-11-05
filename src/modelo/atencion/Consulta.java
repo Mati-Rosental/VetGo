@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import modelo.agenda.Turno;
 import modelo.enumeradores.EstadoConsulta;
@@ -25,6 +26,7 @@ public class Consulta implements Serializable {
     private List<Tratamiento> tratamientos = new ArrayList<>();
     private List<VacunaAplicada> vacunasAplicadas = new ArrayList<>();
     private List<NotaRectificatoria> notasRectificatorias = new ArrayList<>();
+    private final String id;
 
     public void registrarPeso(double peso) {
         System.out.println("Consulta.registrarPeso");
@@ -71,6 +73,10 @@ public class Consulta implements Serializable {
         this.motivo = motivo;
         this.fecha = LocalDateTime.now();
         this.estado = EstadoConsulta.EN_CURSO;
+        this.id = UUID.randomUUID().toString();
         this.pesoDia = null;
+    }
+    public String getId() {
+        return id;
     }
 }

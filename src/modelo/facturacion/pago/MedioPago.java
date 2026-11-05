@@ -1,7 +1,8 @@
 package modelo.facturacion.pago;
 
-public interface MedioPago {
-    double calcularTotal(double subtotal, boolean tienePlanSalud);
+import java.io.Serializable;
 
+public interface MedioPago extends Serializable {
+    double calcularTotal(double subtotal, boolean tienePlanSalud);
     String getNombre();
 }

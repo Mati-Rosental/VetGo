@@ -33,8 +33,8 @@ public class VacunaAplicada implements Serializable {
         return false;
     }
 
-    public Mascota getVacuna() {
+    public Vacuna getVacuna() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVacuna'");
+        return vacuna;
     }
 }

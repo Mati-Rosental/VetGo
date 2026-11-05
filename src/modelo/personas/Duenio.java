@@ -27,20 +27,25 @@ public class Duenio extends Persona {
     }
 
     public void registrarAusencia() {
-        System.out.println("Duenio.registrarAusencia");
+        // con tres ausencias seguidas el dueño debe pagar una seña
+        ausenciasSeguidas++;
+        if (ausenciasSeguidas >= 3) {
+            seniaRequerida = true;
+        }
+
     }
 
     public void registrarAsistencia() {
-        System.out.println("Duenio.registrarAsistencia");
+        ausenciasSeguidas = 0;
     }
 
     public void pagarSenia(double monto) {
-        System.out.println("Duenio.pagarSenia");
+        seniaPendiente += monto;
+        seniaRequerida = false;
     }
 
     public boolean puedePedirTurno() {
-        System.out.println("Duenio.puedePedirTurno");
-        return false;
+        return !seniaRequerida;
     }
 
     @Override

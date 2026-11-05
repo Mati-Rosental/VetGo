@@ -10,6 +10,12 @@ public class Tarifario implements Serializable {
     private double montoSenia;
     private double porcCancelacionTardia;
 
+    public Tarifario(Map<TipoAtencion, Double> precios, double montoSenia, double porcCancelacionTardia) {
+        this.precios = precios;
+        this.montoSenia = montoSenia;
+        this.porcCancelacionTardia = porcCancelacionTardia;
+    }
+
     public double getPrecio(TipoAtencion tipo) {
         System.out.println("Tarifario.getPrecio");
         return 0.0;

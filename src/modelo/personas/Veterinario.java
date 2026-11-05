@@ -1,7 +1,9 @@
 package modelo.personas;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +21,32 @@ public class Veterinario extends Persona {
     }
 
     public boolean atiendeEn(LocalDateTime inicio, int minutos) {
-        System.out.println("Veterinario.atiendeEn");
+        DayOfWeek dia = inicio.getDayOfWeek();
+        LocalTime horaInicioTurno = inicio.toLocalTime();
+        LocalTime horaFinTurno = horaInicioTurno.plusMinutes(minutos);
+
+        // Si cruza la medianoche, rechazar
+        if (horaFinTurno.isBefore(horaInicioTurno)) {
+            return false;
+        }
+
+        for (HorarioAtencion h : horarios) {
+            if (h.getDia().equals(dia)) {
+                if (h.cubreTramoHorario(horaInicioTurno, horaFinTurno)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
     public boolean esDeGuardia(LocalDate dia) {
-        System.out.println("Veterinario.esDeGuardia");
+        DayOfWeek d = dia.getDayOfWeek();
+        for (HorarioAtencion h : horarios) {
+            if (h.getDia().equals(d) && h.esDeGuardia()) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -36,7 +58,11 @@ public class Veterinario extends Persona {
     public void modificarDatos(String nombre, String apellido, String telefono,
          String especialidad, List<HorarioAtencion> horarios) {
         // Si alguna variable es null, no hay que modificarla
-        System.out.println("Veterinario.modificarDatos");
+        if (nombre != null && !nombre.isBlank()) this.nombre = nombre;
+        if (apellido != null && !apellido.isBlank()) this.apellido = apellido;
+        if (telefono != null && !telefono.isBlank()) this.telefono = telefono;
+        if (especialidad != null && !especialidad.isBlank()) this.especialidad = especialidad;
+        if (horarios != null && !horarios.isEmpty()) this.horarios = horarios;
     }
 
     public LocalDateTime proximaApertura(LocalDateTime inicio) {

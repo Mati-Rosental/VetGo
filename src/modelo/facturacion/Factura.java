@@ -24,7 +24,16 @@ public class Factura implements Serializable {
     private NotaCredito notaCredito;
     private final List<LineaFactura> lineas = new ArrayList<>();
 
-    
+    public Factura(String numero, LocalDate fecha, EstadoFactura estado, double seniaDescontada, Consulta consulta, Duenio duenio, Tarifario tarifario, MedioPago medioPago) {
+        this.numero = UUID.randomUUID().toString();
+        this.fecha = LocalDate.now();
+        this.estado = EstadoFactura.EMITIDA; // <--- Agregar esto
+        this.consulta = consulta;
+        this.duenio = duenio;
+        this.tarifario = tarifario;
+        this.medioPago = medioPago;
+        this.seniaDescontada = 0.0; // O la lógica de la seña pendiente del dueño
+    }
 
     public Factura(Consulta consulta, Duenio duenio, Tarifario tarifario, MedioPago medioPago) {
         this.numero = UUID.randomUUID().toString();

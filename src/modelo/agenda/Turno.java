@@ -19,7 +19,7 @@ public class Turno implements Comparable<Turno>, Serializable {
     private Mascota mascota;
     private Veterinario veterinario;
     private Consulta consulta;
-
+    private boolean cancelado;
 
 
     public Turno(LocalDateTime fechaHora, TipoAtencion tipo,
@@ -34,23 +34,25 @@ public class Turno implements Comparable<Turno>, Serializable {
     }
 
     public int getDuracionMin() {
-        System.out.println("Turno.getDuracionMin");
-        return 0;
+        return tipo.getDuracionMin();
     }
 
     public LocalDateTime getFin() {
-        System.out.println("Turno.getFin");
-        return null;
+        return fechaHora.plusMinutes(getDuracionMin());
     }
 
     public boolean seSuperpone(Turno otro) {
-        System.out.println("Turno.seSuperpone");
-        return false;
+        if (this.cancelado || otro.cancelado) return false;
+        if (!this.veterinario.getDocumento().equals(otro.veterinario.getDocumento())) {
+            return false;
+        }
+        return this.fechaHora.isBefore(otro.getFin()) && otro.fechaHora.isBefore(this.getFin()); // RN-T2
     }
 
     public boolean cancelar(LocalDateTime ahora) {
-        System.out.println("Turno.cancelar");
-        return false;
+        this.estado = EstadoTurno.CANCELADO;
+        // Si faltan menos de 2 horas hay cargo
+        return java.time.Duration.between(ahora, this.fechaHora).toHours() < 2;
     }
 
     public void marcarAusente() {
@@ -62,17 +64,16 @@ public class Turno implements Comparable<Turno>, Serializable {
     }
 
     public void marcarAtendido() {
-        System.out.println("Turno.marcarAtendido");
+        this.estado = EstadoTurno.ATENDIDO;
     }
 
     public void reprogramar(LocalDateTime nuevaFechaHora) {
-        System.out.println("Turno.reprogramar");
+        this.fechaHora = nuevaFechaHora;
     }
 
     @Override
     public int compareTo(Turno otro) {
-        System.out.println("Turno.compareTo");
-        return 0;
+        return this.fechaHora.compareTo(otro.fechaHora);
     }
 
     public TipoAtencion getTipoAtencion() {
@@ -96,7 +97,17 @@ public class Turno implements Comparable<Turno>, Serializable {
     }
 
     public String getDescripcion() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDescripcion'");
+        return "Turno [ID=" + id + ", Fecha=" + fechaHora + ", Tipo=" + tipo + ", Estado=" + estado +
+                ", Mascota=" + mascota.getNombre() + ", Veterinario=" + veterinario.getNombreCompleto() + "]";
+    }
+    public String getId() {
+        return id;
+    }
+    public void setConsulta(Consulta consulta) {
+        this.consulta = consulta;
+    }
+
+    public EstadoTurno getEstado() {
+        return estado;
     }
 }

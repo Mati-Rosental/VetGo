@@ -19,6 +19,7 @@ public abstract class Mascota implements Serializable {
     private LocalDate fechaTransferencia;
     private HistoriaClinica historiaClinica;
 
+
     public Mascota(Duenio duenio, String nombre, String raza, Sexo sexo, LocalDate fechaNacimiento, double peso) {        
         this.id = UUID.randomUUID().toString();
         this.duenio = duenio;
@@ -35,13 +36,21 @@ public abstract class Mascota implements Serializable {
         System.out.println("Mascota.edadEnSemanas");
         return 0;
     }
+    public String getId() {
+        return id;
+    }
 
     public void actualizarPeso(double peso) {
-        System.out.println("Mascota.actualizarPeso");
+        this.peso = peso;
     }
 
     public void transferirA(Duenio nuevoDuenio, LocalDate fecha) {
-        System.out.println("Mascota.transferirA");
+        if (this.duenio != null) {
+            this.duenio.getMascotas().remove(this);
+        }
+        this.duenio = nuevoDuenio;
+        nuevoDuenio.agregarMascota(this);
+        this.fechaTransferencia = fecha;
     }
 
     public Duenio getDuenio() {

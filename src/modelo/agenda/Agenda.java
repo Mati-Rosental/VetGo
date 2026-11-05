@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import modelo.enumeradores.EstadoTurno;
 import modelo.enumeradores.TipoAtencion;
 import modelo.mascotas.Mascota;
 import modelo.personas.Veterinario;
@@ -14,55 +16,105 @@ public class Agenda implements Serializable {
     private final List<Turno> turnos = new ArrayList<>();
 
     public boolean asignarTurno(Turno turno) {
-        // Validar si se puede asignar el turno
-        System.out.println("Agenda.asignarTurno");
+        if (hayDisponibilidad(turno.getVeterinario(), turno.getFechaHora(), turno.getDuracionMin())) {
+            turnos.add(turno);
+            return true;
+        }
         return false;
     }
 
     public boolean reprogramar(Turno turno, LocalDateTime nuevaFechaHora) {
-        System.out.println("Agenda.reprogramar");
+        LocalDateTime viejoInicio = turno.getFechaHora();
+        turno.reprogramar(nuevaFechaHora);
+        if (hayDisponibilidad(turno.getVeterinario(), nuevaFechaHora, turno.getDuracionMin())) {
+            return true;
+        }
+        turno.reprogramar(viejoInicio); // rollback si no hay lugar
         return false;
     }
 
     public boolean cancelar(Turno turno) {
-        // True si hay cargo por cancelacion tardia
-        System.out.println("Agenda.cancelar");
-        return false;
+        return turno.cancelar(LocalDateTime.now());
     }
 
     public void registrarAusencia(Turno turno) {
-        System.out.println("Agenda.registrarAusencia");
+        turno.marcarAusente();
     }
 
     public boolean hayDisponibilidad(Veterinario veterinario, LocalDateTime inicio, int minutos) {
-        System.out.println("Agenda.hayDisponibilidad");
-        return false;
+        if (!veterinario.atiendeEn(inicio, minutos)) {
+            return false;
+        }
+        LocalDateTime fin = inicio.plusMinutes(minutos);
+        for (Turno t : turnos) {
+            if (!t.getEstado().equals(EstadoTurno.CANCELADO) && t.getVeterinario().getDocumento().equals(veterinario.getDocumento())) {
+                if (inicio.isBefore(t.getFin()) && t.getFechaHora().isBefore(fin)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public List<Turno> getTurnosDe(Veterinario veterinario, LocalDate desde, LocalDate hasta) {
-        System.out.println("Agenda.getTurnosDe");
-        // Si hasta es null devuelve todos
-        return null;
+        List<Turno> resultado = new ArrayList<>();
+        for (Turno t : turnos) {
+            if (t.getVeterinario().getDocumento().equals(veterinario.getDocumento())) {
+                LocalDate fechaTurno = t.getFechaHora().toLocalDate();
+                boolean despuesDeOIgual = !fechaTurno.isBefore(desde);
+                boolean antesDeOIgual = (hasta == null) || !fechaTurno.isAfter(hasta);
+                if (despuesDeOIgual && antesDeOIgual) {
+                    resultado.add(t);
+                }
+            }
+        }
+        Collections.sort(resultado);
+        return resultado;
     }
 
     public Turno getTurnoSiguiente(Veterinario veterinario, LocalDateTime despuesDe) {
-        System.out.println("Agenda.getTurnoSiguiente");
-        return null;
+        Turno siguiente = null;
+        for (Turno t : turnos) {
+            if (t.getVeterinario().getDocumento().equals(veterinario.getDocumento()) && t.getFechaHora().isAfter(despuesDe)) {
+                if (siguiente == null || t.compareTo(siguiente) < 0) {
+                    siguiente = t;
+                }
+            }
+        }
+        return siguiente;
     }
 
     public Turno getTurnoActual(Veterinario veterinario) {
-        // Si es null no esta atendiendo o no puede atender ahora
-        System.out.println("Agenda.getTurnoSiguiente");
+        LocalDateTime ahora = LocalDateTime.now();
+        for (Turno t : turnos) {
+            if (!t.getEstado().equals(EstadoTurno.CANCELADO) && !t.getEstado().equals(EstadoTurno.AUSENTE)) {
+                if (t.getVeterinario().getDocumento().equals(veterinario.getDocumento())) {
+                    if (!ahora.isBefore(t.getFechaHora()) && !ahora.isAfter(t.getFin())) {
+                        return t;
+                    }
+                }
+            }
+        }
         return null;
     }
 
     public LocalDateTime primerHorarioLibre(Veterinario veterinario, LocalDateTime desde, int minutos) {
-        System.out.println("Agenda.primerHorarioLibre");
+        LocalDateTime cursor = desde;
+        for (int i = 0; i < 30; i++) { // límite de días
+            if (hayDisponibilidad(veterinario, cursor, minutos)) {
+                return cursor;
+            }
+            cursor = cursor.plusMinutes(15);
+        }
         return null;
     }
 
     public Turno buscarTurno(String idTurno) {
-        System.out.println("Agenda.buscarTurno");
+        for (Turno t : turnos) {
+            if (t.getId().equals(idTurno)) {
+                return t;
+            }
+        }
         return null;
     }
 }

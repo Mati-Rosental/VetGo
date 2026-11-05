@@ -18,12 +18,11 @@ public class HorarioAtencion implements Serializable {
     }
 
     public boolean esDeGuardia() {
-        System.out.println("HorarioAtencion.esDeGuardia");
-        return false;
+        return deGuardia;
     }
 
     public void setDeGuardia(boolean deGuardia) {
-        System.out.println("HorarioAtencion.setDeGuardia");
+        this.deGuardia = deGuardia;
     }
 
     public HorarioAtencion(DayOfWeek dia, LocalTime horaInicio, LocalTime horaFin, boolean deGuardia) {
@@ -44,7 +43,6 @@ public class HorarioAtencion implements Serializable {
     }
 
     public DayOfWeek getDia() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDia'");
+        return dia;
     }
 }
