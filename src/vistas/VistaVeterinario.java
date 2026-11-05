@@ -18,11 +18,13 @@ public class VistaVeterinario {
             System.out.println("\n--- Menú de veterinario ---");
             System.out.println("1. Registrar consulta");
             System.out.println("2. Registrar peso de consulta");
-            System.out.println("3. Indicar tratamiento");
-            System.out.println("4. Aplicar vacuna");
-            System.out.println("5. Confirmar consulta");
-            System.out.println("6. Registrar nota rectificatoria");
-            System.out.println("7. Consultar historia clínica");
+            System.out.println("3. Registrar diagnóstico de consulta");
+            System.out.println("4. Registrar observaciones de consulta");
+            System.out.println("5. Indicar tratamiento");
+            System.out.println("6. Aplicar vacuna");
+            System.out.println("7. Confirmar consulta");
+            System.out.println("8. Registrar nota rectificatoria");
+            System.out.println("9. Consultar historia clínica");
             System.out.println("0. Volver");
 
             opcion = leer(scanner, "Opción: ");
@@ -52,6 +54,26 @@ public class VistaVeterinario {
                     break;
 
                 case "3":
+                    if (controlador.registrarDiagnostico(
+                            leer(scanner, "Identificador de la consulta: "),
+                            leer(scanner, "Diagnóstico: "))) {
+                        System.out.println("Diagnóstico registrado correctamente.");
+                    } else {
+                        System.out.println("No se pudo registrar el diagnóstico.");
+                    }
+                    break;
+
+                case "4":
+                    if (controlador.registrarObservaciones(
+                            leer(scanner, "Identificador de la consulta: "),
+                            leer(scanner, "Observaciones: "))) {
+                        System.out.println("Observaciones registradas correctamente.");
+                    } else {
+                        System.out.println("No se pudo registrar las observaciones.");
+                    }
+                    break;
+
+                case "5":
                     try {
                         String idConsulta = leer(scanner, "Identificador de la consulta: ");
                         String idProducto = leer(scanner, "Identificador del medicamento: ");
@@ -70,7 +92,7 @@ public class VistaVeterinario {
                     }
                     break;
 
-                case "4":
+                case "6":
                     if (controlador.aplicarVacuna(
                             leer(scanner, "Identificador de la consulta: "),
                             leer(scanner, "Identificador de la vacuna: "))) {
@@ -80,7 +102,7 @@ public class VistaVeterinario {
                     }
                     break;
 
-                case "5":
+                case "7":
                     if (controlador.confirmarConsulta(leer(scanner, "Identificador de la consulta: "))) {
                         System.out.println("Consulta confirmada correctamente.");
                     } else {
@@ -88,7 +110,7 @@ public class VistaVeterinario {
                     }
                     break;
 
-                case "6":
+                case "8":
                     if (controlador.registrarNotaRectificatoria(
                             leer(scanner, "Identificador de la consulta: "),
                             leer(scanner, "Texto de la nota: "),
@@ -99,7 +121,7 @@ public class VistaVeterinario {
                     }
                     break;
 
-                case "7":
+                case "9":
                     HistoriaClinica historia = controlador.consultarHistoriaClinica(
                             leer(scanner, "Identificador de la mascota: "));
 

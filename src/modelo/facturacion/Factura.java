@@ -19,51 +19,67 @@ public class Factura implements Serializable {
     private double seniaDescontada;
     private Consulta consulta;
     private Duenio duenio;
-    private Tarifario tarifario;
     private MedioPago medioPago;
     private NotaCredito notaCredito;
-    private final List<LineaFactura> lineas = new ArrayList<>();
+    private List<LineaFactura> lineas = new ArrayList<>();
+    private double subtotal;
+    private double total;
 
-    public Factura(String numero, LocalDate fecha, EstadoFactura estado, double seniaDescontada, Consulta consulta, Duenio duenio, Tarifario tarifario, MedioPago medioPago) {
+
+    public Factura(Consulta consulta, MedioPago medioPago, List<LineaFactura> lineas) {
+        this.consulta = consulta;
+        this.medioPago = medioPago;
+        this.lineas = new ArrayList<>(lineas);
+
         this.numero = UUID.randomUUID().toString();
         this.fecha = LocalDate.now();
-        this.estado = EstadoFactura.EMITIDA; // <--- Agregar esto
-        this.consulta = consulta;
-        this.duenio = duenio;
-        this.tarifario = tarifario;
-        this.medioPago = medioPago;
-        this.seniaDescontada = 0.0; // O la lógica de la seña pendiente del dueño
+        this.estado = EstadoFactura.EMITIDA;
+        this.duenio = consulta.getTurno().getMascota().getDuenio();
+        this.seniaDescontada = duenio.getSeniaPendiente();
+
+        calcularTotal();
     }
 
-    public Factura(Consulta consulta, Duenio duenio, Tarifario tarifario, MedioPago medioPago) {
+    public Factura(Duenio duenio, List<LineaFactura> lineas) {
+        this.duenio = duenio;
+        this.lineas = new ArrayList<>(lineas);
+
         this.numero = UUID.randomUUID().toString();
-        fecha = LocalDate.now();
-        this.consulta = consulta;
-        this.duenio = duenio;
-        this.tarifario = tarifario;
-        this.medioPago = medioPago;
+        this.fecha = LocalDate.now();
+        this.estado = EstadoFactura.EMITIDA;
+        this.seniaDescontada = 0;
+
+        calcularTotal();
     }
 
-    public void agregarLinea(String descripcion, int cantidad, double precioUnitario) {
-        lineas.add(new LineaFactura(descripcion, cantidad, precioUnitario));
-    }
-
-    public double calcularSubtotal() {
+    private double calcularSubtotal() {
         double sub = 0;
         for (LineaFactura lf : lineas) {
             sub += lf.getSubtotal();
         }
+        subtotal = sub;
         return sub;
     }
 
-    public double calcularTotal() {
-        System.out.println("Factura.calcularTotal");
-        return 0.0;
+    private void calcularTotal() {
+        // Si la factura es para un cobro de cancelacion
+        if (consulta == null) {
+            total = calcularSubtotal();
+        }
+        else {
+            // calcula el subtototal y aplica medio de pago, plan salud y descuenta la seña
+            total = medioPago.calcularTotal(calcularSubtotal(), duenio.tienePlanSalud()) - seniaDescontada;
+        }
+        
+    }
+
+    public double getTotal() {
+        return total;
     }
 
     public void anular(String motivo, Recepcionista emisor) {
         this.estado = EstadoFactura.ANULADA;
-        this.notaCredito = new NotaCredito(0, this, motivo, emisor);
+        this.notaCredito = new NotaCredito(this, motivo, emisor);
     }
 
     public boolean estaAnulada() {

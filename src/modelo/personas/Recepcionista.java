@@ -11,7 +11,6 @@ public class Recepcionista extends Persona {
     }
 
     public void modificarDatos(String nombre, String apellido, String telefono) {
-        // TODO Auto-generated method stub
         // Si alguna variable es null, no hay que modificarla
         if (nombre != null && !nombre.isBlank()) this.nombre = nombre;
         if (apellido != null && !apellido.isBlank()) this.apellido = apellido;

@@ -55,8 +55,8 @@ public class ControladorAtencion {
         // Abrir la consulta en la historia clínica de la mascota
         Mascota mascota = turno.getMascota();
         mascota.getHistoriaClinica().abrirConsulta(turno, motivo);
-        // Marcar el turno como atendido
-        turno.marcarAtendido();
+        // Marcar el turno como en curso
+        turno.marcarEnCurso();
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -75,6 +75,40 @@ public class ControladorAtencion {
         }
         // Registrar el peso en la consulta
         consulta.registrarPeso(peso);
+        // Guardar los cambios
+        estadoRepositorio.guardar(estado);
+
+        return true;
+    }
+    public boolean registrarDiagnostico(String idConsulta, String diagnostico) {
+        // Validar los parámetros
+        if (idConsulta == null || vacio(diagnostico)) {
+            return false;
+        }
+        // Buscar la consulta
+        Consulta consulta = clinica.buscarConsulta(idConsulta);
+        if (consulta == null || consulta.estaConfirmada()) {
+            return false;
+        }
+        // Registrar el diagnostico en la consulta
+        consulta.registrarDiagnostico(diagnostico);
+        // Guardar los cambios
+        estadoRepositorio.guardar(estado);
+
+        return true;
+    }
+    public boolean registrarObservaciones(String idConsulta, String observaciones) {
+        // Validar los parámetros
+        if (idConsulta == null || vacio(observaciones)) {
+            return false;
+        }
+        // Buscar la consulta
+        Consulta consulta = clinica.buscarConsulta(idConsulta);
+        if (consulta == null || consulta.estaConfirmada()) {
+            return false;
+        }
+        // Registrar las observaciones en la consulta
+        consulta.registrarObservaciones(observaciones);
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -100,7 +134,9 @@ public class ControladorAtencion {
             return false;
         }
         // Delegar el registro del tratamiento a Consulta
-        consulta.indicarTratamiento(medicamento, dosis, frecuencia, duracionDias, cantidad);
+        if (!consulta.indicarTratamiento(medicamento, dosis, frecuencia, duracionDias, cantidad)) {
+            return false;
+        }
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -151,6 +187,8 @@ public class ControladorAtencion {
                 }
             }
         }
+        // Marcar turno como atendido
+        consulta.getTurno().marcarAtendido();
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -188,5 +226,11 @@ public class ControladorAtencion {
         }
         // Obtener la historia clínica de la mascota
         return mascota.getHistoriaClinica();
+    }
+
+    // Auxiliares
+
+    private boolean vacio(String texto) {
+        return texto == null || texto.isBlank();
     }
 }

@@ -1,7 +1,6 @@
 package modelo.agenda;
 
 import java.io.Serializable;
-import java.rmi.MarshalException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,7 +18,6 @@ public class Turno implements Comparable<Turno>, Serializable {
     private Mascota mascota;
     private Veterinario veterinario;
     private Consulta consulta;
-    private boolean cancelado;
 
 
     public Turno(LocalDateTime fechaHora, TipoAtencion tipo,
@@ -42,11 +40,14 @@ public class Turno implements Comparable<Turno>, Serializable {
     }
 
     public boolean seSuperpone(Turno otro) {
-        if (this.cancelado || otro.cancelado) return false;
+        if ((estado != EstadoTurno.PROGRAMADO && estado != EstadoTurno.EN_CURSO)
+            || (otro.getEstado() != EstadoTurno.PROGRAMADO && otro.getEstado() != EstadoTurno.EN_CURSO)) {
+            return false;
+        }
         if (!this.veterinario.getDocumento().equals(otro.veterinario.getDocumento())) {
             return false;
         }
-        return this.fechaHora.isBefore(otro.getFin()) && otro.fechaHora.isBefore(this.getFin()); // RN-T2
+        return this.fechaHora.isBefore(otro.getFin()) && otro.fechaHora.isBefore(this.getFin());
     }
 
     public boolean cancelar(LocalDateTime ahora) {
@@ -62,7 +63,9 @@ public class Turno implements Comparable<Turno>, Serializable {
         // Registrar la ausencia del dueño
         this.mascota.getDuenio().registrarAusencia();
     }
-
+    public void marcarEnCurso() {
+        this.estado = EstadoTurno.EN_CURSO;
+    }
     public void marcarAtendido() {
         this.estado = EstadoTurno.ATENDIDO;
     }

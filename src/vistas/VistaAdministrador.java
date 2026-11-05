@@ -141,7 +141,7 @@ public class VistaAdministrador {
                         leerEntero(scanner, "Intervalo de refuerzo en días: "),
                         leerDecimal(scanner, "Precio unitario: "),
                         leerEntero(scanner, "Stock mínimo: "),
-                        leer(scanner, "CUIL del proveedor: "),
+                        leer(scanner, "CUIT del proveedor: "),
                         leerLotes(scanner)),
                         "Vacuna registrada correctamente.",
                         "No se pudo registrar la vacuna.");
@@ -178,7 +178,7 @@ public class VistaAdministrador {
                         leerEntero(scanner, "Stock mínimo: "),
                         leerDecimal(scanner, "Precio unitario de venta: "),
                         leerLotes(scanner),
-                        leer(scanner, "CUIL del proveedor: ")),
+                        leer(scanner, "CUIT del proveedor: ")),
                         "Producto registrado correctamente.",
                         "No se pudo registrar el producto.");
                 break;
@@ -194,7 +194,7 @@ public class VistaAdministrador {
                         leerEntero(scanner, "Stock mínimo: "),
                         leerDecimal(scanner, "Precio unitario de venta: "),
                         leerLotesOConservar(scanner),
-                        leer(scanner, "CUIL del proveedor: ")),
+                        leer(scanner, "CUIT del proveedor: ")),
                         "Producto modificado correctamente.",
                         "No se pudo modificar el producto.");
                 break;
@@ -215,7 +215,7 @@ public class VistaAdministrador {
         switch (accion) {
             case "1":
                 resultado(controlador.altaProveedor(
-                        leer(scanner, "CUIL: "),
+                        leer(scanner, "CUIT: "),
                         leer(scanner, "Nombre: "),
                         leer(scanner, "Teléfono: "),
                         leer(scanner, "Correo: ")),
@@ -223,13 +223,13 @@ public class VistaAdministrador {
                         "No se pudo registrar el proveedor.");
                 break;
             case "2":
-                resultado(controlador.bajaProveedor(leer(scanner, "CUIL del proveedor: ")),
+                resultado(controlador.bajaProveedor(leer(scanner, "CUIT del proveedor: ")),
                         "Proveedor dado de baja correctamente.",
                         "No se pudo dar de baja el proveedor.");
                 break;
             case "3":
                 resultado(controlador.modificarProveedor(
-                        leer(scanner, "CUIL del proveedor: "),
+                        leer(scanner, "CUIT del proveedor: "),
                         leer(scanner, "Nombre: "),
                         leer(scanner, "Teléfono: "),
                         leer(scanner, "Correo: ")),

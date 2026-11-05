@@ -55,8 +55,9 @@ public class GestorUrgencias {
         List<LocalDateTime> nuevosHorarios = new ArrayList<>();
 
         LocalDateTime finActual = turnoUrgencia.getFin();
-        Turno siguiente = agenda.getTurnoSiguiente(vet, turnoUrgencia.getFechaHora());
-
+        // Se busca desde un instante antes para incluir un turno que empiece justo al inicio de la urgencia
+        Turno siguiente = agenda.getTurnoSiguiente(vet, turnoUrgencia.getFechaHora().minusNanos(1));
+        
         // Mientras haya un siguiente turno y este empiece antes de que la cadena actual termine
         while (siguiente != null && siguiente.getFechaHora().isBefore(finActual)) {
             int duracion = siguiente.getDuracionMin();

@@ -208,7 +208,7 @@ public class ControladorAdministracion {
 
     public boolean altaVacuna(
             String codigo, String nombre, Set<Especie> especies, int edadMinimaSemanas, int intervaloRefuerzoDias,
-            double precioUnitario, int stockMinimo, String CUILProveedor, List<Lote> lotes) {
+            double precioUnitario, int stockMinimo, String CUITProveedor, List<Lote> lotes) {
         // Validar los parámetros
         if (vacio(codigo) || vacio(nombre) || especies == null || especies.isEmpty() || lotes == null) {
             return false;
@@ -220,7 +220,7 @@ public class ControladorAdministracion {
         // Los lotes deben ser válidos y no estar vencidos
         if (!lotesValidos(lotes)) return false;
         // El proveedor tiene que existir
-        Proveedor proveedor = inventario.buscarProveedor(CUILProveedor);
+        Proveedor proveedor = inventario.buscarProveedor(CUITProveedor);
         if (proveedor == null) return false;
         if (inventario.buscarVacuna(codigo) != null) return false;
         // Crear la vacuna y cargarle los lotes
@@ -248,7 +248,7 @@ public class ControladorAdministracion {
             return false;
         }
         // Dar de baja sin borrar el historial de vacunas aplicadas
-        inventario.darDeBajaVacuna(vacuna);
+        inventario.darDeBajaProducto(vacuna);
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -293,9 +293,9 @@ public class ControladorAdministracion {
 
     public boolean altaProducto(
             String codigo, String nombre, int stockMinimo, double precioUnitario, List<Lote> lotes,
-            String CUILProveedor) {
+            String CUITProveedor) {
         // Validar los parámetros
-        if (vacio(nombre) || vacio(CUILProveedor) || lotes == null) {
+        if (vacio(nombre) || vacio(CUITProveedor) || lotes == null) {
             return false;
         }
         if (stockMinimo < 0 || precioUnitario <= 0) {
@@ -310,7 +310,7 @@ public class ControladorAdministracion {
             return false;
         }
         // El proveedor debe existir
-        Proveedor proveedor = inventario.buscarProveedor(CUILProveedor);
+        Proveedor proveedor = inventario.buscarProveedor(CUITProveedor);
         if (proveedor == null) {
             return false;
         }
@@ -351,9 +351,9 @@ public class ControladorAdministracion {
             int stockMinimo,
             double precioUnitario,
             List<Lote> lotes,
-            String CUILProveedor) {
+            String CUITProveedor) {
         // Validar los parámetros
-        if (vacio(codigo) || vacio(nombre) || vacio(CUILProveedor)) {
+        if (vacio(codigo) || vacio(nombre) || vacio(CUITProveedor)) {
             return false;
         }
         if (stockMinimo < 0 || precioUnitario <= 0) {
@@ -364,7 +364,7 @@ public class ControladorAdministracion {
         }
         // Buscar el producto y el proveedor
         Producto producto = inventario.buscarProducto(codigo);
-        Proveedor proveedor = inventario.buscarProveedor(CUILProveedor);
+        Proveedor proveedor = inventario.buscarProveedor(CUITProveedor);
         if (producto == null || proveedor == null) {
             return false;
         }
@@ -381,30 +381,30 @@ public class ControladorAdministracion {
 
     // Gestionar catálogo de proveedores
 
-    public boolean altaProveedor(String CUIL, String nombre, String telefono, String correo) {
+    public boolean altaProveedor(String CUIT, String nombre, String telefono, String correo) {
         // Validar los parámetros
         if (vacio(nombre) || vacio(telefono) || vacio(correo)) {
             return false;
         }
         // Rechazar proveedor ya registrado
-        if (inventario.buscarProveedor(CUIL) != null) {
+        if (inventario.buscarProveedor(CUIT) != null) {
             return false;
         }
         // Crear el proveedor y agregarlo al inventario
-        inventario.agregarProveedor(new Proveedor(CUIL, nombre, telefono, correo));
+        inventario.agregarProveedor(new Proveedor(CUIT, nombre, telefono, correo));
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
         return true;
     }
 
-    public boolean bajaProveedor(String CUILProveedor) {
+    public boolean bajaProveedor(String CUITProveedor) {
         // Validar el parámetro
-        if (vacio(CUILProveedor)) {
+        if (vacio(CUITProveedor)) {
             return false;
         }
         // Buscar el proveedor
-        Proveedor proveedor = inventario.buscarProveedor(CUILProveedor);
+        Proveedor proveedor = inventario.buscarProveedor(CUITProveedor);
         if (proveedor == null) {
             return false;
         }
@@ -421,13 +421,13 @@ public class ControladorAdministracion {
     }
 
     public boolean modificarProveedor(
-            String CUILProveedor, String nombre, String telefono, String correo) {
+            String CUITProveedor, String nombre, String telefono, String correo) {
         // Validar los parámetros
-        if (vacio(CUILProveedor) || vacio(nombre) || vacio(telefono) || vacio(correo)) {
+        if (vacio(CUITProveedor) || vacio(nombre) || vacio(telefono) || vacio(correo)) {
             return false;
         }
         // Buscar el proveedor
-        Proveedor proveedor = inventario.buscarProveedor(CUILProveedor);
+        Proveedor proveedor = inventario.buscarProveedor(CUITProveedor);
         if (proveedor == null) {
             return false;
         }

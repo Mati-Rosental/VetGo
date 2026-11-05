@@ -10,6 +10,14 @@ public class AlertaStock implements Serializable {
     private boolean vigente;
     private Producto producto;
 
+    public AlertaStock(Producto producto) {
+        this.producto = producto;
+        this.fecha = LocalDate.now();
+        this.stockActual = producto.getStockActual();
+        this.stockMinimo = producto.getStockMinimo();
+        this.vigente = true;
+    }
+
     public void cerrar() {
         this.vigente = false;
     }
@@ -19,11 +27,7 @@ public class AlertaStock implements Serializable {
         return "Alerta: El producto " + producto.getNombre() + " tiene stock actual (" + producto.getStockActual() + ") menor al mínimo (" + stockMinimo + ").";
     }
 
-    public AlertaStock(Producto producto) {
-        this.producto = producto;
-        this.fecha = LocalDate.now();
-        this.stockActual = producto.getStockActual();
-        this.stockMinimo = producto.getStockMinimo();
-        this.vigente = true;
+    public boolean esVigente() {
+        return vigente;
     }
 }

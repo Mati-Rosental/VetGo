@@ -17,6 +17,7 @@ public class Tarifario implements Serializable {
     }
 
     public double getPrecio(TipoAtencion tipo) {
+        // Si el tipo de atencion no esta registrado, devuelve 0
         return precios != null ? precios.getOrDefault(tipo, 0.0) : 0.0;
     }
 
@@ -29,6 +30,6 @@ public class Tarifario implements Serializable {
     }
 
     public double calcularCargoCancelacionTardia() {
-        return 1000.0;
+        return precios.get(TipoAtencion.CONSULTA_GENERAL) * porcCancelacionTardia;
     }
 }

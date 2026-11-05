@@ -20,6 +20,10 @@ public class Veterinario extends Persona {
         this.horarios = horarios;
     }
 
+    public Object getMatricula() {
+        return matricula;
+    }
+
     public boolean atiendeEn(LocalDateTime inicio, int minutos) {
         DayOfWeek dia = inicio.getDayOfWeek();
         LocalTime horaInicioTurno = inicio.toLocalTime();
@@ -65,8 +69,35 @@ public class Veterinario extends Persona {
         if (horarios != null && !horarios.isEmpty()) this.horarios = horarios;
     }
 
+    // Devuelve la primera apertura disponible a partir del día siguiente al indicado
     public LocalDateTime proximaApertura(LocalDateTime inicio) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'proximaApertura'");
+        // Comienza la búsqueda desde el día siguiente
+        LocalDate diaBusqueda = inicio.toLocalDate().plusDays(1);
+
+        // Busca una apertura dentro de los próximos 7 días
+        for (int i = 0; i < 7; i++) {
+            DayOfWeek diaSemana = diaBusqueda.getDayOfWeek();
+            LocalTime primeraApertura = null;
+
+            // Busca el horario de inicio más temprano para ese día
+            for (HorarioAtencion h : horarios) {
+                if (h.getDia().equals(diaSemana)) {
+                    if (primeraApertura == null || h.getHoraInicio().isBefore(primeraApertura)) {
+                        primeraApertura = h.getHoraInicio();
+                    }
+                }
+            }
+
+            // Si encontró un horario, devuelve la fecha y hora de apertura
+            if (primeraApertura != null) {
+                return LocalDateTime.of(diaBusqueda, primeraApertura);
+            }
+
+            // Avanza al siguiente día
+            diaBusqueda = diaBusqueda.plusDays(1);
+        }
+
+        // No hay horarios de atención configurados
+        return null;
     }
 }

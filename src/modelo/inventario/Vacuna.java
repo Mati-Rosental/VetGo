@@ -46,10 +46,13 @@ public class Vacuna extends Producto {
         return "Vacuna: " + getNombre() + " [Código: " + getCodigo() + ", Refuerzo cada " + intervaloRefuerzoDias + " días]";
     }
 
-    public void modificarDatos(String nombre, Set<Especie> especies2, int edadMinimaSemanas2,
-            int intervaloRefuerzoDias2, double precioUnitario) {
-        // TODO Auto-generated method stub
-        // Si alguna variable es null, no hay que modificarla
-        throw new UnsupportedOperationException("Unimplemented method 'modificarDatos'");
+    // Modifica los datos de la vacuna, manteniendo los valores actuales cuando los nuevos son null o no son válidos
+    public void modificarDatos(String nuevoNombre, Set<Especie> nuevasEspecies, Integer nuevaEdadMinimaSemanas,
+            Integer nuevoIntervaloRefuerzoDias, Double nuevoPrecioUnitario) {
+        if (nuevoNombre != null && !nuevoNombre.isBlank()) this.nombre = nuevoNombre;
+        if (nuevasEspecies != null) this.especies = nuevasEspecies;
+        if (nuevaEdadMinimaSemanas != null && nuevaEdadMinimaSemanas >= 0) this.edadMinimaSemanas = nuevaEdadMinimaSemanas;
+        if (nuevoIntervaloRefuerzoDias != null && nuevoIntervaloRefuerzoDias >= 0) this.intervaloRefuerzoDias = nuevoIntervaloRefuerzoDias;
+        if (nuevoPrecioUnitario != null && nuevoPrecioUnitario > 0) this.precioUnitario = nuevoPrecioUnitario;
     }
 }

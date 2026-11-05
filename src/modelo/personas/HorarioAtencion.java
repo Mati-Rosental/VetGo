@@ -32,14 +32,12 @@ public class HorarioAtencion implements Serializable {
         this.deGuardia = deGuardia;
     }
 
-    public LocalDate getHoraFin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHoraFin'");
+    public LocalTime getHoraFin() {
+        return horaFin;
     }
 
-    public ChronoLocalDate getHoraInicio() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHoraInicio'");
+    public LocalTime getHoraInicio() {
+        return getHoraInicio();
     }
 
     public DayOfWeek getDia() {

@@ -1,7 +1,5 @@
 package modelo.facturacion.pago;
 
-import java.io.Serializable;
-
 public class Credito implements MedioPago {
     private int cuotas;
 
@@ -11,13 +9,21 @@ public class Credito implements MedioPago {
 
     @Override
     public double calcularTotal(double subtotal, boolean tienePlanSalud) {
-        return subtotal;
+        // Aplica 15% de descuento con plan salud y otro 7% por recargo de credito
+        if (tienePlanSalud) {
+            double subtotalConDescuento = subtotal - (subtotal * 0.15);
+            return (subtotalConDescuento - (subtotalConDescuento * 0.07));
+        }
+        else {
+            return subtotal - (subtotal * 0.07);
+        }
     }
 
     @Override
     public String getNombre() {
         return "Crédito";
     }
+
     public int getCuotas() {
         return cuotas;
     }

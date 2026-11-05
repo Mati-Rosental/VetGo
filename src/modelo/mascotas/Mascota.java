@@ -32,10 +32,10 @@ public abstract class Mascota implements Serializable {
         this.historiaClinica = new HistoriaClinica();
     }
 
-    public int edadEnSemanas(LocalDate fechaActual) {
-        System.out.println("Mascota.edadEnSemanas");
-        return 0;
+    public int edadEnSemanas() {
+        return (int) java.time.temporal.ChronoUnit.WEEKS.between(fechaNacimiento, LocalDate.now());
     }
+
     public String getId() {
         return id;
     }

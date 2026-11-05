@@ -12,18 +12,23 @@ public class HistoriaClinica implements Serializable {
     private Mascota mascota;
     private final List<Consulta> consultas = new ArrayList<>();
 
-    public Consulta abrirConsulta(Turno turno, String motivo) {
-        System.out.println("HistoriaClinica.abrirConsulta");
-        return null;
+    public void abrirConsulta(Turno turno, String motivo) {
+        consultas.add(new Consulta(turno, motivo));
     }
+    
 
     public List<Consulta> getConsultas() {
         return consultas;
     }
 
     public List<VacunaAplicada> getVacunasAplicadas() {
-        System.out.println("HistoriaClinica.getVacunasAplicadas");
-        return null;
+        List<VacunaAplicada> vacunasAplicadas = new ArrayList<>();
+
+        for (Consulta consulta : consultas) {
+            vacunasAplicadas.addAll(consulta.getVacunasAplicadas());
+        }
+
+        return vacunasAplicadas;
     }
 
     @Override

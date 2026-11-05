@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class Producto implements Serializable {
-    private final String codigo;
-    private String nombre;
-    private int stockMinimo;
-    private double precioUnitario;
-    private Proveedor proveedor;
-    private List<Lote> lotes = new ArrayList<>();
+    protected final String codigo;
+    protected String nombre;
+    protected int stockMinimo;
+    protected double precioUnitario;
+    protected Proveedor proveedor;
+    protected List<Lote> lotes = new ArrayList<>();
 
     public Producto(String codigo, String nombre, int stockMinimo, double precioUnitario, Proveedor proveedor) {
         this.codigo = codigo;
@@ -27,6 +27,7 @@ public class Producto implements Serializable {
         return getStockActual() >= cantidad;
     }
 
+    // Calcula el stock total disponible, sin contar los lotes vencidos
     public int getStockActual() {
         int total = 0;
         LocalDate hoy = LocalDate.now();
@@ -47,6 +48,7 @@ public class Producto implements Serializable {
         Collections.sort(lotes);
     }
 
+    // Descuenta una cantidad del stock, priorizando los lotes según su orden y omitiendo los vencidos
     public void descontar(int cantidad) {
         int restante = cantidad;
         LocalDate hoy = LocalDate.now();
@@ -91,11 +93,12 @@ public class Producto implements Serializable {
         return lotes;
     }
 
-    public void modificarDatos(String nombre2, int stockMinimo2, double precioUnitario2, Proveedor proveedor2) {
-        if (nombre != null && !nombre.isBlank()) this.nombre = nombre;
-        this.stockMinimo = stockMinimo;
-        if (precioUnitario > 0) this.precioUnitario = precioUnitario;
-        if (proveedor != null) this.proveedor = proveedor;
+    // Modifica los datos del producto, manteniendo los valores actuales cuando los nuevos son null o no son válidos
+    public void modificarDatos(String nuevoNombre, Integer nuevoStockMinimo, Double nuevoPrecioUnitario, Proveedor nuevoProveedor) {
+        if (nuevoNombre != null && !nuevoNombre.isBlank()) this.nombre = nuevoNombre;
+        if (nuevoStockMinimo != null && nuevoStockMinimo >= 0) this.stockMinimo = nuevoStockMinimo;
+        if (nuevoPrecioUnitario != null && nuevoPrecioUnitario > 0) this.precioUnitario = nuevoPrecioUnitario;
+        if (nuevoProveedor != null) this.proveedor = nuevoProveedor;
     }
 
     public void reemplazarLotes(List<Lote> lotes2) {

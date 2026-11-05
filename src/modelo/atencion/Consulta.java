@@ -20,33 +20,51 @@ public class Consulta implements Serializable {
     private String observaciones;
     private EstadoConsulta estado;
     private Turno turno;
-    private Veterinario veterinario;
     private List<Tratamiento> tratamientos = new ArrayList<>();
     private List<VacunaAplicada> vacunasAplicadas = new ArrayList<>();
     private List<NotaRectificatoria> notasRectificatorias = new ArrayList<>();
     private final String id;
 
-    public void registrarPeso(double peso) {
-        this.pesoDia = peso;
-        if (turno != null && turno.getMascota() != null) {
-            turno.getMascota().actualizarPeso(peso); // S-23
-        }
+    public Consulta(Turno turno, String motivo) {
+        this.turno = turno;
+        turno.setConsulta(this);
+        this.motivo = motivo;
+        this.fecha = LocalDateTime.now();
+        this.estado = EstadoConsulta.EN_CURSO;
+        this.id = UUID.randomUUID().toString();
+        this.pesoDia = null;
     }
 
-    public void indicarTratamiento(
-            Producto medicamento,
-            String dosis,
-            String frecuencia,
-            int duracionDias,
-            int cantidad) {
-        if (pesoDia != null) {
-            tratamientos.add(new Tratamiento(dosis, frecuencia, duracionDias, cantidad, medicamento)); // RN-M5
+    public String getId() {
+        return id;
+    }
+
+    public void registrarPeso(double peso) {
+        this.pesoDia = peso;
+        turno.getMascota().actualizarPeso(peso);
+    }
+
+    public void registrarDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
+    public void registrarObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public boolean indicarTratamiento(Producto medicamento, String dosis, String frecuencia, int duracionDias, int cantidad) {
+        if (estaConfirmada() || pesoDia == null || medicamento == null) {
+            return false;
         }
+
+        tratamientos.add(new Tratamiento(dosis, frecuencia, duracionDias, cantidad, medicamento));
+        return true;
     }
 
     public void aplicarVacuna(Vacuna vacuna) {
         Mascota m = turno.getMascota();
-        int semanas = m.edadEnSemanas(LocalDate.now());
+        int semanas = m.edadEnSemanas();
+        // Registra la vacuna solo si es para la especie de la mascota y si tiene la edad mínima
         if (vacuna.aplicaA(m.getEspecie()) && vacuna.permiteEdad(semanas)) {
             vacunasAplicadas.add(new VacunaAplicada(vacuna, vacuna.getNumeroPrimerLote(), LocalDate.now()));
         }
@@ -64,11 +82,14 @@ public class Consulta implements Serializable {
         return this.estado.equals(EstadoConsulta.CONFIRMADA);
     }
 
+    // Junta los productos usados en la consulta con la cantidad total de cada uno
     public Map<Producto, Integer> getInsumosUtilizados() {
         Map<Producto, Integer> insumos = new HashMap<>();
+        // Medicamentos de los tratamientos, sumando si se repite el producto
         for (Tratamiento t : tratamientos) {
             insumos.merge(t.getMedicamento(), t.getCantidad(), Integer::sum);
         }
+        // Cada vacuna aplicada consume una unidad
         for (VacunaAplicada v : vacunasAplicadas) {
             insumos.merge(v.getVacuna(), 1, Integer::sum);
         }
@@ -79,15 +100,6 @@ public class Consulta implements Serializable {
         return turno;
     }
 
-    public Consulta(Turno turno, Veterinario veterinario, String motivo) {
-        this.turno = turno;
-        this.veterinario = veterinario;
-        this.motivo = motivo;
-        this.fecha = LocalDateTime.now();
-        this.estado = EstadoConsulta.EN_CURSO;
-        this.id = UUID.randomUUID().toString();
-        this.pesoDia = null;
-    }
     public List<Tratamiento> getTratamientos() {
         return tratamientos;
     }
@@ -98,9 +110,15 @@ public class Consulta implements Serializable {
 
     @Override
     public String toString() {
-        return "Consulta [ID=" + id + ", Fecha=" + fecha + ", Motivo=" + motivo + ", Estado=" + estado + "]";
-    }
-    public String getId() {
-        return id;
+        return "Consulta [ID=" + id
+                + ", Fecha=" + fecha
+                + ", Motivo=" + motivo
+                + ", Peso del día=" + (pesoDia != null ? pesoDia + " kg" : "No registrado")
+                + ", Diagnóstico=" + diagnostico
+                + ", Observaciones=" + observaciones
+                + ", Tratamientos=" + tratamientos
+                + ", Vacunas aplicadas=" + vacunasAplicadas
+                + ", Notas rectificatorias=" + notasRectificatorias
+                + ", Estado=" + estado + "]";
     }
 }

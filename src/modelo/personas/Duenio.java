@@ -44,16 +44,24 @@ public class Duenio extends Persona {
         seniaRequerida = false;
     }
 
+    public double getSeniaPendiente() {
+        return seniaPendiente;
+    }
+
     public boolean puedePedirTurno() {
         return !seniaRequerida;
+    }
+
+    public void agregarMascota(Mascota mascota) {
+        System.out.println("Duenio.agregarMascota");
+    }
+
+    public boolean tienePlanSalud() {
+        return tienePlanSalud;
     }
 
     @Override
     public String getRol() {
         return "Dueño";
-    }
-
-    public void agregarMascota(Mascota mascota) {
-        System.out.println("Duenio.agregarMascota");
     }
 }

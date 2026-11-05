@@ -5,6 +5,7 @@ import modelo.agenda.Turno;
 import modelo.atencion.Consulta;
 import modelo.enumeradores.TipoAtencion;
 import modelo.facturacion.Factura;
+import modelo.facturacion.LineaFactura;
 import modelo.facturacion.Tarifario;
 import modelo.facturacion.pago.MedioPago;
 import modelo.personas.Clinica;
@@ -13,6 +14,7 @@ import modelo.personas.Recepcionista;
 import persistencia.EstadoSistema;
 import persistencia.Repositorio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorFacturacion {
@@ -43,15 +45,15 @@ public class ControladorFacturacion {
         // Obtener el precio de la consulta
         TipoAtencion tipo = consulta.getTurno().getTipoAtencion();
         double precioConsulta = tarifario.getPrecio(tipo);
-        // Crear la factura
-        Duenio duenio = consulta.getTurno().getMascota().getDuenio();
-        Factura factura = new Factura(consulta, duenio, tarifario, medioPago);
-        // Agregar la consulta como linea
-        factura.agregarLinea("Consulta veterinaria", 1, precioConsulta);
+        // Crear las líneas de la factura
+        List<LineaFactura> lineas = new ArrayList<>();
+        lineas.add(new LineaFactura("Consulta veterinaria", 1, precioConsulta));
         // Agregar una línea por cada insumo utilizado
-        // Es una funcion lambda
-        consulta.getInsumosUtilizados().forEach((producto, cantidad) ->
-        {factura.agregarLinea(producto.getNombre(), cantidad, producto.getPrecioUnitario());});
+        consulta.getInsumosUtilizados().forEach((producto, cantidad) -> {
+            lineas.add(new LineaFactura(producto.getNombre(), cantidad, producto.getPrecioUnitario()));
+        });
+        // Crear la factura con todas sus líneas
+        Factura factura = new Factura(consulta, medioPago, lineas);
         // Guardar la factura
         facturas.add(factura);
         estadoRepositorio.guardar(estado);
@@ -94,10 +96,11 @@ public class ControladorFacturacion {
         Duenio duenio = turno.getMascota().getDuenio();
         // Calcular el importe del cargo
         double importe = tarifario.calcularCargoCancelacionTardia();
+        // Crear las líneas de la factura
+        List<LineaFactura> lineas = new ArrayList<>();
+        lineas.add(new LineaFactura("Cargo por cancelación tardía", 1, importe));
         // Crear la factura
-        Factura factura = new Factura(null, duenio, tarifario, null);
-        // Agregar la única línea de la factura
-        factura.agregarLinea("Cargo por cancelación tardía", 1, importe);
+        Factura factura = new Factura(duenio, lineas);
         // Guardar la factura
         facturas.add(factura);
         estadoRepositorio.guardar(estado);

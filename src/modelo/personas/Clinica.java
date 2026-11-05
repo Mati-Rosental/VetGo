@@ -105,7 +105,11 @@ public class Clinica implements Serializable {
     }
 
     public Object buscarVeterinarioPorMatricula(String matricula) {
-        System.out.println("Clinica.buscarVeterinarioPorMatricula");
+        for (Veterinario v : veterinarios) {
+            if (v.getMatricula().equals(matricula)) {
+                return v;
+            }
+        }
         return null;
     }
 
