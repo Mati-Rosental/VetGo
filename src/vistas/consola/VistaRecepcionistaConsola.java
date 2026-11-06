@@ -55,6 +55,7 @@ public class VistaRecepcionistaConsola implements VistaRecepcionista{
             System.out.println("13. Ver todos los turnos");
             System.out.println("14. Ver turnos de un dueño");
             System.out.println("15. Ver consultas pendientes de facturación");
+            System.out.println("16. Cobrar seña a un dueño");
             System.out.println("0. Volver");
 
             opcion = Entrada.textoOpcional(scanner, "Opción: ");
@@ -96,7 +97,7 @@ public class VistaRecepcionistaConsola implements VistaRecepcionista{
                                 }),
                                 Entrada.fechaHora(scanner, "Fecha y hora (AAAA-MM-DDTHH:MM): ")),
                                 "Turno asignado correctamente.",
-                                "No se pudo asignar el turno. Verifique los datos y que el veterinario esté disponible en ese horario.");
+                                "No se pudo asignar el turno. Verifique los datos, que el veterinario esté disponible en ese horario y que el dueño no tenga una seña pendiente.");
                         break;
 
                     case "5":
@@ -171,6 +172,10 @@ public class VistaRecepcionistaConsola implements VistaRecepcionista{
                         verConsultasPendientes();
                         break;
 
+                    case "16":
+                        cobrarSenia(scanner);
+                        break;
+
                     case "0":
                         break;
 
@@ -219,7 +224,24 @@ public class VistaRecepcionistaConsola implements VistaRecepcionista{
                 "No se pudo registrar la mascota. Verifique que el documento del dueño exista.");
     }
 
-    // Muestra todos los dueños registrados
+    private void cobrarSenia(Scanner scanner) {
+        List<Duenio> pendientes = controladorFacturacion.obtenerDueniosConSeniaRequerida();
+
+        if (pendientes.isEmpty()) {
+            System.out.println("No hay dueños con una seña pendiente de pago.");
+            return;
+        }
+
+        System.out.println("\n--- Dueños con seña pendiente (monto: $" + controladorFacturacion.getMontoSenia() + ") ---");
+        for (Duenio d : pendientes) {
+            System.out.println(d.getNombreCompleto() + " - " + d.getDocumento());
+        }
+
+        resultado(controladorFacturacion.cobrarSenia(leer(scanner, "Documento del dueño: ")),
+                "Seña cobrada correctamente. El dueño ya puede pedir turnos.",
+                "No se pudo cobrar la seña. Verifique que el dueño tenga una seña pendiente.");
+    }
+
     private void verDuenios() {
         List<Duenio> duenios = controladorRegistro.obtenerDuenios();
 

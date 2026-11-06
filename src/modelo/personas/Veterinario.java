@@ -20,7 +20,7 @@ public class Veterinario extends Persona {
         this.horarios = horarios;
     }
 
-    public Object getMatricula() {
+    public String getMatricula() {
         return matricula;
     }
 

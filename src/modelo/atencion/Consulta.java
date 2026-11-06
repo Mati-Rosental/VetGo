@@ -61,13 +61,16 @@ public class Consulta implements Serializable {
         return true;
     }
 
-    public void aplicarVacuna(Vacuna vacuna) {
+    // Devuelve true si la vacuna se registró, false si no corresponde aplicarla
+    public boolean aplicarVacuna(Vacuna vacuna) {
         Mascota m = turno.getMascota();
         int semanas = m.edadEnSemanas();
         // Registra la vacuna solo si es para la especie de la mascota y si tiene la edad mínima
         if (vacuna.aplicaA(m.getEspecie()) && vacuna.permiteEdad(semanas)) {
             vacunasAplicadas.add(new VacunaAplicada(vacuna, vacuna.getNumeroPrimerLote(), LocalDate.now()));
+            return true;
         }
+        return false;
     }
 
     public void agregarNota(String texto, Veterinario firmante) {

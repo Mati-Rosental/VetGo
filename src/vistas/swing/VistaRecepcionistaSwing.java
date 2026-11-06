@@ -102,8 +102,8 @@ public class VistaRecepcionistaSwing implements VistaRecepcionista{
                 new String[]{"Atender urgencia", "Ver mascotas"},
                 new Runnable[]{this::atenderUrgencia, this::verMascotas}));
         pestanias.addTab("Facturación", crearPanelAcciones(
-                new String[]{"Facturar consulta", "Anular factura", "Consultas pendientes"},
-                new Runnable[]{this::facturarConsulta, this::anularFactura, this::verConsultasPendientes}));
+                new String[]{"Facturar consulta", "Anular factura", "Consultas pendientes", "Cobrar seña"},
+                new Runnable[]{this::facturarConsulta, this::anularFactura, this::verConsultasPendientes, this::cobrarSenia}));
 
         contenido.add(pestanias, BorderLayout.CENTER);
         return contenido;
@@ -279,7 +279,7 @@ public class VistaRecepcionistaSwing implements VistaRecepcionista{
                     veterinario.getItemAt(veterinario.getSelectedIndex()).valor.getDocumento(),
                     (TipoAtencion) tipo.getSelectedItem(), fechaHora);
             if (asignado) mostrarExito("El turno fue asignado correctamente.");
-            else mostrarError("No se pudo asignar el turno. Verifique la disponibilidad del veterinario y los datos.");
+            else mostrarError("No se pudo asignar el turno. Verifique la disponibilidad del veterinario, los datos y que el dueño no tenga una seña pendiente.");
         } catch (DateTimeParseException e) {
             mostrarError("La fecha debe tener el formato AAAA-MM-DD HH:MM.");
         }
@@ -346,6 +346,17 @@ public class VistaRecepcionistaSwing implements VistaRecepcionista{
                 consulta.getItemAt(consulta.getSelectedIndex()).valor.getId(), pago);
         if (ok) mostrarExito("La consulta fue facturada correctamente.");
         else mostrarError("No se pudo facturar la consulta.");
+    }
+
+    private void cobrarSenia() {
+        List<Duenio> duenios = controladorFacturacion.obtenerDueniosConSeniaRequerida();
+        if (duenios.isEmpty()) { mostrarError("No hay dueños con una seña pendiente de pago."); return; }
+        JComboBox<Opcion<Duenio>> duenio = combo(duenios, d -> d.getNombreCompleto() + " — " + d.getDocumento());
+        if (!confirmarFormulario("Cobrar seña ($" + controladorFacturacion.getMontoSenia() + ")",
+                formulario(new JLabel("Dueño"), duenio))) return;
+        boolean ok = controladorFacturacion.cobrarSenia(duenio.getItemAt(duenio.getSelectedIndex()).valor.getDocumento());
+        if (ok) mostrarExito("La seña fue cobrada. El dueño ya puede pedir turnos.");
+        else mostrarError("No se pudo cobrar la seña.");
     }
 
     private void anularFactura() {

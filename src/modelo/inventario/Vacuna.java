@@ -35,7 +35,7 @@ public class Vacuna extends Producto {
         LocalDate hoy = LocalDate.now();
         for (Lote l : getLotes()) {
             if (!l.estaVencido(hoy) && l.getCantidad() > 0) {
-                return l.toString();
+                return l.getNumero();
             }
         }
         return null;

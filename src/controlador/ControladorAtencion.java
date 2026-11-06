@@ -1,4 +1,3 @@
-
 package controlador;
 
 import java.util.List;
@@ -56,6 +55,8 @@ public class ControladorAtencion {
         mascota.getHistoriaClinica().abrirConsulta(turno, motivo);
         // Marcar el turno como en curso
         turno.marcarEnCurso();
+        // El dueño asistió: se reinicia su conteo de ausencias seguidas
+        mascota.getDuenio().registrarAsistencia();
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -157,8 +158,10 @@ public class ControladorAtencion {
         if (!vacuna.hayStock(1)) {
             return false;
         }
-        // Registrar la aplicación de la vacuna en la consulta
-        consulta.aplicarVacuna(vacuna);
+        // Registrar la aplicación de la vacuna en la consulta (falla si la especie o la edad no corresponden)
+        if (!consulta.aplicarVacuna(vacuna)) {
+            return false;
+        }
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 

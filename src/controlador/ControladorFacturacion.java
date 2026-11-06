@@ -111,6 +111,41 @@ public class ControladorFacturacion {
         return factura;
     }
 
+    // Cobra la seña a un dueño bloqueado por ausencias y levanta el bloqueo
+    public boolean cobrarSenia(String documentoDuenio) {
+        // Validar el parámetro
+        if (documentoDuenio == null || documentoDuenio.isBlank()) return false;
+        // Buscar al dueño; solo se cobra si tiene una seña requerida
+        Duenio duenio = clinica.buscarDuenio(documentoDuenio);
+        if (duenio == null || !duenio.requiereSenia()) return false;
+        // El monto debe estar configurado en el tarifario
+        double monto = tarifario.getMontoSenia();
+        if (monto <= 0) return false;
+        // Registrar el cobro como factura
+        List<LineaFactura> lineas = new ArrayList<>();
+        lineas.add(new LineaFactura("Seña por ausencias reiteradas", 1, monto));
+        facturas.add(new Factura(duenio, lineas));
+        // Registrar el pago en el dueño (levanta el bloqueo y deja la seña a favor)
+        duenio.pagarSenia(monto);
+
+        estadoRepositorio.guardar(estado);
+
+        return true;
+    }
+
+    public double getMontoSenia() {
+        return tarifario.getMontoSenia();
+    }
+
+    // Devuelve los dueños que deben pagar una seña para volver a pedir turnos
+    public List<Duenio> obtenerDueniosConSeniaRequerida() {
+        List<Duenio> duenios = new ArrayList<>();
+        for (Duenio duenio : clinica.getDuenios()) {
+            if (duenio.requiereSenia()) duenios.add(duenio);
+        }
+        return duenios;
+    }
+
     // Devuelve las consultas confirmadas que todavía no fueron facturadas
     public List<Consulta> obtenerConsultasConfirmadas() {
         List<Consulta> consultasPendientes = new ArrayList<>();

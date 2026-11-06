@@ -10,6 +10,7 @@ import java.util.Set;
 import modelo.agenda.Agenda;
 import modelo.agenda.Turno;
 import modelo.enumeradores.Especie;
+import modelo.enumeradores.EstadoTurno;
 import modelo.inventario.Inventario;
 import modelo.inventario.Lote;
 import modelo.inventario.Producto;
@@ -87,8 +88,11 @@ public class ControladorAdministracion {
             return false;
         }
         // Con turnos futuros hay que reprogramarlos antes de la baja
-        if (!agenda.getTurnosDe(veterinario, LocalDate.now(), null).isEmpty()) {
-            return false;
+        for (Turno turno : agenda.getTurnosDe(veterinario, LocalDate.now(), null)) {
+            if (turno.getEstado() == EstadoTurno.PROGRAMADO ||
+            turno.getEstado() == EstadoTurno.EN_CURSO) {
+                return false;
+            }
         }
         // Quitarlo de la clínica
         clinica.eliminarVeterinario(veterinario);
@@ -106,6 +110,7 @@ public class ControladorAdministracion {
             String especialidad,
             List<HorarioAtencion> horarios) {
         // Validar los parámetros
+        // Nombre, apellido, teléfono y especialidad pueden ser null (no se modifican)
         if (vacio(documento) || !horariosValidos(horarios)) {
             return false;
         }
@@ -197,6 +202,8 @@ public class ControladorAdministracion {
         for (Lote lote : lotes) {
             producto.agregarLote(lote);
         }
+        // Cerrar las alertas de stock que la reposición haya resuelto
+        inventario.cerrarAlertasResueltas();
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -282,6 +289,8 @@ public class ControladorAdministracion {
         if (lotes != null) {
             vacuna.reemplazarLotes(lotes);
         }
+        // Cierra las alertas que fueron impactadas
+        inventario.cerrarAlertasResueltas();
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 
@@ -372,6 +381,8 @@ public class ControladorAdministracion {
         if (lotes != null) {
             producto.reemplazarLotes(lotes);
         }
+        // Cierra las alertas que fueron impactadas
+        inventario.cerrarAlertasResueltas();
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
 

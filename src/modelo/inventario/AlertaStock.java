@@ -30,4 +30,8 @@ public class AlertaStock implements Serializable {
     public boolean esVigente() {
         return vigente;
     }
+
+    public Producto getProducto() {
+        return producto;
+    }
 }

@@ -38,4 +38,8 @@ public class Lote implements Comparable<Lote>, Serializable {
     public LocalDate getFechaVencimiento() {
         return fechaVencimiento;
     }
+
+    public String getNumero() {
+        return numero;
+    }
 }

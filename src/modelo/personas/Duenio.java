@@ -39,9 +39,23 @@ public class Duenio extends Persona {
         ausenciasSeguidas = 0;
     }
 
+    // Al pagar la seña se levanta el bloqueo y se reinicia el conteo de ausencias.
+    // El monto queda a favor y se descuenta de la próxima factura.
     public void pagarSenia(double monto) {
         seniaPendiente += monto;
         seniaRequerida = false;
+        ausenciasSeguidas = 0;
+    }
+
+    // Descuenta de la seña a favor hasta el máximo indicado y devuelve lo consumido
+    public double consumirSenia(double maximo) {
+        double consumido = Math.min(seniaPendiente, Math.max(0, maximo));
+        seniaPendiente -= consumido;
+        return consumido;
+    }
+
+    public boolean requiereSenia() {
+        return seniaRequerida;
     }
 
     public double getSeniaPendiente() {

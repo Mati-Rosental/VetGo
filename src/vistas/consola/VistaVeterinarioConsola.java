@@ -92,7 +92,7 @@ public class VistaVeterinarioConsola implements VistaVeterinario {
                                 leer(scanner, "Identificador de la vacuna: "))) {
                             System.out.println("Vacuna aplicada correctamente.");
                         } else {
-                            System.out.println("No se pudo registrar la aplicación de la vacuna.");
+                            System.out.println("No se pudo aplicar la vacuna. Verifique especie, edad y stock.");
                         }
                         break;
 

@@ -18,6 +18,9 @@ public class Inventario implements Serializable {
         List<AlertaStock> nuevasAlertas = new ArrayList<>();
         Map<Producto, Integer> insumos = consulta.getInsumosUtilizados();
 
+        // Cierra las alertas de productos que ya repusieron stock, para que puedan volver a generarse
+        cerrarAlertasResueltas();
+
         // Recorre los productos utilizados y descuenta las cantidades correspondientes
         for (Map.Entry<Producto, Integer> entry : insumos.entrySet()) {
             Producto p = entry.getKey();
@@ -26,7 +29,8 @@ public class Inventario implements Serializable {
             p.descontar(cant);
 
             // Genera y registra una alerta si el stock queda por debajo del mínimo establecido
-            if (p.estaBajoMinimo()) {
+            // y el producto todavía no tiene una alerta vigente (evita alertas repetidas)
+            if (p.estaBajoMinimo() && !tieneAlertaVigente(p)) {
                 AlertaStock alerta = new AlertaStock(p);
                 alertas.add(alerta);
                 nuevasAlertas.add(alerta);
@@ -34,6 +38,35 @@ public class Inventario implements Serializable {
         }
 
         return nuevasAlertas;
+    }
+
+    // Cierra las alertas vigentes cuyo producto ya no está bajo el mínimo o fue dado de baja
+    public void cerrarAlertasResueltas() {
+        for (AlertaStock alerta : alertas) {
+            if (alerta.esVigente()
+                    && (!productos.contains(alerta.getProducto()) || !alerta.getProducto().estaBajoMinimo())) {
+                alerta.cerrar();
+            }
+        }
+    }
+
+    private boolean tieneAlertaVigente(Producto producto) {
+        for (AlertaStock alerta : alertas) {
+            if (alerta.esVigente() && alerta.getProducto() == producto) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<AlertaStock> getAlertasVigentes() {
+        List<AlertaStock> vigentes = new ArrayList<>();
+        for (AlertaStock alerta : alertas) {
+            if (alerta.esVigente()) {
+                vigentes.add(alerta);
+            }
+        }
+        return vigentes;
     }
 
     // Devuelve una lista con los productos cuyo stock está por debajo del mínimo establecido
@@ -109,6 +142,7 @@ public class Inventario implements Serializable {
 
     public void darDeBajaProducto(Producto producto) {
         productos.remove(producto);
+        cerrarAlertasResueltas();
     }
     
     public List<Producto> getProductos() {

@@ -35,7 +35,7 @@ public class Factura implements Serializable {
         this.fecha = LocalDate.now();
         this.estado = EstadoFactura.EMITIDA;
         this.duenio = consulta.getTurno().getMascota().getDuenio();
-        this.seniaDescontada = duenio.getSeniaPendiente();
+        this.seniaDescontada = 0;
 
         calcularTotal();
     }
@@ -68,7 +68,10 @@ public class Factura implements Serializable {
         }
         else {
             // calcula el subtototal y aplica medio de pago, plan salud y descuenta la seña
-            total = medioPago.calcularTotal(calcularSubtotal(), duenio.tienePlanSalud()) - seniaDescontada;
+            double totalSinSenia = medioPago.calcularTotal(calcularSubtotal(), duenio.tienePlanSalud());
+            // Consume la seña a favor del dueño (sin pasarse del total) para no descontarla dos veces
+            seniaDescontada = duenio.consumirSenia(totalSinSenia);
+            total = totalSinSenia - seniaDescontada;
         }
         
     }
