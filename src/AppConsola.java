@@ -37,12 +37,15 @@ import servicio.GestorUrgencias;
 import servicio.Notificador;
 import servicio.NotificadorConsola;
 import servicio.ServicioRecordatorios;
-import vistas.VistaAdministrador;
-import vistas.VistaPrincipal;
-import vistas.VistaRecepcionista;
-import vistas.VistaVeterinario;
+import vistas.consola.VistaAdministradorConsola;
+import vistas.consola.VistaRecepcionistaConsola;
+import vistas.consola.VistaVeterinarioConsola;
+import vistas.interfaces.VistaAdministrador;
+import vistas.interfaces.VistaRecepcionista;
+import vistas.interfaces.VistaVeterinario;
+import vistas.swing.VistaPrincipal;
 
-public class App {
+public class AppConsola {
 
     private static final String ARCHIVO_DATOS = "vetgo.dat";
 
@@ -130,15 +133,15 @@ public class App {
         }
 
         // Inicializar las vistas
-        VistaRecepcionista vistaRecepcionista = new VistaRecepcionista(
+        VistaRecepcionista vistaRecepcionista = new VistaRecepcionistaConsola(
                 controladorRegistro,
                 controladorTurnos,
                 controladorFacturacion
         );
 
-        VistaVeterinario vistaVeterinario = new VistaVeterinario(controladorAtencion);
+        VistaVeterinario vistaVeterinario = new VistaVeterinarioConsola(controladorAtencion);
 
-        VistaAdministrador vistaAdministrador = new VistaAdministrador(controladorAdministracion);
+        VistaAdministrador vistaAdministrador = new VistaAdministradorConsola(controladorAdministracion);
 
         Scanner scanner = new Scanner(System.in);
 

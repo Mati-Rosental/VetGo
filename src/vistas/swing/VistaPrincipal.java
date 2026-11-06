@@ -1,4 +1,4 @@
-package vistas;
+package vistas.swing;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -8,6 +8,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
+import vistas.consola.Entrada;
+import vistas.interfaces.VistaAdministrador;
+import vistas.interfaces.VistaRecepcionista;
+import vistas.interfaces.VistaVeterinario;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;

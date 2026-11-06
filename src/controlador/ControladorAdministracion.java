@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import modelo.*;
 import modelo.agenda.Agenda;
 import modelo.agenda.Turno;
 import modelo.enumeradores.Especie;
@@ -107,8 +106,7 @@ public class ControladorAdministracion {
             String especialidad,
             List<HorarioAtencion> horarios) {
         // Validar los parámetros
-        if (vacio(documento) || vacio(nombre) || vacio(apellido) || vacio(telefono)
-            || vacio(especialidad) || !horariosValidos(horarios)) {
+        if (vacio(documento) || !horariosValidos(horarios)) {
             return false;
         }
         // Buscar al veterinario
@@ -481,6 +479,32 @@ public class ControladorAdministracion {
         return true;
     }
 
+
+    // Consultas para mostrar los registros disponibles en la interfaz gráfica
+    public List<Veterinario> obtenerVeterinarios() {
+        return new ArrayList<>(clinica.getVeterinarios());
+    }
+
+    public List<Recepcionista> obtenerRecepcionistas() {
+        return new ArrayList<>(clinica.getRecepcionistas());
+    }
+
+    public List<Producto> obtenerProductos() {
+        return new ArrayList<>(inventario.getProductos());
+    }
+
+    public List<Vacuna> obtenerVacunas() {
+        List<Vacuna> vacunas = new ArrayList<>();
+        for (Producto producto : inventario.getProductos()) {
+            if (producto instanceof Vacuna) vacunas.add((Vacuna) producto);
+        }
+        return vacunas;
+    }
+
+    public List<Proveedor> obtenerProveedores() {
+        return new ArrayList<>(inventario.getProveedores());
+    }
+
     // Auxiliares
 
     private boolean vacio(String texto) {
@@ -512,7 +536,7 @@ public class ControladorAdministracion {
         }
         return true;
     }
-    
+    // Solo utilizado por el sistema, no disponible desde vistas
     public boolean altaAdministrador(String nombre, String apellido, String documento, String telefono) {
         if (vacio(nombre) || vacio(apellido) || vacio(documento) || vacio(telefono)) {
             return false;

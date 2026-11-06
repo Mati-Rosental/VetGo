@@ -3,7 +3,6 @@ package controlador;
 
 import java.util.List;
 
-import modelo.*;
 import modelo.agenda.Agenda;
 import modelo.agenda.Turno;
 import modelo.atencion.Consulta;
@@ -226,6 +225,56 @@ public class ControladorAtencion {
         }
         // Obtener la historia clínica de la mascota
         return mascota.getHistoriaClinica();
+    }
+
+
+    // Devuelve los turnos que todavía pueden iniciar una consulta
+    public List<Turno> obtenerTurnosProgramados() {
+        List<Turno> disponibles = new java.util.ArrayList<>();
+        for (Turno turno : agenda.getTurnos()) {
+            if (turno.getEstado() == modelo.enumeradores.EstadoTurno.PROGRAMADO) {
+                disponibles.add(turno);
+            }
+        }
+        return disponibles;
+    }
+
+    // Devuelve las consultas que todavía están siendo atendidas
+    public List<Consulta> obtenerConsultasEnCurso() {
+        List<Consulta> consultas = new java.util.ArrayList<>();
+        for (Consulta consulta : clinica.getConsultas()) {
+            if (consulta.estaEnCurso()) consultas.add(consulta);
+        }
+        return consultas;
+    }
+
+    // Devuelve las consultas que ya finalizaron su atención
+    public List<Consulta> obtenerConsultasFinalizadas() {
+        List<Consulta> consultas = new java.util.ArrayList<>();
+        for (Consulta consulta : clinica.getConsultas()) {
+            if (!consulta.estaEnCurso()) consultas.add(consulta);
+        }
+        return consultas;
+    }
+
+    public List<Producto> obtenerProductos() {
+        return new java.util.ArrayList<>(inventario.getProductos());
+    }
+
+    public List<Vacuna> obtenerVacunas() {
+        List<Vacuna> vacunas = new java.util.ArrayList<>();
+        for (Producto producto : inventario.getProductos()) {
+            if (producto instanceof Vacuna) vacunas.add((Vacuna) producto);
+        }
+        return vacunas;
+    }
+
+    public List<modelo.mascotas.Mascota> obtenerMascotas() {
+        return new java.util.ArrayList<>(clinica.getMascotas());
+    }
+
+    public List<Veterinario> obtenerVeterinarios() {
+        return new java.util.ArrayList<>(clinica.getVeterinarios());
     }
 
     // Auxiliares

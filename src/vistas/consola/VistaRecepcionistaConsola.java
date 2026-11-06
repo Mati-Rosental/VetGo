@@ -1,5 +1,5 @@
 
-package vistas;
+package vistas.consola;
 
 import controlador.ControladorFacturacion;
 import controlador.ControladorRegistro;
@@ -16,18 +16,19 @@ import modelo.facturacion.pago.Efectivo;
 import modelo.facturacion.pago.MedioPago;
 import modelo.mascotas.Mascota;
 import modelo.personas.Duenio;
+import vistas.interfaces.VistaRecepcionista;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class VistaRecepcionista {
-    private final ControladorRegistro controladorRegistro;
-    private final ControladorTurnos controladorTurnos;
-    private final ControladorFacturacion controladorFacturacion;
+public class VistaRecepcionistaConsola implements VistaRecepcionista{
+    protected final ControladorRegistro controladorRegistro;
+    protected final ControladorTurnos controladorTurnos;
+    protected final ControladorFacturacion controladorFacturacion;
 
-    public VistaRecepcionista(ControladorRegistro controladorRegistro, ControladorTurnos controladorTurnos, ControladorFacturacion controladorFacturacion) {
+    public VistaRecepcionistaConsola(ControladorRegistro controladorRegistro, ControladorTurnos controladorTurnos, ControladorFacturacion controladorFacturacion) {
         this.controladorRegistro = controladorRegistro;
         this.controladorTurnos = controladorTurnos;
         this.controladorFacturacion = controladorFacturacion;

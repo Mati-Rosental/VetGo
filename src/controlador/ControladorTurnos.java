@@ -1,11 +1,9 @@
 package controlador;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.*;
 import modelo.agenda.Agenda;
 import modelo.agenda.Turno;
 import modelo.enumeradores.TipoAtencion;
@@ -94,13 +92,17 @@ public class ControladorTurnos {
         Mascota mascota = clinica.buscarMascota(idMascota);
         if (mascota == null) return null;
         // Obtener el veterinario de guardia
-        Veterinario veterinario = clinica.getVeterinarioDeGuardia(LocalDate.now());
+        Veterinario veterinario = clinica.getVeterinarioDeGuardia(LocalDateTime.now());
         if (veterinario == null) return null;
         // Delegar la atención de la urgencia a GestorUrgencias
         Turno turno = gestorUrgencias.atenderUrgencia(mascota, veterinario);
         // Guardar los cambios
         estadoRepositorio.guardar(estado);
         return turno;
+    }
+
+    public List<Veterinario> obtenerVeterinarios() {
+        return new ArrayList<>(clinica.getVeterinarios());
     }
 
     public List<Turno> obtenerTurnos() {

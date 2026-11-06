@@ -1,4 +1,4 @@
-package vistas;
+package vistas.consola;
 
 import controlador.ControladorAdministracion;
 import modelo.agenda.Turno;
@@ -6,6 +6,7 @@ import modelo.enumeradores.Especie;
 import modelo.inventario.Lote;
 import modelo.inventario.Producto;
 import modelo.personas.HorarioAtencion;
+import vistas.interfaces.VistaAdministrador;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -16,10 +17,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-public class VistaAdministrador {
+public class VistaAdministradorConsola implements VistaAdministrador {
     private final ControladorAdministracion controlador;
 
-    public VistaAdministrador(ControladorAdministracion controlador) {
+    public VistaAdministradorConsola(ControladorAdministracion controlador) {
         this.controlador = controlador;
     }
 

@@ -114,4 +114,8 @@ public class Inventario implements Serializable {
     public List<Producto> getProductos() {
         return productos;
     }
+
+    public List<Proveedor> getProveedores() {
+        return proveedores;
+    }
 }

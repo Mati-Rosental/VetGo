@@ -25,5 +25,11 @@ public class Proveedor implements Serializable {
     public String getCUIT() {
         return CUIT;
     }
+
+    public String getNombre() { return nombre; }
+
+    public String getTelefono() { return telefono; }
+
+    public String getCorreo() { return correo; }
 }
 

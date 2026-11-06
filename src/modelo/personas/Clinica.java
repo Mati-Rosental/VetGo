@@ -2,6 +2,7 @@ package modelo.personas;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -36,9 +37,13 @@ public class Clinica implements Serializable {
         return veterinarios;
     }
 
-    public Veterinario getVeterinarioDeGuardia(LocalDate dia) {
+    public List<Recepcionista> getRecepcionistas() {
+        return recepcionistas;
+    }
+
+    public Veterinario getVeterinarioDeGuardia(LocalDateTime momento) {
         for (Veterinario v : veterinarios) {
-            if (v.esDeGuardia(dia)) {
+            if (v.esDeGuardia(momento)) {
                 return v;
             }
         }

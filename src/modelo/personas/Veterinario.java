@@ -44,10 +44,12 @@ public class Veterinario extends Persona {
         return false;
     }
 
-    public boolean esDeGuardia(LocalDate dia) {
-        DayOfWeek d = dia.getDayOfWeek();
+    // Está de guardia si hay un bloque de guardia de ese día que cubre la hora indicada
+    public boolean esDeGuardia(LocalDateTime momento) {
+        DayOfWeek d = momento.getDayOfWeek();
+        LocalTime hora = momento.toLocalTime();
         for (HorarioAtencion h : horarios) {
-            if (h.getDia().equals(d) && h.esDeGuardia()) {
+            if (h.getDia().equals(d) && h.esDeGuardia() && h.cubreTramoHorario(hora, hora)) {
                 return true;
             }
         }
@@ -99,5 +101,9 @@ public class Veterinario extends Persona {
 
         // No hay horarios de atención configurados
         return null;
+    }
+
+    public String getEspecialidad() {
+        return especialidad;
     }
 }

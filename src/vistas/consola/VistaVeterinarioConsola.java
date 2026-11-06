@@ -1,14 +1,15 @@
-package vistas;
+package vistas.consola;
 
 import controlador.ControladorAtencion;
 import modelo.mascotas.HistoriaClinica;
+import vistas.interfaces.VistaVeterinario;
 
 import java.util.Scanner;
 
-public class VistaVeterinario {
+public class VistaVeterinarioConsola implements VistaVeterinario {
     private final ControladorAtencion controlador;
 
-    public VistaVeterinario(ControladorAtencion controlador) {
+    public VistaVeterinarioConsola(ControladorAtencion controlador) {
         this.controlador = controlador;
     }
 

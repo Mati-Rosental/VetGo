@@ -1,4 +1,4 @@
-package vistas;
+package vistas.consola;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
