@@ -9,13 +9,13 @@ public class Credito implements MedioPago {
 
     @Override
     public double calcularTotal(double subtotal, boolean tienePlanSalud) {
-        // Aplica 15% de descuento con plan salud y otro 7% por recargo de credito
+        // Aplica 15% de descuento con plan salud y luego suma 8% por recargo de credito
         if (tienePlanSalud) {
             double subtotalConDescuento = subtotal - (subtotal * 0.15);
-            return (subtotalConDescuento - (subtotalConDescuento * 0.07));
+            return (subtotalConDescuento + (subtotalConDescuento * 0.08));
         }
         else {
-            return subtotal - (subtotal * 0.07);
+            return subtotal + (subtotal * 0.08);
         }
     }
 
