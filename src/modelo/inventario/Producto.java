@@ -40,7 +40,7 @@ public class Producto implements Serializable {
     }
 
     public boolean estaBajoMinimo() {
-        return getStockActual() < stockMinimo;
+        return getStockActual() <= stockMinimo;
     }
 
     public void agregarLote(Lote lote) {

@@ -1,6 +1,5 @@
 package controlador;
 
-import modelo.*;
 import modelo.agenda.Turno;
 import modelo.atencion.Consulta;
 import modelo.enumeradores.TipoAtencion;

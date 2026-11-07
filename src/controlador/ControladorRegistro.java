@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.*;
 import modelo.enumeradores.Especie;
 import modelo.enumeradores.Sexo;
 import modelo.enumeradores.TamanioPerro;
